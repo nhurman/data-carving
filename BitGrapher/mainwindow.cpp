@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "bitstring.h"
-
+#include <iostream>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -13,6 +13,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->plainTextEdit->appendPlainText(m_bitstring->toString().c_str());
 
     ui->graphArea->setBitString(m_bitstring);
+
+    if(m_bitstring->contains(BitString("B5F1")))
+        std::cout << "yes" << std::endl;
+    else
+        std::cout << "no" << std::endl;
 }
 
 MainWindow::~MainWindow()

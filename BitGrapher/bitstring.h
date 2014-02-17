@@ -1,7 +1,7 @@
-#ifndef BITSTRING_H
-#define BITSTRING_H
+#ifndef bitstring_H
+#define bitstring_H
 
-#include "bitstring.h"
+//#include "bitstring.h"
 
 #include <algorithm>
 #include <cmath>
@@ -19,7 +19,10 @@ public:
     bool operator[](unsigned int index) const;
     bool set(unsigned int index, bool value);
     std::string toString() const;
+    BitString substring(unsigned int start, size_t size) const;
     size_t size() const;
+    bool equals(BitString const& bitstring) const;
+    bool contains(BitString s) const;
 
 private:
     size_t m_size;
@@ -27,4 +30,4 @@ private:
 };
 
 
-#endif // BITSTRING_H
+#endif // bitstring_H
