@@ -104,6 +104,39 @@ void BitString::bitXor(BitString const& bitstring)
 }
 
 
+unsigned int BitString::hammingWeight() const
+{
+    unsigned int result = 0;
+
+    for (unsigned int index = 0; index < m_size; ++index) {
+        if (m_bytes[index / 8] & (1 << index % 8)){
+            result++;
+        }
+    }
+
+    return result;
+}
+
+unsigned int BitString::hammingDistance(BitString const& bitstring) const
+{
+    unsigned int result = 0;
+
+    // If both BitStrings don't have the same size, we can't process their Hamming distance
+    if (m_size != bitstring.m_size){
+        return -1;
+    }
+
+    for (unsigned int index = 0; index < m_size; ++index) {
+        int a = m_bytes[index / 8] & (1 << index % 8);
+        int b = bitstring.m_bytes[index / 8] & (1 << index % 8);
+        if (a == b){
+            result++;
+        }
+    }
+
+    return result;
+}
+
 
 std::string BitString::toString() const
 {

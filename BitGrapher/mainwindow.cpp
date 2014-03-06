@@ -14,10 +14,23 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->graphArea->setBitString(m_bitstring);
 
+    /* ---------------- TESTS -------------- */
+    /*              To be moved              */
+
     if(m_bitstring->contains(BitString("B5F1")))
         std::cout << "yes" << std::endl;
     else
         std::cout << "no" << std::endl;
+
+    BitString bitTest1("FF");
+    std::cout << "Hamming Weight : " << bitTest1.hammingWeight() << std::endl;
+
+    BitString bitTest2("F3");
+    std::cout << "Hamming Distance : " << bitTest1.hammingDistance(bitTest2) << std::endl;
+
+
+
+    /* ------------------------------------- */
 }
 
 MainWindow::~MainWindow()
