@@ -84,21 +84,21 @@ bool BitString::set(unsigned int index, bool value)
 
 void BitString::bitAnd(BitString const& bitstring)
 {
-    for (unsigned int index = 0; index < m_size; ++index) {
+    for (unsigned int index = 0; index < m_size/8; ++index) {
         m_bytes[index] = m_bytes[index] & bitstring.m_bytes[index];
     }
 }
 
 void BitString::bitOr(BitString const& bitstring)
 {
-    for (unsigned int index = 0; index < m_size; ++index) {
+    for (unsigned int index = 0; index < m_size/8; ++index) {
         m_bytes[index] = m_bytes[index] | bitstring.m_bytes[index];
     }
 }
 
 void BitString::bitXor(BitString const& bitstring)
 {
-    for (unsigned int index = 0; index < m_size; ++index) {
+    for (unsigned int index = 0; index < m_size/8; ++index) {
         m_bytes[index] = m_bytes[index] ^ bitstring.m_bytes[index];
     }
 }
