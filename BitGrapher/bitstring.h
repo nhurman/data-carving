@@ -18,6 +18,11 @@ public:
     bool get(unsigned int index) const;
     bool operator[](unsigned int index) const;
     bool set(unsigned int index, bool value);
+
+    void bitAnd(BitString const& bitstring);
+    void bitOr(BitString const& bitstring);
+    void bitXor(BitString const& bitstring);
+
     std::string toString() const;
     BitString substring(unsigned int start, size_t size) const;
     size_t size() const;
