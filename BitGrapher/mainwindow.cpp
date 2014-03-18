@@ -24,10 +24,12 @@ MainWindow::MainWindow(QWidget *parent) :
     else
         std::cout << "no" << std::endl;
 
-    BitString bitTest1("FF");
+    BitString bitTest1("615");
     std::cout << "Hamming Weight : " << bitTest1.hammingWeight() << std::endl;
-
+    std::cout << "Hamming Weight (bit 0 to 8) : " << bitTest1.hammingWeight(0, 8) << std::endl;
+    std::cout << "Hamming Weight (bit 2 to 5) : " << bitTest1.hammingWeight(2, 3) << std::endl;
     BitString bitTest2("F3");
+
     std::cout << "Hamming Distance : " << bitTest1.hammingDistance(bitTest2) << std::endl;
 
 

@@ -61,6 +61,7 @@ size_t BitString::size() const
     return m_size;
 }
 
+// Give the bit at position index; the first bit is index 0
 bool BitString::get(unsigned int index) const
 {
     return m_bytes[index / 8] & (1 << (index % 8));
@@ -81,7 +82,7 @@ bool BitString::set(unsigned int index, bool value)
     return value;
 }
 
-
+// ne
 void BitString::bitAnd(BitString const& bitstring)
 {
     for (unsigned int index = 0; index < m_size/8; ++index) {
@@ -116,6 +117,11 @@ unsigned int BitString::hammingWeight() const
 
     return result;
 }
+// do the hamming weight on a substring of nbBit starting at index
+unsigned int BitString::hammingWeight(unsigned int index, unsigned int nbBit) const {
+    BitString b = this->substring(index, nbBit);
+    return b.hammingWeight();
+}
 
 unsigned int BitString::hammingDistance(BitString const& bitstring) const
 {
@@ -123,17 +129,18 @@ unsigned int BitString::hammingDistance(BitString const& bitstring) const
 
     // If both BitStrings don't have the same size, we can't process their Hamming distance
     if (m_size != bitstring.m_size){
+        // we could also add max(m_size, bitstring.m_size) - min(m_size, bitstring.m_size)
         return -1;
     }
 
     for (unsigned int index = 0; index < m_size; ++index) {
         int a = m_bytes[index / 8] & (1 << index % 8);
         int b = bitstring.m_bytes[index / 8] & (1 << index % 8);
-        if (a == b){
+        // they have to be different, not equal
+        if (a != b){
             result++;
         }
     }
-
     return result;
 }
 

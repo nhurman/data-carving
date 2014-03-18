@@ -24,7 +24,9 @@ public:
     void bitXor(BitString const& bitstring);
 
     unsigned int hammingWeight() const;
+    unsigned int hammingWeight(unsigned int index, unsigned int nbBit) const;
     unsigned int hammingDistance(BitString const& bitstring) const;
+
 
     std::string toString() const;
     BitString substring(unsigned int start, size_t size) const;
