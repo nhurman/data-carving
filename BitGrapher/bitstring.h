@@ -2,11 +2,15 @@
 #define bitstring_H
 
 //#include "bitstring.h"
-
+#include "diagonal.h"
 #include <algorithm>
 #include <cmath>
 #include <string>
 #include <cstring>
+#include <list>
+#include <map>
+
+#define MIN_DIAG_SIZE 4
 
 class BitString
 {
@@ -33,6 +37,8 @@ public:
     size_t size() const;
     bool equals(BitString const& bitstring) const;
     bool contains(BitString s) const;
+
+    std::list<Diagonal> dotPlotPattern(BitString dump) const;
 
 private:
     size_t m_size;

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 
+
 BitString::BitString(size_t size) : m_size(size)
 {
     int bytes = ceil(m_size / 8.);
@@ -192,3 +193,37 @@ bool BitString::contains(BitString s) const
     return false;
 }
 
+
+//avec des doublons, à finir
+std::list<Diagonal> BitString::dotPlotPattern(BitString dump) const {
+    std::list<Diagonal> listDiag;
+    unsigned int z;
+    //std::map<unsigned int, std::list<unsigned int>> toAvoid();
+
+
+    for (unsigned int y = 0; y <= dump.m_size - MIN_DIAG_SIZE ; y++){
+        for (unsigned int x = 0; x <= this->m_size - MIN_DIAG_SIZE; x++ ){
+            for( z = 0; x+z < this->m_size && y+z < dump.m_size ; z++){
+                /*if (toAvoid[x]){
+                    (std::binary_search (v.begin(), v.end(), 3))
+                    if (toAvoid[x].)
+                }*/
+                if (!((dump.m_bytes[(y+z) / 8] & (1 << ((y+z) % 8))) == (this->m_bytes[(x+z) / 8] & (1 << ((x+z) % 8))))) {
+                   break;
+                }
+            }
+            if (z >= MIN_DIAG_SIZE) {
+                listDiag.push_back(Diagonal(x, y, z));
+                /*std::list<unsigned int> lst;
+                for (int i = 1; i < z - MIN_DIAG_SIZE; i++) {
+                    lst.push_back(y+i);
+                }
+                toAvoid[x] = lst;*/
+            }
+        }
+    }
+    return listDiag;
+}
+
+// find diagonals in a dotplot pattern
+//Diagonal BitString::findDiagonals()

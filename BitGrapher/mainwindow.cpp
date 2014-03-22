@@ -33,6 +33,16 @@ MainWindow::MainWindow(QWidget *parent) :
     std::cout << "Hamming Distance : " << bitTest1.hammingDistance(bitTest2) << std::endl;
 
 
+    BitString testDiag1("FFF0F0F000");
+    BitString testDiag2("0F0F0F0FFF");
+    Diagonal test(2,6,11);
+    std::cout << "Diag test :" << test.toString() << std::endl ;
+    std::list<Diagonal> listdiag = testDiag1.dotPlotPattern(testDiag2);
+    std::cout << "Dotplot Pattern : " << listdiag.size() << std::endl;
+    for (std::list<Diagonal>::iterator i = listdiag.begin(); i != listdiag.end(); i++ ){
+        std::cout << "Diag " << (*i).toString() << std::endl ;
+    }
+
 
     /* ------------------------------------- */
 }
