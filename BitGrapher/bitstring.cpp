@@ -215,3 +215,26 @@ std::list<Diagonal> BitString::dotPlotPattern(BitString dump) const {
     }
     return listDiag;
 }
+
+std::list<Diagonal> BitString::dotPlotPattern() const {
+    std::list<Diagonal> listDiag;
+    unsigned int z;
+
+    listDiag.push_back(Diagonal(0, 0, m_size));
+
+    for (unsigned int y = 0; y <= m_size - MIN_DIAG_SIZE ; y++){
+        for (unsigned int x = 0; x < y; x++ ){
+            if (( x!= 0) ? ((m_bytes[(y-1) / 8] & (1 << ((y-1) % 8))) != (m_bytes[(x-1) / 8] & (1 << ((x-1) % 8)))) : 1) {
+                for( z = 0; x+z < m_size && y+z < m_size ; z++){
+                    if (!((m_bytes[(y+z) / 8] & (1 << ((y+z) % 8))) == (m_bytes[(x+z) / 8] & (1 << ((x+z) % 8))))) {
+                       break;
+                    }
+                }
+                if (z >= MIN_DIAG_SIZE) {
+                    listDiag.push_back(Diagonal(x, y, z));
+                }
+            }
+        }
+    }
+    return listDiag;
+}

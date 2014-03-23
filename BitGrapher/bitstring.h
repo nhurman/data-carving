@@ -39,6 +39,7 @@ public:
     bool contains(BitString s) const;
 
     std::list<Diagonal> dotPlotPattern(BitString dump) const;
+    std::list<Diagonal>dotPlotPattern() const;
 
 private:
     size_t m_size;
