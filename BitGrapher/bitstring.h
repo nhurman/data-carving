@@ -10,7 +10,7 @@
 #include <list>
 #include <map>
 
-#define MIN_DIAG_SIZE 4
+#define MIN_DIAG_SIZE 6
 
 class BitString
 {
