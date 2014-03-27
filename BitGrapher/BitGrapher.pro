@@ -10,11 +10,13 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     bitgrapharea.cpp \
     bitstring.cpp \
-    diagonal.cpp
+    diagonal.cpp \
+    dump.cpp
 
 HEADERS  += mainwindow.h \
     bitgrapharea.h \
     bitstring.h \
-    diagonal.h
+    diagonal.h \
+    dump.h
 
 FORMS    += mainwindow.ui
