@@ -3,11 +3,16 @@
 
 #include "bitstring.h"
 #include <iostream>
+
+#include <QFileDialog>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->listWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 
     m_bitstring = new BitString("615B5F1F58503C42454C56414E4445523C4D45554C454E3C3C4A4F53453C483C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C45463437383539373C3942454C383030313136324D313130333231383C3C3C3C3C3C3C3C3C3C3C3C3C3C3034");
     BitString bs("F15B5F1F58503C42454C56414E4445523C4D45554C454E3C3C4A4F53453C483C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C45463437383539373C3942454C383030313136324D313130333231383C3C3C3C3C3C3C3C3C3C3C3C3C3C3034");
@@ -51,4 +56,32 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete m_bitstring;
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                                     DEFAULT_DIRECTORY,
+                                                     tr("Files (*.*)"));
+    m_dumpSet.addDump(fileName.toStdString());
+    ui->listWidget->addItem(fileName);
+
+}
+
+void MainWindow::on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
+{
+    m_bitstring = m_dumpSet.find(current->text().toStdString())->getBitString();
+    refreshDisplay();
+}
+
+void MainWindow::refreshDisplay()
+{
+    //gets rid of old text
+    ui->plainTextEdit->clear();
+    //sets new text and image
+    ui->plainTextEdit->appendPlainText(m_bitstring->toString().c_str());
+    ui->graphArea->setBitString(m_bitstring);
+    //refreshes the modifies fields
+    ui->plainTextEdit->repaint();
+    ui->graphArea->repaint();
 }

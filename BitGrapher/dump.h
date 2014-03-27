@@ -9,6 +9,7 @@ class Dump
 protected:
     BitString m_bitstring;
 public:
+    Dump();
     Dump(std::string fileName);
     ~Dump();
 
