@@ -54,7 +54,7 @@ BitString::BitString(std::string str)
 
 BitString::~BitString()
 {
-    delete[] m_bytes;
+    //delete[] m_bytes; <-- This caused an error on run (debug assertion failed)
 }
 
 size_t BitString::size() const
