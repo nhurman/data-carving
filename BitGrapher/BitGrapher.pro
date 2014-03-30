@@ -12,13 +12,15 @@ SOURCES += main.cpp\
     bitstring.cpp \
     diagonal.cpp \
     dump.cpp \
-    dumpset.cpp
+    dumpset.cpp \
+    dotplotview.cpp
 
 HEADERS  += mainwindow.h \
     bitgrapharea.h \
     bitstring.h \
     diagonal.h \
     dump.h \
-    dumpset.h
+    dumpset.h \
+    dotplotview.h
 
 FORMS    += mainwindow.ui

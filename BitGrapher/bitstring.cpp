@@ -232,6 +232,7 @@ std::list<Diagonal> BitString::dotPlotPattern() const {
                 }
                 if (z >= MIN_DIAG_SIZE) {
                     listDiag.push_back(Diagonal(x, y, z));
+                    listDiag.push_back(Diagonal(y, x, z));
                 }
             }
         }

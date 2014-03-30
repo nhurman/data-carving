@@ -21,8 +21,16 @@ public:
     ~MainWindow();
 
 private slots:
+    // File Menu
     void on_actionOpen_triggered();
+    void on_actionSave_triggered();
+    void on_actionSave_as_triggered();
 
+    // View Menu
+    void on_actionDiagonals_View_triggered();
+    void on_actionBitmap_View_triggered();
+
+    // Others
     void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 private:

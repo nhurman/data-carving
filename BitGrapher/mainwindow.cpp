@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
     BitString bs("F15B5F1F58503C42454C56414E4445523C4D45554C454E3C3C4A4F53453C483C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C45463437383539373C3942454C383030313136324D313130333231383C3C3C3C3C3C3C3C3C3C3C3C3C3C3034");
     m_bitstring->bitOr(bs);
     ui->plainTextEdit->appendPlainText(m_bitstring->toString().c_str());
-
     ui->graphArea->setBitString(m_bitstring);
 
     /* ---------------- TESTS -------------- */
@@ -67,6 +66,21 @@ void MainWindow::on_actionOpen_triggered()
     ui->listWidget->addItem(fileName);
 
 }
+
+void MainWindow::on_actionSave_triggered() {
+    std::cout << "Saving !" << std::endl ;
+}
+
+void MainWindow::on_actionSave_as_triggered() {
+    std::cout << "Saving as ... !" << std::endl ;
+}
+void MainWindow::on_actionDiagonals_View_triggered() {
+    std::cout << "Saving as ... !" << std::endl ;
+}
+void MainWindow::on_actionBitmap_View_triggered() {
+    std::cout << "Saving as ... !" << std::endl ;
+}
+
 
 void MainWindow::on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
