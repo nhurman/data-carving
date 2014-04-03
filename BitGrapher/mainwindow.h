@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include <QTreeWidgetItem>
 #include "bitstring.h"
 #include "dumpset.h"
 
@@ -31,12 +32,20 @@ private slots:
     void on_actionBitmap_View_triggered();
 
     // Others
-    void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+    //void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+
+    void on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+
+    void on_actionAdd_Dump_to_Set_triggered();
+
+    void on_actionNew_Dump_Set_triggered();
 
 private:
     Ui::MainWindow *ui;
     BitString *m_bitstring;
-    DumpSet m_dumpSet;
+    DumpSet* m_dumpSet;
+
+
     //refreshes the display of the bitsrting
     void refreshDisplay();
 };

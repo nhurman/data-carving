@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->listWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    //ui->listWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 
     m_bitstring = new BitString("615B5F1F58503C42454C56414E4445523C4D45554C454E3C3C4A4F53453C483C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C45463437383539373C3942454C383030313136324D313130333231383C3C3C3C3C3C3C3C3C3C3C3C3C3C3034");
     BitString bs("F15B5F1F58503C42454C56414E4445523C4D45554C454E3C3C4A4F53453C483C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C45463437383539373C3942454C383030313136324D313130333231383C3C3C3C3C3C3C3C3C3C3C3C3C3C3034");
@@ -59,11 +59,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+    /*QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                      DEFAULT_DIRECTORY,
                                                      tr("Files (*.*)"));
-    m_dumpSet.addDump(fileName.toStdString());
-    ui->listWidget->addItem(fileName);
+    m_dumpSet->addDump(fileName.toStdString());*/
+    //ui->listWidget->addItem(fileName);
 
 }
 
@@ -82,20 +82,64 @@ void MainWindow::on_actionBitmap_View_triggered() {
 }
 
 
-void MainWindow::on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
+/*void MainWindow::on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
     m_bitstring = m_dumpSet.find(current->text().toStdString())->getBitString();
     refreshDisplay();
-}
+}*/
 
 void MainWindow::refreshDisplay()
 {
-    //gets rid of old text
-    ui->plainTextEdit->clear();
-    //sets new text and image
-    ui->plainTextEdit->appendPlainText(m_bitstring->toString().c_str());
-    ui->graphArea->setBitString(m_bitstring);
-    //refreshes the modifies fields
-    ui->plainTextEdit->repaint();
-    ui->graphArea->repaint();
+    if(m_bitstring != NULL)
+    {
+        //gets rid of old text
+        ui->plainTextEdit->clear();
+        //sets new text and image
+        ui->plainTextEdit->appendPlainText(m_bitstring->toString().c_str());
+        ui->graphArea->setBitString(m_bitstring);
+        //refreshes the modifies fields
+        ui->plainTextEdit->repaint();
+        ui->graphArea->repaint();
+    }
+    else
+    {
+        std::cout<<"Dump introuvable dans le set courant."<<std::endl;
+    }
+}
+
+void MainWindow::on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+{
+    if(current->parent() == NULL) //if a dumpset was selected
+    {
+        m_dumpSet = DumpSet::openedDumpSets[current->text(0)];
+        std::cout<<"toplevel"<<std::endl;
+    }
+    else //if a dump is selected
+    {
+        if(current->parent() != previous->parent() || current->parent() != previous) //if the dumpset has changed
+        {
+            m_dumpSet = DumpSet::openedDumpSets[current->parent()->text(0)];
+            std::cout<<"new parent"<<std::endl;
+        }
+        m_bitstring = m_dumpSet->find(current->text(0))->getBitString();
+        std::cout<<"lowlevel"<<std::endl;
+    }
+    refreshDisplay();
+}
+
+void MainWindow::on_actionAdd_Dump_to_Set_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                                     DEFAULT_DIRECTORY,
+                                                     tr("Files (*.*)"));
+    ui->treeWidget->setCurrentItem(m_dumpSet->addDump(fileName));
+}
+
+void MainWindow::on_actionNew_Dump_Set_triggered()
+{
+    QString name = "NewDumpSet_" + QString::number(DumpSet::m_nbNewDumpSets++);
+    QTreeWidgetItem* i = new QTreeWidgetItem(QStringList(name));
+    DumpSet::openedDumpSets[name] = new DumpSet(i);
+    ui->treeWidget->addTopLevelItem(i);
+    ui->treeWidget->setCurrentItem(i);
 }

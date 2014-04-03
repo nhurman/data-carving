@@ -2,20 +2,30 @@
 #define DUMPSET_H
 
 #include "dump.h"
+#include <QString>
+#include <QTreeWidgetItem>
 
 class DumpSet
 {
 public:
     DumpSet();
+    DumpSet(QTreeWidgetItem* associatedItem);
     //loads a dump to the dumpSet
-    void addDump(std::string fileName);
+    QTreeWidgetItem* addDump(QString fileName);
     //finds a dump in the dumpSet. Returns null if not found
-    Dump* find(std::string name);
+    Dump* find(QString name);
     //removes a dump from the set
-    void remove(std::string name);
+    void remove(QString name);
+
+    static std::map<QString, DumpSet*> openedDumpSets;
+    static int m_nbNewDumpSets;
 
 private:
-    std::map<std::string, Dump> m_dumps;
+    std::map<QString, Dump> m_dumps;
+    QTreeWidgetItem* m_associatedItem;
+
+    static QString shortenFileName(QString fileName);
+    static QString shortenFileName(std::string fileName);
 };
 
 #endif // DUMPSET_H

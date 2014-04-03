@@ -1,17 +1,32 @@
 #include "dumpset.h"
 
-DumpSet::DumpSet()
+std::map<QString, DumpSet*> DumpSet::openedDumpSets;
+int DumpSet::m_nbNewDumpSets;
+
+DumpSet::DumpSet(QTreeWidgetItem* associatedItem) : m_associatedItem(associatedItem), m_dumps()
 {
 }
 
-void DumpSet::addDump(std::string fileName)
+DumpSet::DumpSet() : m_dumps()
 {
-    m_dumps[fileName] = Dump(fileName);
 }
 
-Dump* DumpSet::find(std::string name)
+QTreeWidgetItem* DumpSet::addDump(QString fileName)
 {
-    std::map<std::string, Dump>::iterator i = m_dumps.find(name);
+    QString shortName = shortenFileName(fileName);
+    m_dumps[shortName] = Dump(fileName);
+    if(m_associatedItem != NULL)
+    {
+        QTreeWidgetItem* i = new QTreeWidgetItem(QStringList(shortName));
+        m_associatedItem->addChild(i);
+        return i;
+    }
+    return NULL;
+}
+
+Dump* DumpSet::find(QString name)
+{
+    std::map<QString, Dump>::iterator i = m_dumps.find(name);
     if( i != m_dumps.end())
     {
         return &(i->second);
@@ -19,7 +34,17 @@ Dump* DumpSet::find(std::string name)
     return NULL;
 }
 
-void DumpSet::remove(std::string name)
+void DumpSet::remove(QString name)
 {
     m_dumps.erase(name);
+}
+
+QString DumpSet::shortenFileName(QString fileName)
+{
+    return fileName.section('/',-1);
+}
+
+QString DumpSet::shortenFileName(std::string fileName)
+{
+    return QString::fromStdString(fileName).section('/',-1);
 }

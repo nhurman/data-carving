@@ -16,7 +16,16 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QListWidget" name="listWidget"/>
+     <widget class="QTreeWidget" name="treeWidget">
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <column>
+       <property name="text">
+        <string>Dump Sets</string>
+       </property>
+      </column>
+     </widget>
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -47,14 +56,16 @@
      <x>0</x>
      <y>0</y>
      <width>674</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNew_Dump_Set"/>
     <addaction name="actionOpen"/>
+    <addaction name="actionAdd_Dump_to_Set"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
    </widget>
@@ -88,6 +99,9 @@
    <property name="text">
     <string>Save as ...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
   </action>
   <action name="actionBitmap_View">
    <property name="text">
@@ -97,6 +111,22 @@
   <action name="actionDiagonals_View">
    <property name="text">
     <string>Diagonals View</string>
+   </property>
+  </action>
+  <action name="actionNew_Dump_Set">
+   <property name="text">
+    <string>New Dump Set</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionAdd_Dump_to_Set">
+   <property name="text">
+    <string>Add Dump to Set</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>
