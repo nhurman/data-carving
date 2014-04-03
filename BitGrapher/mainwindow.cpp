@@ -67,18 +67,43 @@ void MainWindow::on_actionOpen_triggered()
 
 }
 
-void MainWindow::on_actionSave_triggered() {
-    std::cout << "Saving !" << std::endl ;
+void MainWindow::on_actionSave_triggered()
+{
+    if(m_dumpSet != NULL)
+    {
+        if(m_dumpSet->hasName())
+            m_dumpSet->save();
+        else
+            on_actionSave_as_triggered(); //save as instead
+    }
+    else
+    {
+        std::cout << "Unable to save dump : no dump selected" << std::endl ;
+    }
 }
 
-void MainWindow::on_actionSave_as_triggered() {
-    std::cout << "Saving as ... !" << std::endl ;
+void MainWindow::on_actionSave_as_triggered()
+{
+    if(m_dumpSet != NULL)
+    {
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Save dump set as..."),
+                                                         DEFAULT_DIRECTORY,
+                                                         tr("Dump Sets (*.ds)"));
+        if(m_dumpSet->saveToFile(fileName))
+        {
+            m_dumpSet->setFileName(fileName);
+        }
+    }
+    else
+    {
+        std::cout << "Unable to save dump : no dump selected" << std::endl ;
+    }
 }
-void MainWindow::on_actionDiagonals_View_triggered() {
-    std::cout << "Saving as ... !" << std::endl ;
+void MainWindow::on_actionDiagonals_View_triggered(){
+    std::cout << "Diagonals !" << std::endl ;
 }
 void MainWindow::on_actionBitmap_View_triggered() {
-    std::cout << "Saving as ... !" << std::endl ;
+    std::cout << "Bitmap !" << std::endl ;
 }
 
 
@@ -111,14 +136,14 @@ void MainWindow::on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTre
 {
     if(current->parent() == NULL) //if a dumpset was selected
     {
-        m_dumpSet = DumpSet::openedDumpSets[current->text(0)];
+        m_dumpSet = DumpSet::m_openedDumpSets[current->text(0)];
         std::cout<<"toplevel"<<std::endl;
     }
     else //if a dump is selected
     {
         if(current->parent() != previous->parent() || current->parent() != previous) //if the dumpset has changed
         {
-            m_dumpSet = DumpSet::openedDumpSets[current->parent()->text(0)];
+            m_dumpSet = DumpSet::m_openedDumpSets[current->parent()->text(0)];
             std::cout<<"new parent"<<std::endl;
         }
         m_bitstring = m_dumpSet->find(current->text(0))->getBitString();
@@ -129,7 +154,7 @@ void MainWindow::on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTre
 
 void MainWindow::on_actionAdd_Dump_to_Set_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open dump file"),
                                                      DEFAULT_DIRECTORY,
                                                      tr("Files (*.*)"));
     ui->treeWidget->setCurrentItem(m_dumpSet->addDump(fileName));
@@ -139,7 +164,7 @@ void MainWindow::on_actionNew_Dump_Set_triggered()
 {
     QString name = "NewDumpSet_" + QString::number(DumpSet::m_nbNewDumpSets++);
     QTreeWidgetItem* i = new QTreeWidgetItem(QStringList(name));
-    DumpSet::openedDumpSets[name] = new DumpSet(i);
+    DumpSet::m_openedDumpSets[name] = new DumpSet(i);
     ui->treeWidget->addTopLevelItem(i);
     ui->treeWidget->setCurrentItem(i);
 }
