@@ -59,11 +59,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    /*QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                      DEFAULT_DIRECTORY,
-                                                     tr("Files (*.*)"));
-    m_dumpSet->addDump(fileName.toStdString());*/
-    //ui->listWidget->addItem(fileName);
+                                                     tr("Dump Sets (*.ds)"));
+    QTreeWidgetItem* i = DumpSet::openFromFile(fileName);
+    ui->treeWidget->addTopLevelItem(i);
+    ui->treeWidget->setCurrentItem(i);
 
 }
 

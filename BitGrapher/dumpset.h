@@ -21,6 +21,7 @@ public:
     bool saveToFile(QString fileName);
     bool save();
 
+    static QTreeWidgetItem* openFromFile(QString fileName);
     static std::map<QString, DumpSet*> m_openedDumpSets;
     static int m_nbNewDumpSets;
 

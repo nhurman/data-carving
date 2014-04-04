@@ -51,6 +51,26 @@ void DumpSet::remove(QString name)
     m_dumps.erase(name);
 }
 
+QTreeWidgetItem* DumpSet::openFromFile(QString fileName)
+{
+    QString shortName = shortenFileName(fileName);
+    QTreeWidgetItem* i = new QTreeWidgetItem(QStringList(shortName));
+    DumpSet* d = new DumpSet(i, fileName);
+
+    std::ifstream f;
+    f.open (fileName.toUtf8());
+    if(!f.is_open())
+        return NULL;
+    std::string buff = "";
+    while(std::getline(f, buff))
+    {
+        d->addDump(QString::fromStdString(buff));
+    }
+
+    m_openedDumpSets[shortName] = d;
+
+    return i;
+}
 
 bool DumpSet::saveToFile(QString filePath)
 {
