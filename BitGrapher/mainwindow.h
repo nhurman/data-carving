@@ -32,13 +32,15 @@ private slots:
     void on_actionBitmap_View_triggered();
 
     // Others
-    //void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-
-    void on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
-
     void on_actionAdd_Dump_to_Set_triggered();
 
     void on_actionNew_Dump_Set_triggered();
+
+    void on_treeWidget_selectedDumpSetChanged(DumpSet *);
+
+    void on_treeWidget_selectedDumpChanged(Dump);
+
+    void on_actionClose_triggered();
 
 private:
     Ui::MainWindow *ui;

@@ -13,7 +13,8 @@ SOURCES += main.cpp\
     diagonal.cpp \
     dump.cpp \
     dumpset.cpp \
-    dotplotview.cpp
+    dotplotview.cpp \
+    dumpsettreewidget.cpp
 
 HEADERS  += mainwindow.h \
     bitgrapharea.h \
@@ -21,6 +22,7 @@ HEADERS  += mainwindow.h \
     diagonal.h \
     dump.h \
     dumpset.h \
-    dotplotview.h
+    dotplotview.h \
+    dumpsettreewidget.h
 
 FORMS    += mainwindow.ui

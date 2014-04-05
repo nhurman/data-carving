@@ -2,15 +2,24 @@
 #include <iostream>
 #include <fstream>
 
-std::map<QString, DumpSet*> DumpSet::m_openedDumpSets;
-int DumpSet::m_nbNewDumpSets;
-
-DumpSet::DumpSet(QTreeWidgetItem* associatedItem, QString fileName) : m_associatedItem(associatedItem), m_fileName(fileName)
-{
-}
-
 DumpSet::DumpSet(QString fileName) : m_dumps(), m_fileName(fileName)
 {
+    if(fileName != "")
+    {
+
+        QString shortName = shortenFileName(fileName);
+
+        std::ifstream f;
+        f.open (fileName.toUtf8());
+        if(f.is_open())
+        {
+            std::string buff = "";
+            while(std::getline(f, buff))
+            {
+                addDump(QString::fromStdString(buff));
+            }
+        }
+    }
 }
 
 void DumpSet::setFileName(QString fileName)
@@ -18,22 +27,25 @@ void DumpSet::setFileName(QString fileName)
     m_fileName = fileName;
 }
 
+QString DumpSet::getShortName()
+{
+    return shortenFileName(m_fileName);
+}
+
 bool DumpSet::hasName()
 {
     return m_fileName.size() != 0;
 }
 
-QTreeWidgetItem* DumpSet::addDump(QString fileName)
+void DumpSet::addDump(QString fileName)
 {
-    QString shortName = shortenFileName(fileName);
-    m_dumps[shortName] = Dump(fileName);
-    if(m_associatedItem != NULL)
-    {
-        QTreeWidgetItem* i = new QTreeWidgetItem(QStringList(shortName));
-        m_associatedItem->addChild(i);
-        return i;
-    }
-    return NULL;
+    addDump(Dump(fileName));
+}
+
+void DumpSet::addDump(Dump d)
+{
+    QString shortName = shortenFileName(d.getFileName());
+    m_dumps[shortName] = d;
 }
 
 Dump* DumpSet::find(QString name)
@@ -51,26 +63,15 @@ void DumpSet::remove(QString name)
     m_dumps.erase(name);
 }
 
-QTreeWidgetItem* DumpSet::openFromFile(QString fileName)
+std::vector<QString> DumpSet::getDumpNames()
 {
-    QString shortName = shortenFileName(fileName);
-    QTreeWidgetItem* i = new QTreeWidgetItem(QStringList(shortName));
-    DumpSet* d = new DumpSet(i, fileName);
-
-    std::ifstream f;
-    f.open (fileName.toUtf8());
-    if(!f.is_open())
-        return NULL;
-    std::string buff = "";
-    while(std::getline(f, buff))
-    {
-        d->addDump(QString::fromStdString(buff));
+    std::vector<QString> v;
+    for(std::map<QString,Dump>::iterator it = m_dumps.begin(); it != m_dumps.end(); ++it) {
+      v.push_back(it->first);
     }
-
-    m_openedDumpSets[shortName] = d;
-
-    return i;
+    return v;
 }
+
 
 bool DumpSet::saveToFile(QString filePath)
 {
@@ -84,23 +85,12 @@ bool DumpSet::saveToFile(QString filePath)
     }
     file.close();
 
-    changeFileName(filePath);
-
     return true;
 }
 
 bool DumpSet::save()
 {
     return saveToFile(m_fileName);
-}
-
-void DumpSet::changeFileName(QString name)
-{
-    DumpSet::m_openedDumpSets.erase(shortenFileName(m_fileName));
-    m_fileName = name;
-    QString shortName = shortenFileName(name);
-    m_associatedItem->setText(0, shortName);
-    DumpSet::m_openedDumpSets[shortName] = this;
 }
 
 QString DumpSet::shortenFileName(QString fileName)

@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //ui->listWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 
-    m_bitstring = new BitString("615B5F1F58503C42454C56414E4445523C4D45554C454E3C3C4A4F53453C483C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C45463437383539373C3942454C383030313136324D313130333231383C3C3C3C3C3C3C3C3C3C3C3C3C3C3034");
+    m_bitstring = new BitString("615B5F1F");//58503C42454C56414E4445523C4D45554C454E3C3C4A4F53453C483C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C45463437383539373C3942454C383030313136324D313130333231383C3C3C3C3C3C3C3C3C3C3C3C3C3C3034");
     BitString bs("F15B5F1F58503C42454C56414E4445523C4D45554C454E3C3C4A4F53453C483C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C45463437383539373C3942454C383030313136324D313130333231383C3C3C3C3C3C3C3C3C3C3C3C3C3C3034");
     m_bitstring->bitOr(bs);
     ui->plainTextEdit->appendPlainText(m_bitstring->toString().c_str());
@@ -62,9 +62,7 @@ void MainWindow::on_actionOpen_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                      DEFAULT_DIRECTORY,
                                                      tr("Dump Sets (*.ds)"));
-    QTreeWidgetItem* i = DumpSet::openFromFile(fileName);
-    ui->treeWidget->addTopLevelItem(i);
-    ui->treeWidget->setCurrentItem(i);
+    ui->treeWidget->addDumpSet(new DumpSet(fileName));
 
 }
 
@@ -92,7 +90,7 @@ void MainWindow::on_actionSave_as_triggered()
                                                          tr("Dump Sets (*.ds)"));
         if(m_dumpSet->saveToFile(fileName))
         {
-            m_dumpSet->setFileName(fileName);
+            ui->treeWidget->changeDumpSetName(fileName);
         }
     }
     else
@@ -106,13 +104,6 @@ void MainWindow::on_actionDiagonals_View_triggered(){
 void MainWindow::on_actionBitmap_View_triggered() {
     std::cout << "Bitmap !" << std::endl ;
 }
-
-
-/*void MainWindow::on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
-{
-    m_bitstring = m_dumpSet.find(current->text().toStdString())->getBitString();
-    refreshDisplay();
-}*/
 
 void MainWindow::refreshDisplay()
 {
@@ -133,39 +124,33 @@ void MainWindow::refreshDisplay()
     }
 }
 
-void MainWindow::on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
-{
-    if(current->parent() == NULL) //if a dumpset was selected
-    {
-        m_dumpSet = DumpSet::m_openedDumpSets[current->text(0)];
-        std::cout<<"toplevel"<<std::endl;
-    }
-    else //if a dump is selected
-    {
-        if(current->parent() != previous->parent() || current->parent() != previous) //if the dumpset has changed
-        {
-            m_dumpSet = DumpSet::m_openedDumpSets[current->parent()->text(0)];
-            std::cout<<"new parent"<<std::endl;
-        }
-        m_bitstring = m_dumpSet->find(current->text(0))->getBitString();
-        std::cout<<"lowlevel"<<std::endl;
-    }
-    refreshDisplay();
-}
 
 void MainWindow::on_actionAdd_Dump_to_Set_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open dump file"),
                                                      DEFAULT_DIRECTORY,
                                                      tr("Files (*.*)"));
-    ui->treeWidget->setCurrentItem(m_dumpSet->addDump(fileName));
+    if(fileName.size() > 0)
+        ui->treeWidget->addDump(Dump(fileName));
 }
 
 void MainWindow::on_actionNew_Dump_Set_triggered()
 {
-    QString name = "NewDumpSet_" + QString::number(DumpSet::m_nbNewDumpSets++);
-    QTreeWidgetItem* i = new QTreeWidgetItem(QStringList(name));
-    DumpSet::m_openedDumpSets[name] = new DumpSet(i);
-    ui->treeWidget->addTopLevelItem(i);
-    ui->treeWidget->setCurrentItem(i);
+    ui->treeWidget->addDumpSet(new DumpSet());
+}
+
+void MainWindow::on_treeWidget_selectedDumpChanged(Dump d)
+{
+    m_bitstring = d.getBitString();
+    refreshDisplay();
+}
+
+void MainWindow::on_treeWidget_selectedDumpSetChanged(DumpSet* ds)
+{
+    m_dumpSet = ds;
+}
+
+void MainWindow::on_actionClose_triggered()
+{
+    ui->treeWidget->closeDumpSet();
 }

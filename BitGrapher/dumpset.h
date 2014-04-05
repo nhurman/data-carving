@@ -9,28 +9,23 @@ class DumpSet
 {
 public:
     DumpSet(QString fileName = "");
-    DumpSet(QTreeWidgetItem* associatedItem, QString fileName ="");
     void setFileName(QString fileName);
+    QString getShortName();
     bool hasName();
     //loads a dump to the dumpSet
-    QTreeWidgetItem* addDump(QString fileName);
+    void addDump(Dump d);
+    void addDump(QString fileName);
     //finds a dump in the dumpSet. Returns null if not found
     Dump* find(QString name);
     //removes a dump from the set
     void remove(QString name);
+    std::vector<QString> getDumpNames();
     bool saveToFile(QString fileName);
     bool save();
 
-    static QTreeWidgetItem* openFromFile(QString fileName);
-    static std::map<QString, DumpSet*> m_openedDumpSets;
-    static int m_nbNewDumpSets;
-
 private:
     std::map<QString, Dump> m_dumps;
-    QTreeWidgetItem* m_associatedItem;
     QString m_fileName;
-
-    void changeFileName(QString name);
 
     static QString shortenFileName(QString filePath);
     static QString shortenFileName(std::string fileName);

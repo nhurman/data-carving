@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QTreeWidget" name="treeWidget">
+     <widget class="DumpSetTreeWidget" name="treeWidget">
       <property name="selectionMode">
        <enum>QAbstractItemView::SingleSelection</enum>
       </property>
@@ -68,6 +68,7 @@
     <addaction name="actionAdd_Dump_to_Set"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
+    <addaction name="actionClose"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -129,6 +130,14 @@
     <string>Ctrl+D</string>
    </property>
   </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -137,6 +146,11 @@
    <extends>QWidget</extends>
    <header>dotplotview.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DumpSetTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>dumpsettreewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

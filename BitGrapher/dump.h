@@ -8,7 +8,7 @@
 class Dump
 {
 protected:
-    BitString m_bitstring;
+    BitString* m_bitstring;
     QString m_fileName;
 public:
     Dump();
@@ -17,6 +17,11 @@ public:
 
     BitString* getBitString();
     QString getFileName();
+    QString getShortName();
+
+private:
+    static QString shortenFileName(QString filePath);
+    static QString shortenFileName(std::string fileName);
 };
 
 #endif // DUMP_H
