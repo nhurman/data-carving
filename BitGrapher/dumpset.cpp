@@ -2,9 +2,9 @@
 #include <iostream>
 #include <fstream>
 
-DumpSet::DumpSet(QString fileName) : m_dumps(), m_fileName(fileName)
+DumpSet::DumpSet(QString fileName) : m_dumps(), m_fileName(fileName), m_isModified(false)
 {
-    if(fileName != "")
+    if(fileName != "") //existing dump
     {
 
         QString shortName = shortenFileName(fileName);
@@ -19,6 +19,10 @@ DumpSet::DumpSet(QString fileName) : m_dumps(), m_fileName(fileName)
                 addDump(QString::fromStdString(buff));
             }
         }
+    }
+    else //new dump
+    {
+        m_isModified = true;
     }
 }
 
@@ -37,6 +41,11 @@ bool DumpSet::hasName()
     return m_fileName.size() != 0;
 }
 
+bool DumpSet::isModified()
+{
+    return m_isModified;
+}
+
 void DumpSet::addDump(QString fileName)
 {
     addDump(Dump(fileName));
@@ -46,6 +55,7 @@ void DumpSet::addDump(Dump d)
 {
     QString shortName = shortenFileName(d.getFileName());
     m_dumps[shortName] = d;
+    m_isModified = true;
 }
 
 Dump* DumpSet::find(QString name)
@@ -61,6 +71,7 @@ Dump* DumpSet::find(QString name)
 void DumpSet::remove(QString name)
 {
     m_dumps.erase(name);
+    m_isModified = true;
 }
 
 std::vector<QString> DumpSet::getDumpNames()
@@ -84,6 +95,7 @@ bool DumpSet::saveToFile(QString filePath)
         file << i->second.getFileName().toStdString() << std::endl;
     }
     file.close();
+    m_isModified = false;
 
     return true;
 }
