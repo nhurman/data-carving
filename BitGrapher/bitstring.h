@@ -11,6 +11,7 @@
 #include <map>
 
 #define MIN_DIAG_SIZE 6
+#define MIN_SIM_SIZE 4
 
 class BitString
 {
@@ -40,6 +41,8 @@ public:
 
     std::list<Diagonal> dotPlotPattern(BitString dump) const;
     std::list<Diagonal>dotPlotPattern() const;
+
+    static std::list<std::pair<int,int> > similarities(BitString b1, BitString b2);
 
 private:
     size_t m_size;

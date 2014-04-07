@@ -47,6 +47,12 @@ MainWindow::MainWindow(QWidget *parent) :
         std::cout << "Diag " << (*i).toString() << std::endl ;
     }
 
+    std::list<std::pair<int,int> > sim = BitString::similarities(BitString("FFAFF"), BitString("AAFFA"));
+    for (std::list<std::pair<int,int> >::iterator i = sim.begin(); i != sim.end(); i++ )
+    {
+        std::cout << "Sim " << (i->first) << " ; " << (i->second) << std::endl ;
+    }
+
 
     /* ------------------------------------- */
 }
