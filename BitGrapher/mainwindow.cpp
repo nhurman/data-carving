@@ -55,6 +55,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     /* ------------------------------------- */
+
+    std::cout << Encoding::toASCII(65 << 0) << std::endl;
+    BitString testEncode("48414c50");
+    std::cout << testEncode.toString() << " " <<  (unsigned int)(testEncode.getByte(17))<< std::endl;
+    std::cout << Encoding::encode(testEncode, Encoding::toASCII, 0, 0, 8) << std::endl;
 }
 
 MainWindow::~MainWindow()

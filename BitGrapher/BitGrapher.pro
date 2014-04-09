@@ -14,7 +14,8 @@ SOURCES += main.cpp\
     dump.cpp \
     dumpset.cpp \
     dotplotview.cpp \
-    dumpsettreewidget.cpp
+    dumpsettreewidget.cpp \
+    encoding.cpp
 
 HEADERS  += mainwindow.h \
     bitgrapharea.h \
@@ -23,6 +24,7 @@ HEADERS  += mainwindow.h \
     dump.h \
     dumpset.h \
     dotplotview.h \
-    dumpsettreewidget.h
+    dumpsettreewidget.h \
+    encoding.h
 
 FORMS    += mainwindow.ui

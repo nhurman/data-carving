@@ -8,6 +8,7 @@
 #include <QTreeWidgetItem>
 #include "bitstring.h"
 #include "dumpset.h"
+#include "encoding.h"
 
 namespace Ui {
     class MainWindow;

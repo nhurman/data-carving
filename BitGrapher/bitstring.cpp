@@ -68,6 +68,11 @@ bool BitString::get(unsigned int index) const
     return m_bytes[index / 8] & (1 << (index % 8));
 }
 
+// Give the whole byte that contain the bit index
+char BitString::getByte(unsigned int index) const {
+    return  m_bytes[index / 8];
+}
+
 bool BitString::operator[](unsigned int index) const
 {
     return get(index);

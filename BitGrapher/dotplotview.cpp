@@ -48,9 +48,9 @@ void DotPlotView::paintEvent(QPaintEvent* /* event */)
     }
 
     //debug
-    std::cout << "<----------------------ListDiag--------------------------->" << std::endl;
+    /*std::cout << "<----------------------ListDiag--------------------------->" << std::endl;
     for (std::list<Diagonal>::iterator i = m_listDiag.begin(); i != m_listDiag.end(); i++ ){
         std::cout << "Diag " << (*i).toString() << std::endl ;
-    }
+    }*/
 
 }

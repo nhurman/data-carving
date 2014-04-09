@@ -21,6 +21,7 @@ public:
     ~BitString();
 
     bool get(unsigned int index) const;
+    char getByte(unsigned int index) const;
     bool operator[](unsigned int index) const;
     bool set(unsigned int index, bool value);
 
