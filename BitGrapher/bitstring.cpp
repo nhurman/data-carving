@@ -115,9 +115,9 @@ unsigned int BitString::hammingWeight() const
             result++;
         }
     }
-
     return result;
 }
+
 // do the hamming weight on a substring of nbBit starting at index
 unsigned int BitString::hammingWeight(unsigned int index, unsigned int nbBit) const {
     BitString b = this->substring(index, nbBit);
