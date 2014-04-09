@@ -12,6 +12,7 @@ public:
     void setFileName(QString fileName);
     QString getShortName();
     bool hasName();
+    bool isModified();
     //loads a dump to the dumpSet
     void addDump(Dump d);
     void addDump(QString fileName);
@@ -26,6 +27,7 @@ public:
 private:
     std::map<QString, Dump> m_dumps;
     QString m_fileName;
+    bool m_modified;
 
     static QString shortenFileName(QString filePath);
     static QString shortenFileName(std::string fileName);

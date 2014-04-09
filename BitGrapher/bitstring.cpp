@@ -239,3 +239,29 @@ std::list<Diagonal> BitString::dotPlotPattern() const {
     }
     return listDiag;
 }
+
+std::list<std::pair<int,int> > BitString::similarities(BitString b1, BitString b2)
+{
+    std::list<std::pair<int,int> > sim;
+    int start = -1;
+    int max = std::max(b1.m_size, b2.m_size) - MIN_SIM_SIZE;
+    for (int i = 0; i <= max ; i++){
+        if(b1[i]==b2[i])
+        {
+            if(start == -1)
+                start = i;
+        }
+        else
+        {
+            if(start != -1)
+            {
+                if(i-start >= MIN_SIM_SIZE)
+                {
+                    sim.push_back(std::pair<int,int>(start, i-1));
+                }
+                start = -1;
+            }
+        }
+    }
+    return sim;
+}
