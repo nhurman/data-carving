@@ -188,17 +188,14 @@ void MainWindow::on_actionSimilarities_triggered()
                                  QMessageBox::Ok);
         return;
     }
-    /*
-    bool ok;
-    QString dump = QInputDialog::getItem(this, "Select dump to compare to", "Reference dump : ", dumps, 0, false, &ok);
-    if(!ok) //cancel btton was pressed
-        return;
 
-    std::list<std::pair<int,int> > sim = BitString::similarities(*m_bitstring, *(m_dumpSet->find(dump)->getBitString()));
-    */
-    std::list<std::pair<int,int> >* sim = SimilaritesDialog::getSimilarities(m_dumpSet);
+    QString* dumpName = new QString;
+
+    std::list<std::pair<int,int> >* sim = SimilaritesDialog::getSimilarities(m_dumpSet, dumpName);
     if(sim == NULL) //cancel was pressed
         return;
+
+    ui->treeWidget->selectDump(*dumpName);
 
     QString bitString = QString::fromStdString(m_bitstring->toString());
     ui->textEdit->clear();

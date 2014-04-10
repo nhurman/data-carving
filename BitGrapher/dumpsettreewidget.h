@@ -23,6 +23,7 @@ public slots:
     void addDump(Dump);
     void onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
     void closeDumpSet();
+    void selectDump(QString dumpName);
 
 private:
     int m_nbNewDumpSets;

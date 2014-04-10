@@ -74,6 +74,19 @@ void DumpSetTreeWidget::closeDumpSet()
     }
 }
 
+void DumpSetTreeWidget::selectDump(QString dumpName)
+{
+    QTreeWidgetItem* item;
+    for(int i = 0; i < getDumpSetItem()->childCount(); i++)
+    {
+        if((item = getDumpSetItem()->child(i))->text(0) == dumpName)
+        {
+            setCurrentItem(item);
+            return;
+        }
+    }
+}
+
 void DumpSetTreeWidget::onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
     if(current != NULL)
