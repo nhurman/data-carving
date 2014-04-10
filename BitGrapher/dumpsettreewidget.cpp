@@ -7,6 +7,16 @@ DumpSetTreeWidget::DumpSetTreeWidget(QWidget *parent) :
                           this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
 }
 
+Dump DumpSetTreeWidget::getCurrentDump()
+{
+    return m_selectedDump;
+}
+
+DumpSet* DumpSetTreeWidget::getCurrentDumpSet()
+{
+    return m_selectedDumpSet;
+}
+
 void DumpSetTreeWidget::addDump(Dump d)
 {
 

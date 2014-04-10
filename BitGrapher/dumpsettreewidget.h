@@ -11,6 +11,8 @@ class DumpSetTreeWidget : public QTreeWidget
 public:
     explicit DumpSetTreeWidget(QWidget *parent = 0);
     void changeDumpSetName(QString name);
+    Dump getCurrentDump();
+    DumpSet* getCurrentDumpSet();
 
 signals:
     void selectedDumpChanged(Dump);

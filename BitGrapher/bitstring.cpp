@@ -270,3 +270,8 @@ std::list<std::pair<int,int> > BitString::similarities(BitString b1, BitString b
     }
     return sim;
 }
+
+int BitString::convertCoords(int pos)
+{
+    return pos + pos/8;
+}

@@ -45,6 +45,9 @@ public:
 
     static std::list<std::pair<int,int> > similarities(BitString b1, BitString b2);
 
+    //convert between byte pos and char pos in string (because of blanks between bytes)
+    static int convertCoords(int pos);
+
 private:
     size_t m_size;
     char* m_bytes;
