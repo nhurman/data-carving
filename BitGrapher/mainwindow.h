@@ -43,6 +43,8 @@ private slots:
 
     void on_actionClose_triggered();
 
+    void on_actionSimilarities_triggered();
+
 private:
     Ui::MainWindow *ui;
     BitString *m_bitstring;

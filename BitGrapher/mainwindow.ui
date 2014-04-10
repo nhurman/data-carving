@@ -30,11 +30,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPlainTextEdit" name="plainTextEdit">
-        <property name="plainText">
-         <string/>
-        </property>
-       </widget>
+       <widget class="QTextEdit" name="textEdit"/>
       </item>
       <item>
        <widget class="DotPlotView" name="graphArea" native="true">
@@ -77,8 +73,15 @@
     <addaction name="actionBitmap_View"/>
     <addaction name="actionDiagonals_View"/>
    </widget>
+   <widget class="QMenu" name="menuOperations">
+    <property name="title">
+     <string>Operations</string>
+    </property>
+    <addaction name="actionSimilarities"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
+   <addaction name="menuOperations"/>
   </widget>
   <action name="actionOpen">
    <property name="text">
@@ -136,6 +139,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionSimilarities">
+   <property name="text">
+    <string>Similarities</string>
    </property>
   </action>
  </widget>

@@ -5,6 +5,8 @@
 #include <iostream>
 
 #include <QFileDialog>
+#include <QInputDialog>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_bitstring = new BitString("615B5F1F");//58503C42454C56414E4445523C4D45554C454E3C3C4A4F53453C483C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C45463437383539373C3942454C383030313136324D313130333231383C3C3C3C3C3C3C3C3C3C3C3C3C3C3034");
     BitString bs("F15B5F1F58503C42454C56414E4445523C4D45554C454E3C3C4A4F53453C483C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C45463437383539373C3942454C383030313136324D313130333231383C3C3C3C3C3C3C3C3C3C3C3C3C3C3034");
     m_bitstring->bitOr(bs);
-    ui->plainTextEdit->appendPlainText(m_bitstring->toString().c_str());
+    ui->textEdit->setText(m_bitstring->toString().c_str());
     ui->graphArea->setBitString(m_bitstring);
 
     /* ---------------- TESTS -------------- */
@@ -121,12 +123,12 @@ void MainWindow::refreshDisplay()
     if(m_bitstring != NULL)
     {
         //gets rid of old text
-        ui->plainTextEdit->clear();
+        ui->textEdit->clear();
         //sets new text and image
-        ui->plainTextEdit->appendPlainText(m_bitstring->toString().c_str());
+        ui->textEdit->setText(m_bitstring->toString().c_str());
         ui->graphArea->setBitString(m_bitstring);
         //refreshes the modifies fields
-        ui->plainTextEdit->repaint();
+        ui->textEdit->repaint();
         ui->graphArea->repaint();
     }
     else
@@ -164,4 +166,40 @@ void MainWindow::on_treeWidget_selectedDumpSetChanged(DumpSet* ds)
 void MainWindow::on_actionClose_triggered()
 {
     ui->treeWidget->closeDumpSet();
+}
+
+void MainWindow::on_actionSimilarities_triggered()
+{
+    std::vector<QString> dumpsVect = m_dumpSet->getDumpNames();
+    QStringList dumps;
+    for(unsigned int i = 0; i < dumpsVect.size(); i++)
+    {
+        dumps.push_back(dumpsVect.at(i));
+    }
+    QString dump = QInputDialog::getItem(this, "Select dump to compare to", "Reference dump : ", dumps);
+    std::list<std::pair<int,int> > sim = BitString::similarities(*m_bitstring, *(m_dumpSet->find(dump)->getBitString()));
+
+    QString bitString = QString::fromStdString(m_bitstring->toString());
+    ui->textEdit->clear();
+    QString partOfText;
+    int pos = 0;
+    for (std::list<std::pair<int,int> >::iterator i = sim.begin(); i != sim.end(); i++ )
+    {
+        int length = i->first-pos;
+        length += i->first/8 - pos/8;
+        partOfText = bitString.mid(pos,length); //text until next highlight
+        ui->textEdit->setTextColor( QColor( "black" ) );
+        ui->textEdit->insertPlainText(partOfText);
+
+        pos = i->first + i->first/8;
+        length = i->second + i->second/8 - pos + 1;
+        partOfText = bitString.mid(pos, length); //highlighted text
+        ui->textEdit->setTextColor( QColor( "red" ) );
+        ui->textEdit->insertPlainText(partOfText);
+
+        pos = i->second + i->second/8 + 1; //update of pos
+    }
+    partOfText = bitString.mid(pos,-1); //text until end
+    ui->textEdit->setTextColor( QColor( "black" ) );
+    ui->textEdit->insertPlainText(partOfText);
 }
