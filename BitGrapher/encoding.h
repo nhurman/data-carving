@@ -11,8 +11,9 @@ class Encoding
 public:
     Encoding();
 
-    static std::string encode(BitString b, char (*encodeChar)(int c), int globalOffset, int charOffset, int charSize);
-    static char toASCII(int c);
+    static std::string encode(BitString b, char (*encodeChar)(char c), int globalOffset, int charOffset, int charSize);
+    static char toASCII(char c);
+    static char switchEndian(char c);
 
 };
 

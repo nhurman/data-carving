@@ -54,10 +54,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /* ------------------------------------- */
 
-    std::cout << Encoding::toASCII(65 << 0) << std::endl;
+    std::cout << Encoding::toASCII(65) << std::endl;
     BitString testEncode("48414c50");
-    std::cout << testEncode.toString() << " " <<  (unsigned int)(testEncode.getByte(17))<< std::endl;
-    std::cout << Encoding::encode(testEncode, Encoding::toASCII, 0, 0, 8) << std::endl;
+    std::cout << testEncode.toString() << " " <<  (unsigned int)(testEncode.getByte(17))<<  " " << (unsigned int) Encoding::switchEndian(testEncode.getByte(17)) << std::endl;
+    std::cout << Encoding::encode(testEncode, Encoding::switchEndian, 0, 0, 8) << std::endl;
+    BitString testEncode2("F48414c50F");
+    std::cout << testEncode2.toString() <<  std::endl;
+    std::cout << Encoding::encode(testEncode2, Encoding::switchEndian, 4, 0, 8) << std::endl;
+    BitString testEncode3("2420a62800");
+    std::cout << testEncode3.toString() <<  std::endl;
+    std::cout << Encoding::encode(testEncode3, Encoding::switchEndian, 1, 0, 8) << std::endl;
+
 }
 
 MainWindow::~MainWindow()
