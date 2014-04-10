@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "bitstring.h"
+#include "similaritesdialog.h"
 #include <iostream>
 
 #include <QFileDialog>
@@ -48,12 +49,6 @@ MainWindow::MainWindow(QWidget *parent) :
     std::cout << "Dotplot Pattern : " << listdiag.size() << std::endl;
     for (std::list<Diagonal>::iterator i = listdiag.begin(); i != listdiag.end(); i++ ){
         std::cout << "Diag " << (*i).toString() << std::endl ;
-    }
-
-    std::list<std::pair<int,int> > sim = BitString::similarities(BitString("FFAFF"), BitString("AAFFA"));
-    for (std::list<std::pair<int,int> >::iterator i = sim.begin(); i != sim.end(); i++ )
-    {
-        std::cout << "Sim " << (i->first) << " ; " << (i->second) << std::endl ;
     }
 
 
@@ -171,7 +166,7 @@ void MainWindow::on_actionClose_triggered()
 
 void MainWindow::on_actionSimilarities_triggered()
 {
-    if(m_dumpSet == NULL)
+    if(m_dumpSet == NULL) //no dump selected
     {
         QMessageBox::information(this, "Could not perform operation",
                                  "Please select a dump in a dump set.",
@@ -193,19 +188,23 @@ void MainWindow::on_actionSimilarities_triggered()
                                  QMessageBox::Ok);
         return;
     }
-
+    /*
     bool ok;
     QString dump = QInputDialog::getItem(this, "Select dump to compare to", "Reference dump : ", dumps, 0, false, &ok);
     if(!ok) //cancel btton was pressed
         return;
 
     std::list<std::pair<int,int> > sim = BitString::similarities(*m_bitstring, *(m_dumpSet->find(dump)->getBitString()));
+    */
+    std::list<std::pair<int,int> >* sim = SimilaritesDialog::getSimilarities(m_dumpSet);
+    if(sim == NULL) //cancel was pressed
+        return;
 
     QString bitString = QString::fromStdString(m_bitstring->toString());
     ui->textEdit->clear();
     QString partOfText;
     int pos = 0;
-    for (std::list<std::pair<int,int> >::iterator i = sim.begin(); i != sim.end(); i++ )
+    for (std::list<std::pair<int,int> >::iterator i = sim->begin(); i != sim->end(); i++ )
     {
         int length = BitString::convertCoords(i->first)-pos;
         partOfText = bitString.mid(pos,length); //text until next highlight
@@ -223,4 +222,11 @@ void MainWindow::on_actionSimilarities_triggered()
     partOfText = bitString.mid(pos,-1); //text until end
     ui->textEdit->setTextColor( QColor( "black" ) );
     ui->textEdit->insertPlainText(partOfText);
+
+    delete sim;
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    close();
 }

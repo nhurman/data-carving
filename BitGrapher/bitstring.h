@@ -43,7 +43,7 @@ public:
     std::list<Diagonal> dotPlotPattern(BitString dump) const;
     std::list<Diagonal>dotPlotPattern() const;
 
-    static std::list<std::pair<int,int> > similarities(BitString b1, BitString b2);
+    static std::list<std::pair<int,int> > similarities(BitString b1, BitString b2, int minSize = MIN_SIM_SIZE);
 
     //convert between byte pos and char pos in string (because of blanks between bytes)
     static int convertCoords(int pos);
