@@ -3,6 +3,7 @@
 
 #include "bitstring.h"
 #include "similaritesdialog.h"
+#include "encodingsdialog.h"
 #include <iostream>
 
 #include <QFileDialog>
@@ -273,7 +274,8 @@ void MainWindow::on_actionSimilarities_triggered()
 
 void MainWindow::on_actionEncodings_triggered()
 {
-    std::cout << "encoding test" << std::endl;
+    EncodingsDialog encodingDialog(this);
+    std::cout << encodingDialog.exec() << std::endl;
 }
 
 void MainWindow::on_actionExit_triggered()
