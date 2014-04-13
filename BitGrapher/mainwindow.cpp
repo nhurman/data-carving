@@ -224,10 +224,11 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
         pos = BitString::convertCoords(i->first.first);
         length = BitString::convertCoords(i->first.second) - pos + 1;
         partOfText = bitString.mid(pos, length); //highlighted text
+        float ratio = (float) i->second.size()/s->getDumpCount();
         if(std::find(i->second.begin(), i->second.end(), dumpId) != i->second.end()) //the similarity concerne the selected dump
-            ui->textEdit->setTextColor( QColor( SIM_COLOR ) );
+            ui->textEdit->setTextColor( makeColor(QColor( SIM_COLOR ), QColor( DISSIM_COLOR ), ratio) );
         else
-            ui->textEdit->setTextColor( QColor( OTHER_SIM_COLOR ) );
+            ui->textEdit->setTextColor( makeColor(QColor( OTHER_SIM_COLOR ), QColor( DISSIM_COLOR ), ratio) );
         ui->textEdit->insertPlainText(partOfText);
 
         pos = BitString::convertCoords(i->first.second) + 1; //update of pos
@@ -323,3 +324,9 @@ bool MainWindow::on_actionClose_all_triggered()
     return ui->treeWidget->closeAll();
 }
 
+QColor MainWindow::makeColor(QColor c1, QColor c2, float ratio)
+{
+    return QColor (c1.red()*ratio + c2.red()*(1-ratio),
+                   c1.green()*ratio + c2.green()*(1-ratio),
+                   c1.blue()*ratio + c2.blue()*(1-ratio));
+}
