@@ -99,7 +99,7 @@ void SimilaritesDialog::refreshComboBox(int index)
     m_dumpCBs[index]->addItems(dumps);
 
     //puts the selection back if possible
-    int i = m_dumpCBs[index]->findData(selection);
+    int i = m_dumpCBs[index]->findText(selection);
     if ( i != -1 ) // -1 for not found
         m_dumpCBs[index]->setCurrentIndex(i);
     else
