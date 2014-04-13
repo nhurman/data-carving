@@ -12,7 +12,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_charSize(1)
 {
     ui->setupUi(this);
 
@@ -241,6 +242,13 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
 
 void MainWindow::on_actionAdd_Dump_to_Set_triggered()
 {
+    if(m_dumpSet == NULL) //no dump set yet
+    {
+        QMessageBox::information(this, "Could not insert dump",
+                                 "Please select a dump set to insert the dump into.",
+                                 QMessageBox::Ok);
+        return;
+    }
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open dump file"),
                                                      DEFAULT_DIRECTORY,
                                                      tr("Files (*.*)"));
