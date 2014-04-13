@@ -17,6 +17,7 @@ SOURCES += main.cpp\
     dumpsettreewidget.cpp \
     encoding.cpp \
     similaritesdialog.cpp \
+    similarities.cpp
     encodingsdialog.cpp
 
 HEADERS  += mainwindow.h \
@@ -29,6 +30,7 @@ HEADERS  += mainwindow.h \
     dumpsettreewidget.h \
     encoding.h \
     similaritesdialog.h \
+    similarities.h
     encodingsdialog.h
 
 FORMS    += mainwindow.ui \

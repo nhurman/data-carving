@@ -30,6 +30,8 @@ QObject::connect(ui->treeWidget, SIGNAL (dumpSetNeedsSaving(DumpSet*)),
     /* ---------------- TESTS -------------- */
     /*              To be moved              */
 
+    Similarities::test();
+
     if(m_bitstring->contains(BitString("B5F1")))
         std::cout << "yes" << std::endl;
     else
@@ -153,13 +155,53 @@ void MainWindow::refreshDisplay()
         //refreshes the modifies fields
         ui->textEdit->repaint();
         ui->graphArea->repaint();
+
+        std::map<DumpSet*, Similarities*>::iterator i = m_similarities.find(m_dumpSet);
+        if( i != m_similarities.end())
+        {
+            int id = i->second->getDumpId(ui->treeWidget->getCurrentDump());
+            if(id != -1)
+                drawSimilarities(i->second, id);
+        }
     }
     else
     {
-        std::cout<<"Dump introuvable dans le set courant."<<std::endl;
+        QMessageBox::warning(this, "Could not find dump",
+                                 "There is no selected dump",
+                                 QMessageBox::Ok);
     }
 }
 
+void MainWindow::drawSimilarities(Similarities* s, int dumpId)
+{
+    QString bitString = QString::fromStdString(m_bitstring->toString());
+    ui->textEdit->clear();
+    QString partOfText;
+    int pos = 0;
+    std::list< SIM_TYPE >* list = s->getList();
+    for (std::list< SIM_TYPE >::iterator i = list->begin(); i != list->end(); i++ )
+    {
+        int length = BitString::convertCoords(i->first.first)-pos;
+        partOfText = bitString.mid(pos,length); //text until next highlight
+        ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
+        ui->textEdit->insertPlainText(partOfText);
+
+        pos = BitString::convertCoords(i->first.first);
+        length = BitString::convertCoords(i->first.second) - pos + 1;
+        partOfText = bitString.mid(pos, length); //highlighted text
+        if(std::find(i->second.begin(), i->second.end(), dumpId) != i->second.end()) //the similarity concerne the selected dump
+            ui->textEdit->setTextColor( QColor( SIM_COLOR ) );
+        else
+            ui->textEdit->setTextColor( QColor( OTHER_SIM_COLOR ) );
+        ui->textEdit->insertPlainText(partOfText);
+
+        pos = BitString::convertCoords(i->first.second) + 1; //update of pos
+    }
+    partOfText = bitString.mid(pos,-1); //text until end
+    ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
+    ui->textEdit->insertPlainText(partOfText);
+    ui->textEdit->setTextColor( QColor( DEFAULT_COLOR ) );
+}
 
 void MainWindow::on_actionAdd_Dump_to_Set_triggered()
 {
@@ -201,14 +243,7 @@ void MainWindow::on_actionSimilarities_triggered()
         return;
     }
 
-    std::vector<QString> dumpsVect = m_dumpSet->getDumpNames();
-    QStringList dumps;
-    for(unsigned int i = 0; i < dumpsVect.size(); i++)
-    {
-        dumps.push_back(dumpsVect.at(i));
-    }
-    dumps.removeOne(ui->treeWidget->getCurrentDump().getShortName());
-    if(dumps.size() < 1) //no dump to compare to
+    if(m_dumpSet->getDumpNames().size() < 2) //not enough dumps for comparison
     {
         QMessageBox::information(this, "Could not perform operation",
                                  "Not enough dumps in the dump set (at least 2 necessary)",
@@ -218,37 +253,22 @@ void MainWindow::on_actionSimilarities_triggered()
 
     QString* dumpName = new QString;
 
-    std::list<std::pair<int,int> >* sim = SimilaritesDialog::getSimilarities(m_dumpSet, dumpName);
+    Similarities* sim = SimilaritesDialog::getSimilarities(m_dumpSet, dumpName);
     if(sim == NULL) //cancel was pressed
         return;
+    else
+    {
+        if(m_similarities.find(m_dumpSet) != m_similarities.end()) //there is already a similarities in the dump set
+        {
+            delete m_similarities[m_dumpSet]; //delete it
+            m_similarities.erase(m_dumpSet);
+        }
+        m_similarities[m_dumpSet] = sim; //add the new similarities
+    }
 
     ui->treeWidget->selectDump(*dumpName);
 
-    QString bitString = QString::fromStdString(m_bitstring->toString());
-    ui->textEdit->clear();
-    QString partOfText;
-    int pos = 0;
-    for (std::list<std::pair<int,int> >::iterator i = sim->begin(); i != sim->end(); i++ )
-    {
-        int length = BitString::convertCoords(i->first)-pos;
-        partOfText = bitString.mid(pos,length); //text until next highlight
-        ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
-        ui->textEdit->insertPlainText(partOfText);
-
-        pos = BitString::convertCoords(i->first);
-        length = BitString::convertCoords(i->second) - pos + 1;
-        partOfText = bitString.mid(pos, length); //highlighted text
-        ui->textEdit->setTextColor( QColor( SIM_COLOR ) );
-        ui->textEdit->insertPlainText(partOfText);
-
-        pos = BitString::convertCoords(i->second) + 1; //update of pos
-    }
-    partOfText = bitString.mid(pos,-1); //text until end
-    ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
-    ui->textEdit->insertPlainText(partOfText);
-    ui->textEdit->setTextColor( QColor( DEFAULT_COLOR ) );
-
-    delete sim;
+    refreshDisplay(); //refreshes to show similarities. Only useful if the selected dump has not changed
 }
 
 void MainWindow::on_actionEncodings_triggered()

@@ -5,6 +5,7 @@
 
 #define DISSIM_COLOR "red"
 #define SIM_COLOR "green"
+#define OTHER_SIM_COLOR "blue"
 #define DEFAULT_COLOR "black"
 
 #include <QMainWindow>
@@ -13,6 +14,7 @@
 #include "bitstring.h"
 #include "dumpset.h"
 #include "encoding.h"
+#include "similarities.h"
 
 namespace Ui {
     class MainWindow;
@@ -64,9 +66,11 @@ private:
     Ui::MainWindow *ui;
     BitString *m_bitstring;
     DumpSet* m_dumpSet;
+    std::map<DumpSet*, Similarities*> m_similarities;
 
     //refreshes the display of the bitsrting
     void refreshDisplay();
+    void drawSimilarities(Similarities* s, int dumpId);
 };
 
 #endif // MAINWINDOW_H

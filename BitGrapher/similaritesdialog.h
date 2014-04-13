@@ -5,6 +5,7 @@
 #include <QComboBox>
 #include <QSpinBox>
 #include "dumpset.h"
+#include "similarities.h"
 
 class SimilaritesDialog : public QDialog
 {
@@ -12,7 +13,7 @@ class SimilaritesDialog : public QDialog
 public:
     explicit SimilaritesDialog(QWidget *parent = 0, DumpSet* ds = NULL, QString* selectedDump = NULL);
     // selectedDUmp : where the compared dump's name (the one to display) will be stored
-    static std::list<std::pair<int,int> >* getSimilarities(DumpSet* ds, QString* selectedDump = NULL);
+    static Similarities* getSimilarities(DumpSet* ds, QString* selectedDump = NULL);
     Dump getDump1();
     Dump getDump2();
     int getMinSize();
@@ -33,7 +34,7 @@ private:
     QSpinBox* m_minSizeSpinBox;
 
     //the result is tored here, to be recovered after window closure
-    static std::list<std::pair<int,int> >* m_result;
+    static Similarities* m_result;
 
 };
 
