@@ -63,14 +63,14 @@ void DumpSetTreeWidget::changeDumpSetName(QString name)
 
 void DumpSetTreeWidget::closeDumpSet()
 {
-    QTreeWidgetItem*i = getDumpSetItem();
-    if(i != NULL)
+    close(getDumpSetItem());
+}
+
+void DumpSetTreeWidget::closeAll()
+{
+    while (topLevelItemCount() > 0)
     {
-        QString name = i->text(0);
-        m_openedDumpSets.erase(name);
-        delete i; //apparently a safe way to remove the item
-        delete m_selectedDumpSet;
-        m_selectedDumpSet = NULL;
+        close(topLevelItem(topLevelItemCount()-1));
     }
 }
 
@@ -120,3 +120,14 @@ QTreeWidgetItem* DumpSetTreeWidget::getDumpSetItem()
     return selectedItems().at(0);
 }
 
+void DumpSetTreeWidget::close(QTreeWidgetItem* item)
+{
+    if(item != NULL)
+    {
+        QString name = item->text(0);
+        m_openedDumpSets.erase(name);
+        delete item; //apparently a safe way to remove the item
+        delete m_selectedDumpSet;
+        m_selectedDumpSet = NULL;
+    }
+}

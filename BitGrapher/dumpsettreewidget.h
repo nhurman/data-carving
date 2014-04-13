@@ -23,6 +23,7 @@ public slots:
     void addDump(Dump);
     void onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
     void closeDumpSet();
+    void closeAll();
     void selectDump(QString dumpName);
 
 private:
@@ -32,6 +33,7 @@ private:
     std::map<QString, DumpSet*> m_openedDumpSets;
 
     QTreeWidgetItem* getDumpSetItem();
+    void close(QTreeWidgetItem* item);
 };
 
 #endif // DUMPSETTREEWIDGET_H

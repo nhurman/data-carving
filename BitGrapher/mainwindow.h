@@ -51,6 +51,8 @@ private slots:
 
     void on_actionExit_triggered();
 
+    void on_actionClose_all_triggered();
+
 private:
     Ui::MainWindow *ui;
     BitString *m_bitstring;

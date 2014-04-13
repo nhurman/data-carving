@@ -238,5 +238,11 @@ void MainWindow::on_actionSimilarities_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
+    on_actionClose_all_triggered(); //closes all dump sets before exiting
     close();
+}
+
+void MainWindow::on_actionClose_all_triggered()
+{
+    ui->treeWidget->closeAll();
 }
