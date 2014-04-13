@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     dumpsettreewidget.cpp \
     encoding.cpp \
     similaritesdialog.cpp \
-    similarities.cpp
+    similarities.cpp \
+    dumpcombobox.cpp
 
 HEADERS  += mainwindow.h \
     bitgrapharea.h \
@@ -29,6 +30,7 @@ HEADERS  += mainwindow.h \
     dumpsettreewidget.h \
     encoding.h \
     similaritesdialog.h \
-    similarities.h
+    similarities.h \
+    dumpcombobox.h
 
 FORMS    += mainwindow.ui

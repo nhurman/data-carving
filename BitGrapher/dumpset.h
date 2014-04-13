@@ -21,6 +21,7 @@ public:
     //removes a dump from the set
     void remove(QString name);
     std::vector<QString> getDumpNames();
+    int getDumpCount();
     bool saveToFile(QString fileName);
     bool save();
 

@@ -94,6 +94,10 @@ std::vector<QString> DumpSet::getDumpNames()
     return v;
 }
 
+int DumpSet::getDumpCount()
+{
+    return m_dumps.size();
+}
 
 bool DumpSet::saveToFile(QString filePath)
 {

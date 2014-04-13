@@ -4,38 +4,43 @@
 #include <QDialog>
 #include <QComboBox>
 #include <QSpinBox>
+#include <QVBoxLayout>
 #include "dumpset.h"
 #include "similarities.h"
+#include "dumpcombobox.h"
 
 class SimilaritesDialog : public QDialog
 {
     Q_OBJECT
 public:
     explicit SimilaritesDialog(QWidget *parent = 0, DumpSet* ds = NULL, QString* selectedDump = NULL);
-    // selectedDUmp : where the compared dump's name (the one to display) will be stored
+    // selectedDump : where the compared dump's name (the one to display) will be stored
     static Similarities* getSimilarities(DumpSet* ds, QString* selectedDump = NULL);
-    Dump getDump1();
-    Dump getDump2();
+    Dump getDump(int index);
     int getMinSize();
 
 signals:
 
 public slots:
-    void refreshDumps1();
-    void refreshDumps2(const QString dump1 = "");
+    void refreshComboBoxes(int modifiedIndex); //modifiedIndex : index of the modified CB -1 to refresh all
     void processAndClose();
     void cancelAndClose();
+    void addComboBox();
+    void removeComboBox();
 
 private:
+    QVBoxLayout* m_layout;
     QString* m_selectedDump;
     DumpSet* m_dumpSet;
-    QComboBox* m_dump1CB;
-    QComboBox* m_dump2CB;
+    std::vector<DumpComboBox*> m_dumpCBs;
     QSpinBox* m_minSizeSpinBox;
+
+    void refreshComboBox(int index);
 
     //the result is tored here, to be recovered after window closure
     static Similarities* m_result;
-
 };
+
+
 
 #endif // SIMILARITESDIALOG_H

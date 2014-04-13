@@ -8,24 +8,43 @@ Similarities* SimilaritesDialog::m_result;
 SimilaritesDialog::SimilaritesDialog(QWidget *parent, DumpSet* ds, QString* selectedDump) :
     QDialog(parent), m_dumpSet(ds), m_selectedDump(selectedDump)
 {
-    QVBoxLayout* layout = new QVBoxLayout;
-    setLayout(layout);
+    m_layout = new QVBoxLayout;
+    setLayout(m_layout);
 
-    m_dump1CB = new QComboBox(this);
-    m_dump2CB = new QComboBox(this);
-    layout->addWidget(m_dump1CB);
-    layout->addWidget(m_dump2CB);
-
+    //min size
     QHBoxLayout* sLayout = new QHBoxLayout;
     sLayout->addWidget(new QLabel("Minimum string size : "));
     sLayout->addWidget(m_minSizeSpinBox = new QSpinBox(this));
-    layout->addLayout(sLayout);
+    m_layout->addLayout(sLayout);
 
-    QObject::connect(m_dump1CB, SIGNAL(currentIndexChanged( QString ) ),
-                          this, SLOT(refreshDumps2( QString )));
+    //+  -
+    QHBoxLayout* pmLayout = new QHBoxLayout;
+    m_layout->addLayout(pmLayout);
 
+    QPushButton* bPlus = new QPushButton("Add dump");
+    QPushButton* bMinus = new QPushButton("Remove dump");
+    pmLayout->addWidget(bPlus);
+    pmLayout->addWidget(bMinus);
+
+    QObject::connect(bPlus, SIGNAL(clicked()),
+                          this, SLOT(addComboBox()));
+    QObject::connect(bMinus, SIGNAL(clicked()),
+                          this, SLOT(removeComboBox()));
+
+    //dumps
+    m_dumpCBs.push_back(new DumpComboBox(this));
+    m_dumpCBs.push_back(new DumpComboBox(this, 1));
+    m_layout->addWidget(m_dumpCBs[0]);
+    m_layout->addWidget(m_dumpCBs[1]);
+
+    QObject::connect(m_dumpCBs[0], SIGNAL(currentIndexChanged( int ) ),
+                          this, SLOT(refreshComboBoxes( int )));
+    QObject::connect(m_dumpCBs[1], SIGNAL(currentIndexChanged( int ) ),
+                          this, SLOT(refreshComboBoxes( int )));
+
+    //ok cancel
     QHBoxLayout* bLayout = new QHBoxLayout;
-    layout->addLayout(bLayout);
+    m_layout->addLayout(bLayout);
 
     QPushButton* bOK = new QPushButton("OK");
     QPushButton* bCancel = new QPushButton("Cancel");
@@ -37,76 +56,91 @@ SimilaritesDialog::SimilaritesDialog(QWidget *parent, DumpSet* ds, QString* sele
     QObject::connect(bCancel, SIGNAL(clicked()),
                           this, SLOT(cancelAndClose()));
 
-    refreshDumps1();
-    //refreshDumps2(); //done thanks to the signal
+    refreshComboBoxes(-1);
 }
 
-Dump SimilaritesDialog::getDump1()
+Dump SimilaritesDialog::getDump(int index)
 {
-    return *m_dumpSet->find(m_dump1CB->currentText());
+    return *m_dumpSet->find(m_dumpCBs[index]->currentText());
 }
-Dump SimilaritesDialog::getDump2()
-{
-    return *m_dumpSet->find(m_dump2CB->currentText());
-}
+
 int SimilaritesDialog::getMinSize()
 {
     return m_minSizeSpinBox->value();
 }
 
-void SimilaritesDialog::refreshDumps1()
+void SimilaritesDialog::refreshComboBoxes(int modifiedIndex)
 {
-    QString selection = m_dump1CB->currentText();
+    if(modifiedIndex <= 0)
+        if(m_selectedDump != NULL)
+            *m_selectedDump = m_dumpCBs[0]->currentText();
+
+    for(unsigned int i = modifiedIndex+1; i < m_dumpCBs.size(); i++)
+    {
+        refreshComboBox(i);
+    }
+}
+
+void SimilaritesDialog::refreshComboBox(int index)
+{
+    QString selection = m_dumpCBs[index]->currentText();
     std::vector<QString> dumpsVect = m_dumpSet->getDumpNames();
     QStringList dumps;
-    for(unsigned int i = 0; i < dumpsVect.size(); i++)
+    for(unsigned int i = 0; i < dumpsVect.size(); i++) //std::list to QStringList
     {
         dumps.push_back(dumpsVect.at(i));
     }
+    for(int i = 0; i < index; i++) //removind dumps selected in the boxes above
+    {
+        dumps.removeOne(m_dumpCBs[i]->currentText());
+    }
 
-    m_dump1CB->clear();
-    m_dump1CB->addItems(dumps);
+    m_dumpCBs[index]->clear();
+    m_dumpCBs[index]->addItems(dumps);
 
     //puts the selection back if possible
-    int index = m_dump1CB->findData(selection);
-    if ( index != -1 ) // -1 for not found
-       m_dump1CB->setCurrentIndex(index);
+    int i = m_dumpCBs[index]->findData(selection);
+    if ( i != -1 ) // -1 for not found
+        m_dumpCBs[index]->setCurrentIndex(i);
     else
-        m_dump1CB->setCurrentIndex(0);
+        m_dumpCBs[index]->setCurrentIndex(0);
 
 }
 
-void SimilaritesDialog::refreshDumps2(const QString dump1)
+void SimilaritesDialog::addComboBox()
 {
-    QString selection = m_dump2CB->currentText();
-    std::vector<QString> dumpsVect = m_dumpSet->getDumpNames();
-    QStringList dumps;
-    for(unsigned int i = 0; i < dumpsVect.size(); i++)
+    if(m_dumpCBs.size() >= m_dumpSet->getDumpCount()) //not enough dumps
     {
-        dumps.push_back(dumpsVect.at(i));
+        return;
     }
-    if(dump1 != "")
-        dumps.removeOne(dump1);
+    //else
+    m_dumpCBs.push_back(new DumpComboBox(this, m_dumpCBs.size()));
+    m_layout->insertWidget(m_layout->count()-1, m_dumpCBs.back());
 
-    m_dump2CB->clear();
-    m_dump2CB->addItems(dumps);
+    QObject::connect(m_dumpCBs.back(), SIGNAL(currentIndexChanged( int ) ),
+                          this, SLOT(refreshComboBoxes( int )));
 
-    //puts the selection back if possible
-    int index = m_dump2CB->findData(selection);
-    if ( index != -1 ) // -1 for not found
-       m_dump2CB->setCurrentIndex(index);
-    else
-        m_dump2CB->setCurrentIndex(0);
+    refreshComboBox(m_dumpCBs.size()-1);
+}
 
-    if(m_selectedDump != NULL)
-        *m_selectedDump = dump1;
+void SimilaritesDialog::removeComboBox()
+{
+    if(m_dumpCBs.size() <= 2) //you have to leave at least 2 dumps
+    {
+        return;
+    }
+    //else
+    m_layout->removeWidget(m_dumpCBs.back());
+    delete m_dumpCBs.back();
+    m_dumpCBs.pop_back();
 }
 
 void SimilaritesDialog::processAndClose()
 {
     std::vector<Dump> v;
-    v.push_back(getDump1());
-    v.push_back(getDump2());
+    for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
+        v.push_back(getDump(i));
+
     m_result = new Similarities(v, getMinSize());
     done(0);
 }
