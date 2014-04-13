@@ -5,6 +5,7 @@
 
 #define DISSIM_COLOR "red"
 #define SIM_COLOR "green"
+#define OTHER_SIM_COLOR "blue"
 #define DEFAULT_COLOR "black"
 
 #include <QMainWindow>
@@ -20,6 +21,7 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
+#include "similarities.h"
 
 namespace Ui {
     class MainWindow;
@@ -56,6 +58,8 @@ private slots:
 
     void on_actionSimilarities_triggered();
 
+    void on_actionEncodings_triggered();
+
     void on_actionExit_triggered();
 
     //returns false if the closure was aborted by the user
@@ -70,9 +74,11 @@ private:
     BitString *m_bitstring;
     DumpSet* m_dumpSet;
     DotPlotView m_dpgraph;
+    std::map<DumpSet*, Similarities*> m_similarities;
 
     //refreshes the display of the bitsrting
     void refreshDisplay();
+    void drawSimilarities(Similarities* s, int dumpId);
 };
 
 #endif // MAINWINDOW_H
