@@ -10,9 +10,16 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 #include <QTreeWidgetItem>
+#include "bitgrapharea.h"
+#include "dotplotview.h"
 #include "bitstring.h"
 #include "dumpset.h"
 #include "encoding.h"
+#include "similaritesdialog.h"
+#include <iostream>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QMessageBox>
 
 namespace Ui {
     class MainWindow;
@@ -62,6 +69,7 @@ private:
     Ui::MainWindow *ui;
     BitString *m_bitstring;
     DumpSet* m_dumpSet;
+    DotPlotView m_dpgraph;
 
     //refreshes the display of the bitsrting
     void refreshDisplay();

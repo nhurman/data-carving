@@ -18,7 +18,8 @@ std::string Encoding::encode(BitString b, char (* encodeChar)(char c), int globa
 
         toEncode = (leftPart + rightPart)% ((unsigned int) pow(2,charSize));
 
-        std::cout  << (unsigned int) leftPart << " " <<(unsigned int) rightPart << " " << (unsigned int) toEncode  << std::endl;
+        // For debug, let that here !
+        //std::cout  << (unsigned int) leftPart << " " <<(unsigned int) rightPart << " " << (unsigned int) toEncode  << std::endl;
 
         ss << encodeChar(toEncode);
         i += charSize + charOffset;

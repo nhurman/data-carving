@@ -125,3 +125,11 @@ QString DumpSet::shortenFileName(std::string fileName)
 {
     return QString::fromStdString(fileName).section('/',-1);
 }
+
+size_t DumpSet::size() {
+    return m_dumps.size();
+}
+
+std::map<QString, Dump> DumpSet::getDumps(){
+    return m_dumps;
+}
