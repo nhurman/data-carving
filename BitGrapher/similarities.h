@@ -7,7 +7,9 @@
 class Similarities
 {
 public:
-    Similarities(std::vector<Dump> dumps);
+    Similarities(std::vector<Dump> dumps, int minSize = MIN_SIM_SIZE);
+    int getDumpId(Dump d); //returns the Id of the dump or -1 if not found. Equality tested on dump names
+    std::list<std::pair<std::pair<int, int>, std::list<int> > > *getList();
 
     static void test();
 

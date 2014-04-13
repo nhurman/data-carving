@@ -1,18 +1,32 @@
 #include "similarities.h"
 
-Similarities::Similarities(std::vector<Dump> dumps) : m_dumps(dumps)
+Similarities::Similarities(std::vector<Dump> dumps, int minSize) : m_dumps(dumps)
 {
     for(unsigned int i = 0; i < m_dumps.size(); i++)
     {
         std::list< SIM_TYPE > simi;
         for(unsigned int j = i+1; j < m_dumps.size(); j++)
         {
-            std::list<std::pair<int, int> > l = BitString::similarities(*m_dumps[i].getBitString(), *m_dumps[j].getBitString());
+            std::list<std::pair<int, int> > l = BitString::similarities(*m_dumps[i].getBitString(), *m_dumps[j].getBitString(), minSize);
             addSimilarities(&simi, &l, i, j);
         }
         addSimList(&simi);
     }
-    1+1;
+}
+
+int Similarities::getDumpId(Dump d)
+{
+    for(unsigned int i = 0; i < m_dumps.size(); i++)
+    {
+        if(d.getFileName() == m_dumps[i].getFileName())
+            return i;
+    }
+    return -1;
+}
+
+std::list< SIM_TYPE >* Similarities::getList()
+{
+    return &m_similarities;
 }
 
 void Similarities::addSimilarities(std::list<SIM_TYPE>* sim1, std::list<std::pair<int, int> >* sim2, int d1, int d2)

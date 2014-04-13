@@ -3,7 +3,7 @@
 #include <QPushButton>
 #include <QLabel>
 
-std::list<std::pair<int,int> >* SimilaritesDialog::m_result;
+Similarities* SimilaritesDialog::m_result;
 
 SimilaritesDialog::SimilaritesDialog(QWidget *parent, DumpSet* ds, QString* selectedDump) :
     QDialog(parent), m_dumpSet(ds), m_selectedDump(selectedDump)
@@ -104,7 +104,10 @@ void SimilaritesDialog::refreshDumps2(const QString dump1)
 
 void SimilaritesDialog::processAndClose()
 {
-    m_result = new std::list<std::pair<int,int> > (BitString::similarities(*getDump1().getBitString(), *getDump2().getBitString(), getMinSize()));
+    std::vector<Dump> v;
+    v.push_back(getDump1());
+    v.push_back(getDump2());
+    m_result = new Similarities(v, getMinSize());
     done(0);
 }
 
@@ -114,11 +117,11 @@ void SimilaritesDialog::cancelAndClose()
     done(0);
 }
 
-std::list<std::pair<int,int> >* SimilaritesDialog::getSimilarities(DumpSet* ds, QString* selectedDump)
+Similarities* SimilaritesDialog::getSimilarities(DumpSet* ds, QString* selectedDump)
 {
     SimilaritesDialog dialog(0, ds, selectedDump);
     dialog.exec();
-    std::list<std::pair<int,int> >* res = m_result;
+    Similarities* res = m_result;
     m_result = NULL;
     return res;
 }
