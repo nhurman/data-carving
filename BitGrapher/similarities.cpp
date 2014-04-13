@@ -24,6 +24,11 @@ int Similarities::getDumpId(Dump d)
     return -1;
 }
 
+int Similarities::getDumpCount()
+{
+    return m_dumps.size();
+}
+
 std::list< SIM_TYPE >* Similarities::getList()
 {
     return &m_similarities;

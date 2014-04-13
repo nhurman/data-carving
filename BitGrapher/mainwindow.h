@@ -79,6 +79,8 @@ private:
     //refreshes the display of the bitsrting
     void refreshDisplay();
     void drawSimilarities(Similarities* s, int dumpId);
+
+    static QColor makeColor(QColor c1, QColor c2, float ratio);
 };
 
 #endif // MAINWINDOW_H
