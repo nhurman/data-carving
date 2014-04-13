@@ -49,6 +49,8 @@ private slots:
 
     void on_actionSimilarities_triggered();
 
+    void on_actionEncodings_triggered();
+
     void on_actionExit_triggered();
 
     //returns false if the closure was aborted by the user

@@ -251,6 +251,11 @@ void MainWindow::on_actionSimilarities_triggered()
     delete sim;
 }
 
+void MainWindow::on_actionEncodings_triggered()
+{
+    std::cout << "encoding test" << std::endl;
+}
+
 void MainWindow::on_actionExit_triggered()
 {
     if(on_actionClose_all_triggered()) //closes all dump sets before exiting and checks the operation was not aborted
