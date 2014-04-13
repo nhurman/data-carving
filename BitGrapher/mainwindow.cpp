@@ -78,7 +78,8 @@ void MainWindow::on_actionOpen_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                      DEFAULT_DIRECTORY,
                                                      tr("Dump Sets (*.ds)"));
-    ui->treeWidget->addDumpSet(new DumpSet(fileName));
+    if(fileName != "") //the user didn't press cancel
+        ui->treeWidget->addDumpSet(new DumpSet(fileName));
 
 }
 
@@ -91,9 +92,11 @@ void MainWindow::on_actionSave_triggered()
         else
             on_actionSave_as_triggered(); //save as instead
     }
-    else
+    else //no dump set selected
     {
-        std::cout << "Unable to save dump : no dump selected" << std::endl ;
+        QMessageBox::information(this, "Unable to save dump set",
+                                 "Please select a dump set.",
+                                 QMessageBox::Ok);
     }
 }
 
@@ -109,9 +112,11 @@ void MainWindow::on_actionSave_as_triggered()
             ui->treeWidget->changeDumpSetName(fileName);
         }
     }
-    else
+    else //no dump set selected
     {
-        std::cout << "Unable to save dump : no dump selected" << std::endl ;
+        QMessageBox::information(this, "Unable to save dump set",
+                                 "Please select a dump set.",
+                                 QMessageBox::Ok);
     }
 }
 void MainWindow::on_actionDiagonals_View_triggered(){

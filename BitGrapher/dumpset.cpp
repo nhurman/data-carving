@@ -1,6 +1,7 @@
 #include "dumpset.h"
 #include <iostream>
 #include <fstream>
+#include <QMessageBox>
 
 DumpSet::DumpSet(QString fileName) : m_dumps(), m_fileName(fileName), m_modified(false)
 {
@@ -18,6 +19,14 @@ DumpSet::DumpSet(QString fileName) : m_dumps(), m_fileName(fileName), m_modified
             {
                 addDump(QString::fromStdString(buff));
             }
+        }
+        else //could not open file
+        {
+
+            QMessageBox::warning(NULL, "Unable to open dump set",
+                                     "The following dump set could not be opened :\n"+fileName,
+                                     QMessageBox::Ok);
+            return;
         }
     }
     else //new dump

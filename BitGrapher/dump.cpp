@@ -1,11 +1,20 @@
 #include "dump.h"
 #include <iostream>
 #include <fstream>
+#include <QMessageBox>
 
 Dump::Dump(QString fileName): m_fileName(fileName)
 {
     std::ifstream f;
     f.open (fileName.toUtf8());
+    if(!f.is_open())
+    {
+
+        QMessageBox::warning(NULL, QString("Unable to open dump"),
+                                 "The following dump could not be opened :\n"+fileName,
+                                 QMessageBox::Ok);
+        return;
+    }
     std::string str = "";
     std::string buff = "";
     while(std::getline(f, buff))
