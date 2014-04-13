@@ -70,6 +70,8 @@ QObject::connect(ui->treeWidget, SIGNAL (dumpSetNeedsSaving(DumpSet*)),
     BitString testEncode3("2420a62800");
     std::cout << testEncode3.toString() <<  std::endl;
     std::cout << Encoding::encode(testEncode3, Encoding::switchEndian, 1, 0, 8) << std::endl;
+    std::cout << Encoding::encode(testEncode, Encoding::reverseHexadecimal, 0, 0, 4) << std::endl;
+
 
 }
 
