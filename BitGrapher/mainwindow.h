@@ -11,9 +11,16 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 #include <QTreeWidgetItem>
+#include "bitgrapharea.h"
+#include "dotplotview.h"
 #include "bitstring.h"
 #include "dumpset.h"
 #include "encoding.h"
+#include "similaritesdialog.h"
+#include <iostream>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QMessageBox>
 #include "similarities.h"
 
 namespace Ui {
@@ -66,6 +73,7 @@ private:
     Ui::MainWindow *ui;
     BitString *m_bitstring;
     DumpSet* m_dumpSet;
+    DotPlotView m_dpgraph;
     std::map<DumpSet*, Similarities*> m_similarities;
 
     //refreshes the display of the bitsrting

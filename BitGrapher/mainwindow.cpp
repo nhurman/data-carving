@@ -51,7 +51,7 @@ QObject::connect(ui->treeWidget, SIGNAL (dumpSetNeedsSaving(DumpSet*)),
     BitString testDiag2("0F0F0F0FFF");
     Diagonal test(2,6,11);
     std::cout << "Diag test :" << test.toString() << std::endl ;
-    std::list<Diagonal> listdiag = testDiag1.dotPlotPattern(testDiag2);
+    std::list<Diagonal> listdiag = testDiag1.dotPlotPattern(&testDiag2);
     std::cout << "Dotplot Pattern : " << listdiag.size() << std::endl;
     for (std::list<Diagonal>::iterator i = listdiag.begin(); i != listdiag.end(); i++ ){
         std::cout << "Diag " << (*i).toString() << std::endl ;
@@ -60,18 +60,23 @@ QObject::connect(ui->treeWidget, SIGNAL (dumpSetNeedsSaving(DumpSet*)),
 
     /* ------------------------------------- */
 
-    std::cout << Encoding::toASCII(65) << std::endl;
-    BitString testEncode("48414c50");
-    std::cout << testEncode.toString() << " " <<  (unsigned int)(testEncode.getByte(17))<<  " " << (unsigned int) Encoding::switchEndian(testEncode.getByte(17)) << std::endl;
-    std::cout << Encoding::encode(testEncode, Encoding::switchEndian, 0, 0, 8) << std::endl;
+    std::cout << std::endl;
+    BitString testEncode1("48414c50");
+    std::cout << testEncode1.toString() << " " <<  (unsigned int)(testEncode1.getByte(17))<<  " " << (unsigned int) Encoding::switchEndian(testEncode1.getByte(17)) << std::endl;
+    std::cout << Encoding::encode(testEncode1, Encoding::switchEndian, 0, 0, 8) << std::endl;
+    std::cout << Encoding::encode(testEncode1, Encoding::reverseHexadecimal, 0, 0, 4) << std::endl;
+
+    std::cout << std::endl;
     BitString testEncode2("F48414c50F");
     std::cout << testEncode2.toString() <<  std::endl;
     std::cout << Encoding::encode(testEncode2, Encoding::switchEndian, 4, 0, 8) << std::endl;
+    std::cout << Encoding::encode(testEncode2, Encoding::reverseHexadecimal, 0, 0, 4) << std::endl;
+
+    std::cout << std::endl;
     BitString testEncode3("2420a62800");
     std::cout << testEncode3.toString() <<  std::endl;
     std::cout << Encoding::encode(testEncode3, Encoding::switchEndian, 1, 0, 8) << std::endl;
-    std::cout << Encoding::encode(testEncode, Encoding::reverseHexadecimal, 0, 0, 4) << std::endl;
-
+    std::cout << Encoding::encode(testEncode3, Encoding::reverseHexadecimal, 0, 0, 4) << std::endl;
 
 }
 
@@ -137,8 +142,37 @@ void MainWindow::on_actionSave_as_triggered()
 {
     saveDumpSetAs(m_dumpSet);
 }
+
 void MainWindow::on_actionDiagonals_View_triggered(){
     std::cout << "Diagonals !" << std::endl ;
+
+    if(m_dumpSet == NULL) //no dump selected
+    {
+        QMessageBox::information(this, "Could not perform operation",
+                                 "Please select a dump in a dump set.",
+                                 QMessageBox::Ok);
+        return;
+    }
+    else if (m_dumpSet->size() == 1) {
+        std::map<QString, Dump>::iterator it =  m_dumpSet->getDumps().begin();
+        m_dpgraph.setBitString(it->second.getBitString());
+        m_dpgraph.setDiagonals(it->second.getBitString()->dotPlotPattern());
+
+    }
+    else if (m_dumpSet->size() == 2) {
+        std::map<QString, Dump>::iterator it =  m_dumpSet->getDumps().begin();
+        BitString *b1 = it->second.getBitString();
+        BitString *b2 = (++it)->second.getBitString();
+        m_dpgraph.setBitStrings(b1, b2);
+        m_dpgraph.setDiagonals((*b1).dotPlotPattern(b2));
+    }
+    else {
+        QMessageBox::information(this, "Could not perform operation",
+                                 "Please select one or two dump in a dump set.",
+                                 QMessageBox::Ok);
+        return;
+    }
+    m_dpgraph.show();
 }
 void MainWindow::on_actionBitmap_View_triggered() {
     std::cout << "Bitmap !" << std::endl ;

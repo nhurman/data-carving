@@ -40,7 +40,7 @@ public:
     bool equals(BitString const& bitstring) const;
     bool contains(BitString s) const;
 
-    std::list<Diagonal> dotPlotPattern(BitString dump) const;
+    std::list<Diagonal> dotPlotPattern(const BitString *dump) const;
     std::list<Diagonal>dotPlotPattern() const;
 
     static std::list<std::pair<int,int> > similarities(BitString b1, BitString b2, int minSize = MIN_SIM_SIZE);

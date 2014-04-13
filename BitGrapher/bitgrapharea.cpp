@@ -5,13 +5,13 @@ BitGraphArea::BitGraphArea(QWidget *parent) :
 {
 }
 
-void BitGraphArea::setBitString(BitString const* bs)
-{
+void BitGraphArea::setBitString(BitString const* bs){
     m_bitstring = bs;
 }
 
-void BitGraphArea::paintEvent(QPaintEvent* /* event */)
-{
+
+
+void BitGraphArea::paintEvent(QPaintEvent* /* event */){
     int width = this->width() - 2;
     int height = this->height() - 2;
     unsigned int lines = ceil(m_bitstring->size() / 64.);
