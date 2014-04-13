@@ -309,7 +309,7 @@ void MainWindow::on_actionSimilarities_triggered()
 
 void MainWindow::on_actionEncodings_triggered()
 {
-    EncodingsDialog encodingDialog(this, ui->textEdit, m_bitstring);
+    EncodingsDialog encodingDialog(this, ui->textEdit, m_bitstring, &m_charSize);
     encodingDialog.exec();
 }
 
