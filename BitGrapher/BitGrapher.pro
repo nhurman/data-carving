@@ -16,7 +16,8 @@ SOURCES += main.cpp\
     dotplotview.cpp \
     dumpsettreewidget.cpp \
     encoding.cpp \
-    similaritesdialog.cpp
+    similaritesdialog.cpp \
+    similarities.cpp
 
 HEADERS  += mainwindow.h \
     bitgrapharea.h \
@@ -27,6 +28,7 @@ HEADERS  += mainwindow.h \
     dotplotview.h \
     dumpsettreewidget.h \
     encoding.h \
-    similaritesdialog.h
+    similaritesdialog.h \
+    similarities.h
 
 FORMS    += mainwindow.ui
