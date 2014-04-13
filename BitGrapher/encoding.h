@@ -14,6 +14,8 @@ public:
     static std::string encode(BitString b, char (*encodeChar)(char c), int globalOffset, int charOffset, int charSize);
     static char toASCII(char c);
     static char switchEndian(char c);
+    static char toHexadecimal(char c);
+    static char reverseHexadecimal(char c);
 
 };
 

@@ -11,18 +11,14 @@ std::string Encoding::encode(BitString b, char (* encodeChar)(char c), int globa
     int toEncode;
     std::stringstream ss;
 
-    int pika;
-
     while (i + charSize <= b.size()) {
 
-        pika = 1;
+        leftPart = ((unsigned char) b.getByte(i)) / ((unsigned int) pow(2, (i%8))) % ((unsigned int) pow(2,charSize));
+        rightPart = ((unsigned char) b.getByte(i+charSize)) % ((unsigned int) pow(2, (i%8))) << ((8-i%8));
 
-        leftPart = ((unsigned char) b.getByte(i)) / ((unsigned int) pow(2, (i%8)));
-        rightPart = ((unsigned char) b.getByte(i+8)) % ((unsigned int) pow(2, (i%8))) << ((8-i%8));
+        toEncode = (leftPart + rightPart)% ((unsigned int) pow(2,charSize));
 
-       toEncode = (leftPart ) + (rightPart );
-
-        std::cout << pika << " " << (unsigned int) leftPart << " " <<(unsigned int) rightPart << " " << (unsigned int) toEncode  << std::endl;
+        std::cout  << (unsigned int) leftPart << " " <<(unsigned int) rightPart << " " << (unsigned int) toEncode  << std::endl;
 
         ss << encodeChar(toEncode);
         i += charSize + charOffset;
@@ -47,3 +43,13 @@ char Encoding::switchEndian(char c) {
            + ((c & 128) >> 7);
 }
 
+char Encoding::toHexadecimal(char c) {
+        if (c < 10)
+            return c+48;
+        else
+            return c+55;
+}
+
+char Encoding::reverseHexadecimal(char c) {
+    return toHexadecimal(((unsigned char) switchEndian(c)) >> 4);
+}
