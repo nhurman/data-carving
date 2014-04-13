@@ -3,6 +3,7 @@
 
 #include "bitstring.h"
 #include "similaritesdialog.h"
+#include "similarities.h"
 #include <iostream>
 
 #include <QFileDialog>
@@ -29,6 +30,8 @@ QObject::connect(ui->treeWidget, SIGNAL (dumpSetNeedsSaving(DumpSet*)),
 
     /* ---------------- TESTS -------------- */
     /*              To be moved              */
+
+    Similarities::test();
 
     if(m_bitstring->contains(BitString("B5F1")))
         std::cout << "yes" << std::endl;
