@@ -19,6 +19,7 @@ DumpSet::DumpSet(QString fileName) : m_dumps(), m_fileName(fileName), m_modified
             {
                 addDump(QString::fromStdString(buff));
             }
+            m_modified = false;
         }
         else //could not open file
         {
@@ -26,6 +27,7 @@ DumpSet::DumpSet(QString fileName) : m_dumps(), m_fileName(fileName), m_modified
             QMessageBox::warning(NULL, "Unable to open dump set",
                                      "The following dump set could not be opened :\n"+fileName,
                                      QMessageBox::Ok);
+            m_modified = true;
             return;
         }
     }

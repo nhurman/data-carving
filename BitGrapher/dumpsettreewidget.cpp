@@ -1,4 +1,5 @@
 #include "dumpsettreewidget.h"
+#include <QMessageBox>
 
 DumpSetTreeWidget::DumpSetTreeWidget(QWidget *parent) :
     QTreeWidget(parent), m_nbNewDumpSets(0)
@@ -61,17 +62,22 @@ void DumpSetTreeWidget::changeDumpSetName(QString name)
     }
 }
 
-void DumpSetTreeWidget::closeDumpSet()
+bool DumpSetTreeWidget::closeDumpSet()
 {
-    close(getDumpSetItem());
+    bool b = close(getDumpSetItem());
+    m_selectedDumpSet = NULL;
+    return b;
 }
 
-void DumpSetTreeWidget::closeAll()
+bool DumpSetTreeWidget::closeAll()
 {
     while (topLevelItemCount() > 0)
     {
-        close(topLevelItem(topLevelItemCount()-1));
+        if(!close(topLevelItem(topLevelItemCount()-1))) //if the user aborted the closure
+            return false;
     }
+    m_selectedDumpSet = NULL;
+    return true;
 }
 
 void DumpSetTreeWidget::selectDump(QString dumpName)
@@ -120,14 +126,34 @@ QTreeWidgetItem* DumpSetTreeWidget::getDumpSetItem()
     return selectedItems().at(0);
 }
 
-void DumpSetTreeWidget::close(QTreeWidgetItem* item)
+bool DumpSetTreeWidget::close(QTreeWidgetItem* item)
 {
-    if(item != NULL)
+    if(item == NULL)
+        return true;
+
+    QString name = item->text(0);
+    DumpSet* ds = m_openedDumpSets[name];
+    if(ds == NULL)
+        return true;
+
+    if(ds->isModified())
     {
-        QString name = item->text(0);
-        m_openedDumpSets.erase(name);
-        delete item; //apparently a safe way to remove the item
-        delete m_selectedDumpSet;
-        m_selectedDumpSet = NULL;
+        int reply = QMessageBox::question(this, name+" is not saved", "Do you want to save "+name+" ?",
+                                        QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
+        switch(reply)
+        {
+        case QMessageBox::Yes:
+            emit dumpSetNeedsSaving(ds);
+            break;
+        case QMessageBox::Cancel:
+            return false;
+        default: //No
+            break;
+        }
     }
+
+    m_openedDumpSets.erase(name);
+    delete item; //apparently a safe way to remove the item
+    delete ds;
+    return true;
 }

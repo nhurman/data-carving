@@ -17,13 +17,16 @@ public:
 signals:
     void selectedDumpChanged(Dump);
     void selectedDumpSetChanged(DumpSet*);
+    void dumpSetNeedsSaving(DumpSet*);
 
 public slots:
     void addDumpSet(DumpSet*);
     void addDump(Dump);
     void onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
-    void closeDumpSet();
-    void closeAll();
+    //returns false if the closure was aborted by the user
+    bool closeDumpSet();
+    //returns false if the closure was aborted by the user
+    bool closeAll();
     void selectDump(QString dumpName);
 
 private:
@@ -33,7 +36,8 @@ private:
     std::map<QString, DumpSet*> m_openedDumpSets;
 
     QTreeWidgetItem* getDumpSetItem();
-    void close(QTreeWidgetItem* item);
+    //returns false if the closure was aborted by the user
+    bool close(QTreeWidgetItem* item);
 };
 
 #endif // DUMPSETTREEWIDGET_H

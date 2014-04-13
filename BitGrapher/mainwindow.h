@@ -51,13 +51,17 @@ private slots:
 
     void on_actionExit_triggered();
 
-    void on_actionClose_all_triggered();
+    //returns false if the closure was aborted by the user
+    bool on_actionClose_all_triggered();
+
+    void saveDumpSet(DumpSet* ds);
+
+    void saveDumpSetAs(DumpSet* ds);
 
 private:
     Ui::MainWindow *ui;
     BitString *m_bitstring;
     DumpSet* m_dumpSet;
-
 
     //refreshes the display of the bitsrting
     void refreshDisplay();

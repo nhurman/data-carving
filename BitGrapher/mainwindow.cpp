@@ -24,6 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->textEdit->setText(m_bitstring->toString().c_str());
     ui->graphArea->setBitString(m_bitstring);
 
+QObject::connect(ui->treeWidget, SIGNAL (dumpSetNeedsSaving(DumpSet*)),
+                 this, SLOT (saveDumpSet(DumpSet*)));
+
     /* ---------------- TESTS -------------- */
     /*              To be moved              */
 
@@ -83,14 +86,14 @@ void MainWindow::on_actionOpen_triggered()
 
 }
 
-void MainWindow::on_actionSave_triggered()
+void MainWindow::saveDumpSet(DumpSet* ds)
 {
-    if(m_dumpSet != NULL)
+    if(ds != NULL)
     {
-        if(m_dumpSet->hasName())
-            m_dumpSet->save();
+        if(ds->hasName())
+            ds->save();
         else
-            on_actionSave_as_triggered(); //save as instead
+            saveDumpSetAs(ds); //save as instead
     }
     else //no dump set selected
     {
@@ -100,14 +103,14 @@ void MainWindow::on_actionSave_triggered()
     }
 }
 
-void MainWindow::on_actionSave_as_triggered()
+void MainWindow::saveDumpSetAs(DumpSet* ds)
 {
-    if(m_dumpSet != NULL)
+    if(ds != NULL)
     {
         QString fileName = QFileDialog::getSaveFileName(this, tr("Save dump set as..."),
                                                          DEFAULT_DIRECTORY,
                                                          tr("Dump Sets (*.ds)"));
-        if(m_dumpSet->saveToFile(fileName))
+        if(ds->saveToFile(fileName))
         {
             ui->treeWidget->changeDumpSetName(fileName);
         }
@@ -118,6 +121,16 @@ void MainWindow::on_actionSave_as_triggered()
                                  "Please select a dump set.",
                                  QMessageBox::Ok);
     }
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    saveDumpSet(m_dumpSet);
+}
+
+void MainWindow::on_actionSave_as_triggered()
+{
+    saveDumpSetAs(m_dumpSet);
 }
 void MainWindow::on_actionDiagonals_View_triggered(){
     std::cout << "Diagonals !" << std::endl ;
@@ -238,11 +251,12 @@ void MainWindow::on_actionSimilarities_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
-    on_actionClose_all_triggered(); //closes all dump sets before exiting
-    close();
+    if(on_actionClose_all_triggered()) //closes all dump sets before exiting and checks the operation was not aborted
+        close();
 }
 
-void MainWindow::on_actionClose_all_triggered()
+bool MainWindow::on_actionClose_all_triggered()
 {
-    ui->treeWidget->closeAll();
+    return ui->treeWidget->closeAll();
 }
+
