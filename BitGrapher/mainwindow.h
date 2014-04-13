@@ -3,6 +3,10 @@
 
 #define DEFAULT_DIRECTORY "../Utils/TestFiles"
 
+#define DISSIM_COLOR "red"
+#define SIM_COLOR "green"
+#define DEFAULT_COLOR "black"
+
 #include <QMainWindow>
 #include <QListWidgetItem>
 #include <QTreeWidgetItem>

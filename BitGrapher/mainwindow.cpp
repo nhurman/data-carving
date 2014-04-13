@@ -217,20 +217,21 @@ void MainWindow::on_actionSimilarities_triggered()
     {
         int length = BitString::convertCoords(i->first)-pos;
         partOfText = bitString.mid(pos,length); //text until next highlight
-        ui->textEdit->setTextColor( QColor( "black" ) );
+        ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
         ui->textEdit->insertPlainText(partOfText);
 
         pos = BitString::convertCoords(i->first);
         length = BitString::convertCoords(i->second) - pos + 1;
         partOfText = bitString.mid(pos, length); //highlighted text
-        ui->textEdit->setTextColor( QColor( "red" ) );
+        ui->textEdit->setTextColor( QColor( SIM_COLOR ) );
         ui->textEdit->insertPlainText(partOfText);
 
         pos = BitString::convertCoords(i->second) + 1; //update of pos
     }
     partOfText = bitString.mid(pos,-1); //text until end
-    ui->textEdit->setTextColor( QColor( "black" ) );
+    ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
     ui->textEdit->insertPlainText(partOfText);
+    ui->textEdit->setTextColor( QColor( DEFAULT_COLOR ) );
 
     delete sim;
 }
