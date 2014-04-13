@@ -308,8 +308,8 @@ void MainWindow::on_actionSimilarities_triggered()
 
 void MainWindow::on_actionEncodings_triggered()
 {
-    EncodingsDialog encodingDialog(this);
-    std::cout << encodingDialog.exec() << std::endl;
+    EncodingsDialog encodingDialog(this, ui->textEdit, m_bitstring);
+    encodingDialog.exec();
 }
 
 void MainWindow::on_actionExit_triggered()

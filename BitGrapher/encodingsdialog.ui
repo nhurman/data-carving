@@ -29,10 +29,10 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="encoding">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>170</x>
      <y>60</y>
      <width>79</width>
      <height>23</height>
@@ -54,23 +54,23 @@
     </property>
    </item>
   </widget>
-  <widget class="QSpinBox" name="spinBox">
+  <widget class="QSpinBox" name="globalOffset">
    <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>170</x>
      <y>100</y>
      <width>47</width>
      <height>24</height>
     </rect>
    </property>
   </widget>
-  <widget class="QSpinBox" name="spinBox_2">
+  <widget class="QSpinBox" name="localOffset">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>170</x>
      <y>140</y>
      <width>47</width>
      <height>24</height>
