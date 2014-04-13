@@ -12,7 +12,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_charSize(1)
 {
     ui->setupUi(this);
 
@@ -216,13 +217,13 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
     std::list< SIM_TYPE >* list = s->getList();
     for (std::list< SIM_TYPE >::iterator i = list->begin(); i != list->end(); i++ )
     {
-        int length = BitString::convertCoords(i->first.first)-pos;
+        int length = convertCoords(i->first.first, true)-pos;
         partOfText = bitString.mid(pos,length); //text until next highlight
         ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
         ui->textEdit->insertPlainText(partOfText);
 
-        pos = BitString::convertCoords(i->first.first);
-        length = BitString::convertCoords(i->first.second) - pos + 1;
+        pos = convertCoords(i->first.first, true);
+        length = convertCoords(i->first.second) - pos + 1;
         partOfText = bitString.mid(pos, length); //highlighted text
         float ratio = (float) i->second.size()/s->getDumpCount();
         if(std::find(i->second.begin(), i->second.end(), dumpId) != i->second.end()) //the similarity concerne the selected dump
@@ -231,7 +232,7 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
             ui->textEdit->setTextColor( makeColor(QColor( OTHER_SIM_COLOR ), QColor( DISSIM_COLOR ), ratio) );
         ui->textEdit->insertPlainText(partOfText);
 
-        pos = BitString::convertCoords(i->first.second) + 1; //update of pos
+        pos = convertCoords(i->first.second) + 1; //update of pos
     }
     partOfText = bitString.mid(pos,-1); //text until end
     ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
@@ -241,6 +242,13 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
 
 void MainWindow::on_actionAdd_Dump_to_Set_triggered()
 {
+    if(m_dumpSet == NULL) //no dump set yet
+    {
+        QMessageBox::information(this, "Could not insert dump",
+                                 "Please select a dump set to insert the dump into.",
+                                 QMessageBox::Ok);
+        return;
+    }
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open dump file"),
                                                      DEFAULT_DIRECTORY,
                                                      tr("Files (*.*)"));
@@ -329,4 +337,15 @@ QColor MainWindow::makeColor(QColor c1, QColor c2, float ratio)
     return QColor (c1.red()*ratio + c2.red()*(1-ratio),
                    c1.green()*ratio + c2.green()*(1-ratio),
                    c1.blue()*ratio + c2.blue()*(1-ratio));
+}
+
+int MainWindow::convertCoords(int c, bool roundUp)
+{
+    if(m_charSize == 1)
+        return BitString::convertCoords(c);
+    //else
+    int res = c/m_charSize;
+    if(roundUp && c%m_charSize==0)
+        res ++;
+    return res;
 }

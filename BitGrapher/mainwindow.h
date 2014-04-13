@@ -76,6 +76,7 @@ private:
     DotPlotView m_dpgraph;
     std::map<DumpSet*, Similarities*> m_similarities;
     int m_charSize;
+    int convertCoords(int c, bool roundUp = false);
 
     //refreshes the display of the bitsrting
     void refreshDisplay();
