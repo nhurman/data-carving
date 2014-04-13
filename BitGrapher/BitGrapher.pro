@@ -19,6 +19,7 @@ SOURCES += main.cpp\
     similaritesdialog.cpp \
     similarities.cpp \
     dumpcombobox.cpp
+    encodingsdialog.cpp
 
 HEADERS  += mainwindow.h \
     bitgrapharea.h \
@@ -32,5 +33,7 @@ HEADERS  += mainwindow.h \
     similaritesdialog.h \
     similarities.h \
     dumpcombobox.h
+    encodingsdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    encodingsdialog.ui

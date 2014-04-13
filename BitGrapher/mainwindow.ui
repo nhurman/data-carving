@@ -33,7 +33,7 @@
        <widget class="QTextEdit" name="textEdit"/>
       </item>
       <item>
-       <widget class="DotPlotView" name="graphArea" native="true">
+       <widget class="BitGraphArea" name="graphArea" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -52,7 +52,7 @@
      <x>0</x>
      <y>0</y>
      <width>674</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -80,6 +80,7 @@
      <string>Operations</string>
     </property>
     <addaction name="actionSimilarities"/>
+    <addaction name="actionEncodings"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -161,19 +162,24 @@
     <string>Ctrl+Shift+W</string>
    </property>
   </action>
+  <action name="actionEncodings">
+   <property name="text">
+    <string>Encodings</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>DotPlotView</class>
-   <extends>QWidget</extends>
-   <header>dotplotview.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>DumpSetTreeWidget</class>
    <extends>QTreeWidget</extends>
    <header>dumpsettreewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BitGraphArea</class>
+   <extends>QWidget</extends>
+   <header>bitgrapharea.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

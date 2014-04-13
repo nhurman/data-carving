@@ -14,7 +14,10 @@ class DotPlotView : public QWidget
 public:
     explicit DotPlotView(QWidget *parent = 0);
     void setDiagonals(std::list<Diagonal> const sd, unsigned int w, unsigned int h);
+    void setDiagonals(std::list<Diagonal> const sd);
     void setBitString(const BitString *b);
+    void setBitStrings(BitString const* b1, BitString const* b2);
+
 
 signals:
 
@@ -25,6 +28,7 @@ protected:
 
     std::list<Diagonal> m_listDiag;
     BitString const* m_bitstring;
+    BitString const* m_bitstring2;
     unsigned int m_height;
     unsigned int m_width;
 };

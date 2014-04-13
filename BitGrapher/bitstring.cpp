@@ -200,15 +200,15 @@ bool BitString::contains(BitString s) const
 
 
 //Return a list with all the diagonals, without doubles
-std::list<Diagonal> BitString::dotPlotPattern(BitString dump) const {
+std::list<Diagonal> BitString::dotPlotPattern(const BitString *dump) const {
     std::list<Diagonal> listDiag;
     unsigned int z;
 
-    for (unsigned int y = 0; y <= dump.m_size - MIN_DIAG_SIZE ; y++){
+    for (unsigned int y = 0; y <= dump->m_size - MIN_DIAG_SIZE ; y++){
         for (unsigned int x = 0; x <= this->m_size - MIN_DIAG_SIZE; x++ ){
-            if (( x!= 0 && y != 0) ? ((dump.m_bytes[(y-1) / 8] & (1 << ((y-1) % 8))) != (this->m_bytes[(x-1) / 8] & (1 << ((x-1) % 8)))) : 1) {
-                for( z = 0; x+z < this->m_size && y+z < dump.m_size ; z++){
-                    if (!((dump.m_bytes[(y+z) / 8] & (1 << ((y+z) % 8))) == (this->m_bytes[(x+z) / 8] & (1 << ((x+z) % 8))))) {
+            if (( x!= 0 && y != 0) ? ((dump->m_bytes[(y-1) / 8] & (1 << ((y-1) % 8))) != (this->m_bytes[(x-1) / 8] & (1 << ((x-1) % 8)))) : 1) {
+                for( z = 0; x+z < this->m_size && y+z < dump->m_size ; z++){
+                    if (!((dump->m_bytes[(y+z) / 8] & (1 << ((y+z) % 8))) == (this->m_bytes[(x+z) / 8] & (1 << ((x+z) % 8))))) {
                        break;
                     }
                 }

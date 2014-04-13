@@ -24,6 +24,9 @@ public:
     int getDumpCount();
     bool saveToFile(QString fileName);
     bool save();
+    std::map<QString, Dump> getDumps();
+
+    size_t size();
 
 private:
     std::map<QString, Dump> m_dumps;

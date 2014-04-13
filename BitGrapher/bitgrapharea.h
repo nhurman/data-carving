@@ -20,6 +20,7 @@ protected:
     void paintEvent(QPaintEvent* /* event */);
 
     BitString const* m_bitstring;
+
 };
 
 #endif // BITGRAPHAREA_H
