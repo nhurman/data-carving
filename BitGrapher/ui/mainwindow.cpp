@@ -347,7 +347,7 @@ int MainWindow::convertCoords(int c, bool roundUp)
         return BitString::convertCoords(c);
     //else
     int res = c/charSize;
-    if(roundUp && c%charSize==0)
+    if(roundUp && c%charSize!=0)
         res ++;
     return res;
 }
