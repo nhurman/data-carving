@@ -1,4 +1,4 @@
-#include "dumpcombobox.h"
+#include "ui/dumpcombobox.h"
 
 DumpComboBox::DumpComboBox(QWidget *parent, int index) : QComboBox(parent), m_index(index)
 {

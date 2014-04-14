@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 #include <QString>
-#include "bitstring.h"
+#include "core/bitstring.h"
 
 class Encoding
 {

@@ -2,8 +2,8 @@
 #define DUMPSETTREEWIDGET_H
 
 #include <QTreeWidget>
-#include "dump.h"
-#include "dumpset.h"
+#include "core/dump.h"
+#include "core/dumpset.h"
 
 class DumpSetTreeWidget : public QTreeWidget
 {

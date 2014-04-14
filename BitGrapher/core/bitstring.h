@@ -2,7 +2,7 @@
 #define bitstring_H
 
 //#include "bitstring.h"
-#include "diagonal.h"
+#include "algorithms/diagonal.h"
 #include <algorithm>
 #include <cmath>
 #include <string>

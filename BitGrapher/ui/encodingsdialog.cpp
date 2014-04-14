@@ -1,4 +1,4 @@
-#include "encodingsdialog.h"
+#include "ui/encodingsdialog.h"
 #include "ui_encodingsdialog.h"
 
 EncodingsDialog::EncodingsDialog(QWidget *parent, QTextEdit *textEdit, BitString* bitString, Encoding* encoding) :

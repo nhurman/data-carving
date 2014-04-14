@@ -1,4 +1,4 @@
-#include "encoding.h"
+#include "encodings/encoding.h"
 
 Encoding::Encoding(QString encodingName, int globalOffset, int localOffset, int charSize) :
     m_encodingName(encodingName), m_globalOffset(globalOffset), m_localOffset(localOffset), m_charSize(charSize)

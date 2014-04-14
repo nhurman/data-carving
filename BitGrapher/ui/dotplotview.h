@@ -6,7 +6,7 @@
 #include <QPen>
 #include <QString>
 #include <iostream>
-#include "bitstring.h"
+#include "core/bitstring.h"
 
 class DotPlotView : public QWidget
 {

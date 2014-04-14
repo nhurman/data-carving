@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QPainter>
-#include "bitstring.h"
+#include "core/bitstring.h"
 
 class BitGraphArea : public QWidget
 {

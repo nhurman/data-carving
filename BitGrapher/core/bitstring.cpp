@@ -1,4 +1,4 @@
-#include "bitstring.h"
+#include "core/bitstring.h"
 #include <iostream>
 #include <iomanip>
 

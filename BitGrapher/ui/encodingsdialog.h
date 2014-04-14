@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QTextEdit>
-#include "encoding.h"
+#include "encodings/encoding.h"
 
 namespace Ui {
 class EncodingsDialog;

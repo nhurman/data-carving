@@ -6,34 +6,36 @@ TARGET = BitGrapher
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    bitgrapharea.cpp \
-    bitstring.cpp \
-    diagonal.cpp \
-    dump.cpp \
-    dumpset.cpp \
-    dotplotview.cpp \
-    dumpsettreewidget.cpp \
-    encoding.cpp \
-    similaritesdialog.cpp \
-    similarities.cpp \
-    dumpcombobox.cpp \
-    encodingsdialog.cpp
+SOURCES += main.cpp \
+    core/bitstring.cpp \
+    core/dump.cpp \
+    core/dumpset.cpp \
+    algorithms/diagonal.cpp \
+    algorithms/similarities.cpp \
+    encodings/encoding.cpp \
+    ui/bitgrapharea.cpp \
+    ui/dotplotview.cpp \
+    ui/dumpcombobox.cpp \
+    ui/dumpsettreewidget.cpp \
+    ui/encodingsdialog.cpp \
+    ui/mainwindow.cpp \
+    ui/similaritesdialog.cpp
 
-HEADERS  += mainwindow.h \
-    bitgrapharea.h \
-    bitstring.h \
-    diagonal.h \
-    dump.h \
-    dumpset.h \
-    dotplotview.h \
-    dumpsettreewidget.h \
-    encoding.h \
-    similaritesdialog.h \
-    similarities.h \
-    dumpcombobox.h \
-    encodingsdialog.h
+HEADERS  += \
+    core/bitstring.h \
+    core/dump.h \
+    core/dumpset.h \
+    algorithms/diagonal.h \
+    algorithms/similarities.h \
+    encodings/encoding.h \
+    ui/bitgrapharea.h \
+    ui/dotplotview.h \
+    ui/dumpcombobox.h \
+    ui/dumpsettreewidget.h \
+    ui/encodingsdialog.h \
+    ui/mainwindow.h \
+    ui/similaritesdialog.h
 
-FORMS    += mainwindow.ui \
-    encodingsdialog.ui
+FORMS    += \
+    ui/encodingsdialog.ui \
+    ui/mainwindow.ui \

@@ -11,17 +11,17 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 #include <QTreeWidgetItem>
-#include "bitgrapharea.h"
-#include "dotplotview.h"
-#include "bitstring.h"
-#include "dumpset.h"
-#include "encoding.h"
-#include "similaritesdialog.h"
+#include "ui/bitgrapharea.h"
+#include "ui/dotplotview.h"
+#include "core/bitstring.h"
+#include "core/dumpset.h"
+#include "encodings/encoding.h"
+#include "ui/similaritesdialog.h"
 #include <iostream>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
-#include "similarities.h"
+#include "algorithms/similarities.h"
 
 namespace Ui {
     class MainWindow;
