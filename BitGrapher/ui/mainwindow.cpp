@@ -156,6 +156,7 @@ void MainWindow::on_actionDiagonals_View_triggered(){
     }
     else if (m_dumpSet->size() == 1) {
         std::map<QString, Dump>::iterator it =  m_dumpSet->getDumps().begin();
+        //std::cout << it->second.getBitString()->toString() << std::endl ;
         m_dpgraph.setBitString(it->second.getBitString());
         m_dpgraph.setDiagonals(it->second.getBitString()->dotPlotPattern());
 
@@ -165,7 +166,7 @@ void MainWindow::on_actionDiagonals_View_triggered(){
         BitString *b1 = it->second.getBitString();
         BitString *b2 = (++it)->second.getBitString();
         m_dpgraph.setBitStrings(b1, b2);
-        m_dpgraph.setDiagonals((*b1).dotPlotPattern(b2));
+        m_dpgraph.setDiagonals(b1->dotPlotPattern(b2));
     }
     else {
         QMessageBox::information(this, "Could not perform operation",
@@ -174,6 +175,7 @@ void MainWindow::on_actionDiagonals_View_triggered(){
         return;
     }
     m_dpgraph.show();
+    return;
 }
 void MainWindow::on_actionBitmap_View_triggered() {
     std::cout << "Bitmap !" << std::endl ;
