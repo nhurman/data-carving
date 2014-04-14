@@ -10,7 +10,7 @@ public:
     explicit DumpComboBox(QWidget *parent = 0, int index = 0);
 
 signals:
-    void currentIndexChanged( int );
+    void currentDumpChanged( int );
 
 private slots:
     void onCurrentIndexChanged();

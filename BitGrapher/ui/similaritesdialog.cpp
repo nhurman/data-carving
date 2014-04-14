@@ -37,9 +37,9 @@ SimilaritesDialog::SimilaritesDialog(QWidget *parent, DumpSet* ds, QString* sele
     m_layout->addWidget(m_dumpCBs[0]);
     m_layout->addWidget(m_dumpCBs[1]);
 
-    QObject::connect(m_dumpCBs[0], SIGNAL(currentIndexChanged( int ) ),
+    QObject::connect(m_dumpCBs[0], SIGNAL(currentDumpChanged( int ) ),
                           this, SLOT(refreshComboBoxes( int )));
-    QObject::connect(m_dumpCBs[1], SIGNAL(currentIndexChanged( int ) ),
+    QObject::connect(m_dumpCBs[1], SIGNAL(currentDumpChanged( int ) ),
                           this, SLOT(refreshComboBoxes( int )));
 
     //ok cancel
@@ -118,7 +118,7 @@ void SimilaritesDialog::addComboBox()
     m_dumpCBs.push_back(new DumpComboBox(this, m_dumpCBs.size()));
     m_layout->insertWidget(m_layout->count()-1, m_dumpCBs.back());
 
-    QObject::connect(m_dumpCBs.back(), SIGNAL(currentIndexChanged( int ) ),
+    QObject::connect(m_dumpCBs.back(), SIGNAL(currentDumpChanged( int ) ),
                           this, SLOT(refreshComboBoxes( int )));
 
     refreshComboBox(m_dumpCBs.size()-1);

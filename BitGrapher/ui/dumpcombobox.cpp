@@ -9,5 +9,5 @@ DumpComboBox::DumpComboBox(QWidget *parent, int index) : QComboBox(parent), m_in
 
 void DumpComboBox::onCurrentIndexChanged()
 {
-    emit currentIndexChanged(m_index);
+    emit currentDumpChanged(m_index);
 }
