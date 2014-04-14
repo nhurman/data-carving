@@ -217,23 +217,29 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
     std::list< SIM_TYPE >* list = s->getList();
     for (std::list< SIM_TYPE >::iterator i = list->begin(); i != list->end(); i++ )
     {
+        //dissimilarity until next value
         int length = convertCoords(i->first.first, true)-pos;
         partOfText = bitString.mid(pos,length); //text until next highlight
         ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
         ui->textEdit->insertPlainText(partOfText);
 
+        //similarity
         pos = convertCoords(i->first.first, true);
         length = convertCoords(i->first.second) - pos + 1;
-        partOfText = bitString.mid(pos, length); //highlighted text
-        float ratio = (float) i->second.size()/s->getDumpCount();
-        if(std::find(i->second.begin(), i->second.end(), dumpId) != i->second.end()) //the similarity concerne the selected dump
-            ui->textEdit->setTextColor( makeColor(QColor( SIM_COLOR ), QColor( DISSIM_COLOR ), ratio) );
-        else
-            ui->textEdit->setTextColor( makeColor(QColor( OTHER_SIM_COLOR ), QColor( DISSIM_COLOR ), ratio) );
-        ui->textEdit->insertPlainText(partOfText);
+        if(length > 0) //the length can be of 0 or lower due to the encoding
+        {
+            partOfText = bitString.mid(pos, length); //highlighted text
+            float ratio = (float) i->second.size()/s->getDumpCount();
+            if(std::find(i->second.begin(), i->second.end(), dumpId) != i->second.end()) //the similarity concerne the selected dump
+                ui->textEdit->setTextColor( makeColor(QColor( SIM_COLOR ), QColor( DISSIM_COLOR ), ratio) );
+            else
+                ui->textEdit->setTextColor( makeColor(QColor( OTHER_SIM_COLOR ), QColor( DISSIM_COLOR ), ratio) );
+            ui->textEdit->insertPlainText(partOfText);
 
-        pos = convertCoords(i->first.second) + 1; //update of pos
+            pos = convertCoords(i->first.second) + 1;
+        }
     }
+    //last dissimilarity
     partOfText = bitString.mid(pos,-1); //text until end
     ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
     ui->textEdit->insertPlainText(partOfText);
@@ -347,7 +353,11 @@ int MainWindow::convertCoords(int c, bool roundUp)
         return BitString::convertCoords(c);
     //else
     int res = c/charSize;
-    if(roundUp && c%charSize!=0)
-        res ++;
+
+   if(roundUp && c%charSize != 0)
+       res ++;
+   else if(!roundUp && c%charSize != charSize-1)
+       res--;
+
     return res;
 }
