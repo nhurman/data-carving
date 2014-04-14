@@ -1,4 +1,4 @@
-#include "similarities.h"
+#include "algorithms/similarities.h"
 
 Similarities::Similarities(std::vector<Dump> dumps, int minSize) : m_dumps(dumps)
 {

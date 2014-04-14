@@ -1,4 +1,4 @@
-#include "dump.h"
+#include "core/dump.h"
 #include <iostream>
 #include <fstream>
 #include <QMessageBox>

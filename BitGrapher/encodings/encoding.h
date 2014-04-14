@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 #include <iostream>
-#include "bitstring.h"
+#include "core/bitstring.h"
 
 class Encoding
 {

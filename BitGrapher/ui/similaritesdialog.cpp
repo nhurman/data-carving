@@ -1,4 +1,4 @@
-#include "similaritesdialog.h"
+#include "ui/similaritesdialog.h"
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QLabel>

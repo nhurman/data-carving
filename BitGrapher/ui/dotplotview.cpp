@@ -1,4 +1,4 @@
-#include "dotplotview.h"
+#include "ui/dotplotview.h"
 
 DotPlotView::DotPlotView(QWidget *parent) :
     QWidget(parent)

@@ -1,4 +1,4 @@
-#include "encoding.h"
+#include "encodings/encoding.h"
 
 Encoding::Encoding()
 {

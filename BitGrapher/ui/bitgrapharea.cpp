@@ -1,4 +1,4 @@
-#include "bitgrapharea.h"
+#include "ui/bitgrapharea.h"
 
 BitGraphArea::BitGraphArea(QWidget *parent) :
     QWidget(parent)

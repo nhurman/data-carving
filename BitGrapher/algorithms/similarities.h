@@ -1,7 +1,7 @@
 #ifndef SIMILARITIES_H
 #define SIMILARITIES_H
 
-#include "dumpset.h"
+#include "core/dumpset.h"
 #define SIM_TYPE std::pair<std::pair<int, int>, std::list<int> >
 
 class Similarities

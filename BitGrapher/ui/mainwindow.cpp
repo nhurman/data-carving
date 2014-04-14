@@ -1,9 +1,9 @@
-#include "mainwindow.h"
+#include "ui/mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "bitstring.h"
-#include "similaritesdialog.h"
-#include "encodingsdialog.h"
+#include "core/bitstring.h"
+#include "ui/similaritesdialog.h"
+#include "ui/encodingsdialog.h"
 #include <iostream>
 
 #include <QFileDialog>

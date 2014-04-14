@@ -173,12 +173,12 @@
   <customwidget>
    <class>DumpSetTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>dumpsettreewidget.h</header>
+   <header>ui/dumpsettreewidget.h</header>
   </customwidget>
   <customwidget>
    <class>BitGraphArea</class>
    <extends>QWidget</extends>
-   <header>bitgrapharea.h</header>
+   <header>ui/bitgrapharea.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

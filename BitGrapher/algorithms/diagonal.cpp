@@ -1,4 +1,4 @@
-#include "diagonal.h"
+#include "algorithms/diagonal.h"
 
 Diagonal::Diagonal(unsigned int posX, unsigned int posY, size_t length) : m_x(posX), m_y(posY), m_length(length) {}
 
