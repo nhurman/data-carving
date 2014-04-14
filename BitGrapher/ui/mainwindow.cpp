@@ -210,7 +210,7 @@ void MainWindow::refreshDisplay()
 
 void MainWindow::drawSimilarities(Similarities* s, int dumpId)
 {
-    QString bitString = QString::fromStdString(m_bitstring->toString());
+    QString bitString = QString::fromStdString(m_currentEncoding.encode(*m_bitstring));
     ui->textEdit->clear();
     QString partOfText;
     int pos = 0;
