@@ -18,6 +18,7 @@ void DotPlotView::setDiagonals(std::list<Diagonal> const sd)
 }
 void DotPlotView::setBitString(BitString const* b){
     m_bitstring = b;
+    m_bitstring2 = b;
     m_height = b->size();
     m_width = b->size();
     m_listDiag = b->dotPlotPattern();

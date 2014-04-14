@@ -52,7 +52,15 @@ QObject::connect(ui->treeWidget, SIGNAL (dumpSetNeedsSaving(DumpSet*)),
     BitString testDiag2("0F0F0F0FFF");
     Diagonal test(2,6,11);
     std::cout << "Diag test :" << test.toString() << std::endl ;
-    std::list<Diagonal> listdiag = testDiag1.dotPlotPattern(&testDiag2);
+    std::list<Diagonal> listdiag;/* = testDiag1.dotPlotPattern(&testDiag2);
+    std::cout << "Dotplot Pattern : " << listdiag.size() << std::endl;
+    for (std::list<Diagonal>::iterator i = listdiag.begin(); i != listdiag.end(); i++ ){
+        std::cout << "Diag " << (*i).toString() << std::endl ;
+    }*/
+    BitString testDiag3("48414c50FF");
+    //BitString testDiag4("1282320a");
+    BitString testDiag4("FF48414c50");
+    listdiag = testDiag3.dotPlotPattern(&testDiag4);
     std::cout << "Dotplot Pattern : " << listdiag.size() << std::endl;
     for (std::list<Diagonal>::iterator i = listdiag.begin(); i != listdiag.end(); i++ ){
         std::cout << "Diag " << (*i).toString() << std::endl ;
@@ -156,6 +164,7 @@ void MainWindow::on_actionDiagonals_View_triggered(){
     }
     else if (m_dumpSet->size() == 1) {
         std::map<QString, Dump>::iterator it =  m_dumpSet->getDumps().begin();
+        //std::cout << it->second.getBitString()->toString() << std::endl ;
         m_dpgraph.setBitString(it->second.getBitString());
         m_dpgraph.setDiagonals(it->second.getBitString()->dotPlotPattern());
 
@@ -165,7 +174,7 @@ void MainWindow::on_actionDiagonals_View_triggered(){
         BitString *b1 = it->second.getBitString();
         BitString *b2 = (++it)->second.getBitString();
         m_dpgraph.setBitStrings(b1, b2);
-        m_dpgraph.setDiagonals((*b1).dotPlotPattern(b2));
+        m_dpgraph.setDiagonals(b1->dotPlotPattern(b2));
     }
     else {
         QMessageBox::information(this, "Could not perform operation",
@@ -174,6 +183,7 @@ void MainWindow::on_actionDiagonals_View_triggered(){
         return;
     }
     m_dpgraph.show();
+    return;
 }
 void MainWindow::on_actionBitmap_View_triggered() {
     std::cout << "Bitmap !" << std::endl ;
