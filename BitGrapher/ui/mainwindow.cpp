@@ -52,7 +52,15 @@ QObject::connect(ui->treeWidget, SIGNAL (dumpSetNeedsSaving(DumpSet*)),
     BitString testDiag2("0F0F0F0FFF");
     Diagonal test(2,6,11);
     std::cout << "Diag test :" << test.toString() << std::endl ;
-    std::list<Diagonal> listdiag = testDiag1.dotPlotPattern(&testDiag2);
+    std::list<Diagonal> listdiag;/* = testDiag1.dotPlotPattern(&testDiag2);
+    std::cout << "Dotplot Pattern : " << listdiag.size() << std::endl;
+    for (std::list<Diagonal>::iterator i = listdiag.begin(); i != listdiag.end(); i++ ){
+        std::cout << "Diag " << (*i).toString() << std::endl ;
+    }*/
+    BitString testDiag3("48414c50FF");
+    //BitString testDiag4("1282320a");
+    BitString testDiag4("FF48414c50");
+    listdiag = testDiag3.dotPlotPattern(&testDiag4);
     std::cout << "Dotplot Pattern : " << listdiag.size() << std::endl;
     for (std::list<Diagonal>::iterator i = listdiag.begin(); i != listdiag.end(); i++ ){
         std::cout << "Diag " << (*i).toString() << std::endl ;
