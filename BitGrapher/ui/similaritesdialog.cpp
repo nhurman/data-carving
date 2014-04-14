@@ -50,6 +50,7 @@ SimilaritesDialog::SimilaritesDialog(QWidget *parent, DumpSet* ds, QString* sele
     QPushButton* bCancel = new QPushButton("Cancel");
     bLayout->addWidget(bOK);
     bLayout->addWidget(bCancel);
+    bOK->setDefault(true); //when you hit enter, this button is pressed
 
     QObject::connect(bOK, SIGNAL(clicked()),
                           this, SLOT(processAndClose()));
