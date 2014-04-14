@@ -249,9 +249,9 @@ std::list<std::pair<int,int> > BitString::similarities(BitString b1, BitString b
 {
     std::list<std::pair<int,int> > sim;
     int start = -1;
-    int max = std::max(b1.m_size, b2.m_size);
+    int min = std::min(b1.m_size, b2.m_size);
     int i;
-    for (i = 0; i < max ; i++){
+    for (i = 0; i < min ; i++){
         if(b1[i]==b2[i])
         {
             if(start == -1)
