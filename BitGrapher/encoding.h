@@ -4,14 +4,26 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <QString>
 #include "bitstring.h"
 
 class Encoding
 {
-public:
-    Encoding();
+protected:
+    QString m_encodingName;
+    unsigned int m_globalOffset;
+    unsigned int m_localOffset;
+    unsigned int m_charSize;
 
-    static std::string encode(BitString b, char (*encodeChar)(char c), int globalOffset, int charOffset, int charSize);
+public:
+    Encoding(QString encodingName, int globalOffset, int localOffset, int charSize);
+
+    QString getName();
+    int getGlobalOffset();
+    int getLocalOffset();
+    int getCharSize();
+
+    std::string encode(BitString b);
     static char toASCII(char c);
     static char switchEndian(char c);
     static char toHexadecimal(char c);

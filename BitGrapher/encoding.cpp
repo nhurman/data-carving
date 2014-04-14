@@ -1,28 +1,59 @@
 #include "encoding.h"
 
-Encoding::Encoding()
+Encoding::Encoding(QString encodingName, int globalOffset, int localOffset, int charSize) :
+    m_encodingName(encodingName), m_globalOffset(globalOffset), m_localOffset(localOffset), m_charSize(charSize)
 {
 }
 
-std::string Encoding::encode(BitString b, char (* encodeChar)(char c), int globalOffset, int charOffset, int charSize) {
-    int i = globalOffset;
+
+QString Encoding::getName()
+{
+    return m_encodingName;
+}
+
+int Encoding::getGlobalOffset()
+{
+    return m_globalOffset;
+}
+
+int Encoding::getLocalOffset()
+{
+    return m_localOffset;
+}
+
+int Encoding::getCharSize()
+{
+    return m_charSize;
+}
+
+
+std::string Encoding::encode(BitString b) {
+    int i = m_globalOffset;
     unsigned char leftPart;
     unsigned char rightPart;
     int toEncode;
     std::stringstream ss;
+    char (*encodeChar)(char);
 
-    while (i + charSize <= b.size()) {
+    if(m_encodingName == "Binary")
+        return b.toString();
+    else if(m_encodingName == "Hexadecimal")
+        encodeChar =  Encoding::reverseHexadecimal;
+    else
+        encodeChar =  Encoding::toASCII;
 
-        leftPart = ((unsigned char) b.getByte(i)) / ((unsigned int) pow(2, (i%8))) % ((unsigned int) pow(2,charSize));
-        rightPart = ((unsigned char) b.getByte(i+charSize)) % ((unsigned int) pow(2, (i%8))) << ((8-i%8));
+    while (i + m_charSize <= b.size()) {
 
-        toEncode = (leftPart + rightPart)% ((unsigned int) pow(2,charSize));
+        leftPart = ((unsigned char) b.getByte(i)) / ((unsigned int) pow(2, (i%8))) % ((unsigned int) pow(2,m_charSize));
+        rightPart = ((unsigned char) b.getByte(i+m_charSize)) % ((unsigned int) pow(2, (i%8))) << ((8-i%8));
+
+        toEncode = (leftPart + rightPart)% ((unsigned int) pow(2,m_charSize));
 
         // For debug, let that here !
         //std::cout  << (unsigned int) leftPart << " " <<(unsigned int) rightPart << " " << (unsigned int) toEncode  << std::endl;
 
         ss << encodeChar(toEncode);
-        i += charSize + charOffset;
+        i += m_charSize + m_localOffset;
     }
     return ss.str();
 }

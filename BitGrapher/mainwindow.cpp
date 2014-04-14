@@ -13,7 +13,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_charSize(1)
+    m_currentEncoding(QString("Binary"), 0, 0, 1)
 {
     ui->setupUi(this);
 
@@ -61,7 +61,7 @@ QObject::connect(ui->treeWidget, SIGNAL (dumpSetNeedsSaving(DumpSet*)),
 
     /* ------------------------------------- */
 
-    std::cout << std::endl;
+    /*std::cout << std::endl;
     BitString testEncode1("48414c50");
     std::cout << testEncode1.toString() << " " <<  (unsigned int)(testEncode1.getByte(17))<<  " " << (unsigned int) Encoding::switchEndian(testEncode1.getByte(17)) << std::endl;
     std::cout << Encoding::encode(testEncode1, Encoding::switchEndian, 0, 0, 8) << std::endl;
@@ -77,7 +77,7 @@ QObject::connect(ui->treeWidget, SIGNAL (dumpSetNeedsSaving(DumpSet*)),
     BitString testEncode3("2420a62800");
     std::cout << testEncode3.toString() <<  std::endl;
     std::cout << Encoding::encode(testEncode3, Encoding::switchEndian, 1, 0, 8) << std::endl;
-    std::cout << Encoding::encode(testEncode3, Encoding::reverseHexadecimal, 0, 0, 4) << std::endl;
+    std::cout << Encoding::encode(testEncode3, Encoding::reverseHexadecimal, 0, 0, 4) << std::endl;*/
 
 }
 
@@ -186,7 +186,7 @@ void MainWindow::refreshDisplay()
         //gets rid of old text
         ui->textEdit->clear();
         //sets new text and image
-        ui->textEdit->setText(m_bitstring->toString().c_str());
+        ui->textEdit->setPlainText(QString::fromStdString(m_currentEncoding.encode(*m_bitstring)));
         ui->graphArea->setBitString(m_bitstring);
         //refreshes the modifies fields
         ui->textEdit->repaint();
@@ -317,8 +317,9 @@ void MainWindow::on_actionSimilarities_triggered()
 
 void MainWindow::on_actionEncodings_triggered()
 {
-    EncodingsDialog encodingDialog(this, ui->textEdit, m_bitstring, &m_charSize);
+    EncodingsDialog encodingDialog(this, ui->textEdit, m_bitstring, &m_currentEncoding);
     encodingDialog.exec();
+    refreshDisplay();
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -341,11 +342,12 @@ QColor MainWindow::makeColor(QColor c1, QColor c2, float ratio)
 
 int MainWindow::convertCoords(int c, bool roundUp)
 {
-    if(m_charSize == 1)
+    int charSize = m_currentEncoding.getCharSize();
+    if(charSize == 1)
         return BitString::convertCoords(c);
     //else
-    int res = c/m_charSize;
-    if(roundUp && c%m_charSize==0)
+    int res = c/charSize;
+    if(roundUp && c%charSize==0)
         res ++;
     return res;
 }

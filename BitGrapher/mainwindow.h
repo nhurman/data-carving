@@ -75,7 +75,7 @@ private:
     DumpSet* m_dumpSet;
     DotPlotView m_dpgraph;
     std::map<DumpSet*, Similarities*> m_similarities;
-    int m_charSize;
+    Encoding m_currentEncoding;
     int convertCoords(int c, bool roundUp = false);
 
     //refreshes the display of the bitsrting

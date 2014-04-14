@@ -14,7 +14,7 @@ class EncodingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit EncodingsDialog(QWidget *parent, QTextEdit* textEdit, BitString* bitString, int* charSize);
+    explicit EncodingsDialog(QWidget *parent, QTextEdit* textEdit, BitString* bitString, Encoding* encoding);
     ~EncodingsDialog();
     char (* getEncodingFunction())(char);
     void accept();
@@ -28,7 +28,7 @@ private:
     Ui::EncodingsDialog *ui;
     QTextEdit* m_textEdit;
     BitString* m_bitString;
-    int* m_charSize;
+    Encoding* m_encoding;
 
 };
 

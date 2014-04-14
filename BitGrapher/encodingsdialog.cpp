@@ -1,14 +1,22 @@
 #include "encodingsdialog.h"
 #include "ui_encodingsdialog.h"
 
-EncodingsDialog::EncodingsDialog(QWidget *parent, QTextEdit *textEdit, BitString* bitString, int *charSize) :
+EncodingsDialog::EncodingsDialog(QWidget *parent, QTextEdit *textEdit, BitString* bitString, Encoding* encoding) :
     QDialog(parent),
     ui(new Ui::EncodingsDialog),
     m_textEdit(textEdit),
     m_bitString(bitString),
-    m_charSize(charSize)
+    m_encoding(encoding)
 {
     ui->setupUi(this);
+    int index = ui->encoding->findText(encoding->getName());
+    if(index != -1) { // -1 for not found
+        ui->encoding->setCurrentIndex(index);
+    }
+    ui->globalOffset->setValue(encoding->getGlobalOffset());
+    ui->localOffset->setValue(encoding->getLocalOffset());
+    ui->charSize->setValue(encoding->getCharSize());
+
     QObject::connect(ui->encoding, SIGNAL(currentIndexChanged( QString ) ),
                           this, SLOT(onComboBoxChange( QString )));
 }
@@ -18,27 +26,10 @@ EncodingsDialog::~EncodingsDialog()
     delete ui;
 }
 
-char (* EncodingsDialog::getEncodingFunction())(char)
-{
-    QString item = ui->encoding->currentText();
-    if(item == "Hexadecimal")
-        return Encoding::reverseHexadecimal;
-    else
-        return Encoding::toASCII;
-}
-
 void EncodingsDialog::accept()
 {
-    QString content;
-    if(ui->encoding->currentText() == "Binary") {
-        content = QString::fromStdString(m_bitString->toString());
-    }
-    else {
-    content = QString::fromStdString(
-                Encoding::encode(*m_bitString, getEncodingFunction(), ui->globalOffset->value(), ui->localOffset->value(), ui->charSize->value()));
-    }
-    m_textEdit->setPlainText(content);
-    *m_charSize = ui->charSize->value();
+    *m_encoding = Encoding(ui->encoding->currentText(), ui->globalOffset->value(), ui->localOffset->value(), ui->charSize->value());
+
     QDialog::accept();
 }
 
