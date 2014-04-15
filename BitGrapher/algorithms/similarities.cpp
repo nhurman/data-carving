@@ -1,4 +1,5 @@
 #include "algorithms/similarities.h"
+#include <iostream>
 
 Similarities::Similarities(std::vector<Dump> dumps, int minSize) : m_dumps(dumps)
 {
@@ -12,6 +13,7 @@ Similarities::Similarities(std::vector<Dump> dumps, int minSize) : m_dumps(dumps
         }
         addSimList(&simi);
     }
+    //std::cout << toString() << std::endl;
 }
 
 int Similarities::getDumpId(Dump d)
@@ -112,7 +114,7 @@ void Similarities::addSimList (std::list< SIM_TYPE >* list)
     }
 }
 
-std::list< SIM_TYPE > Similarities::uniteSim(SIM_TYPE s1, SIM_TYPE s2)
+std::list< SIM_TYPE > Similarities::uniteSim(SIM_TYPE s1, SIM_TYPE s2, int minSize)
 {
     std::list< SIM_TYPE > l;
     std::list<int> s1secondUs2second = s1.second; //union of s1.second and s2.second
@@ -126,15 +128,23 @@ std::list< SIM_TYPE > Similarities::uniteSim(SIM_TYPE s1, SIM_TYPE s2)
     {
         if(s1.first.second > s2.first.second) //s2 C s1
         {
-            l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
+            if(s2.first.first - s1.first.first >= minSize)
+                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
+
             l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s2.first.second), s1secondUs2second));
-            l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
+
+            if(s1.first.second - s2.first.second >= minSize)
+                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
         }
         else //s1.end e s2 && s2.begin e s1
         {
-            l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
-            l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.second), s1secondUs2second));
-            if(s1.first.second != s2.first.second)
+            if(s2.first.first - s1.first.first >= minSize)
+                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
+
+            if(s1.first.second - s2.first.first +1 >= minSize)
+                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.second), s1secondUs2second));
+
+            if(s2.first.second - s1.first.second >= minSize)
                 l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
         }
     }
@@ -142,24 +152,30 @@ std::list< SIM_TYPE > Similarities::uniteSim(SIM_TYPE s1, SIM_TYPE s2)
     {
         if(s1.first.second < s2.first.second) //s1 C s2
         {
-            if(s1.first.first != s2.first.first)
+            if(s1.first.first - s2.first.first >= minSize)
                 l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
+
             l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s1.first.second), s1secondUs2second));
-            l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
+
+            if(s2.first.second - s1.first.second >= minSize)
+                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
         }
         else //s2.end e s1 && s1.begin e s2
         {
-            if(s1.first.first != s2.first.first)
+            if(s1.first.first - s2.first.first >= minSize)
                 l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
-            l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.second), s1secondUs2second));
-            if(s1.first.second != s2.first.second)
+
+            if(s2.first.second - s1.first.first +1 >= minSize)
+                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.second), s1secondUs2second));
+
+            if(s1.first.second - s2.first.second >= minSize)
                 l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
         }
     }
     return l;
 }
 
-std::list< SIM_TYPE > Similarities::intersectSim(SIM_TYPE s1, SIM_TYPE s2)
+std::list< SIM_TYPE > Similarities::intersectSim(SIM_TYPE s1, SIM_TYPE s2, int minSize)
 {
     std::list< SIM_TYPE > l;
     std::list<int> maxSecond; //max of s1.second and s2.second (in terms of nb of elts)
@@ -185,16 +201,24 @@ std::list< SIM_TYPE > Similarities::intersectSim(SIM_TYPE s1, SIM_TYPE s2)
             }
             else
             {
-                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
+                if(s2.first.first - s1.first.first >= minSize)
+                    l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
+
                 l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s2.first.second), maxSecond));
-                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
+
+                if(s1.first.second - s2.first.second >= minSize)
+                    l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
             }
         }
         else //s1.end e s2 && s2.begin e s1
         {
-            l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
-            l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.second), maxSecond));
-            if(s1.first.second != s2.first.second)
+            if(s2.first.first - s1.first.first >= minSize)
+                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
+
+            if(s1.first.second - s2.first.first +1 >= minSize)
+                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.second), maxSecond));
+
+            if(s2.first.second - s1.first.second >= minSize)
                 l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
         }
     }
@@ -208,24 +232,50 @@ std::list< SIM_TYPE > Similarities::intersectSim(SIM_TYPE s1, SIM_TYPE s2)
             }
             else
             {
-                if(s1.first.first != s2.first.first)
+                if(s1.first.first - s2.first.first >= minSize)
                     l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
+
                 l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s1.first.second), maxSecond));
-                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
+
+                if(s2.first.second - s1.first.second >= minSize)
+                    l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
             }
         }
         else //s2.end e s1 && s1.begin e s2
         {
-            if(s1.first.first != s2.first.first)
+            if(s1.first.first - s2.first.first >= minSize)
                 l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
-            l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.second), maxSecond));
-            if(s1.first.second != s2.first.second)
+
+            if(s2.first.second - s1.first.first +1 >= minSize)
+                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.second), maxSecond));
+
+            if(s1.first.second - s2.first.second >= minSize)
                 l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
         }
     }
     return l;
 }
 
+std::string Similarities::toString() const
+{
+    std::string s = "Similarities :\n";
+    for(SIM_TYPE sim: m_similarities)
+    {
+        char c[8];
+        s += "[";
+        s += itoa(sim.first.first, c, 10);
+        s += " ; ";
+        s += itoa(sim.first.second, c, 10);
+        s += "] :";
+        for(int i: sim.second)
+        {
+            s += " ";
+            s += itoa(i, c, 10);
+        }
+        s += "\n";
+    }
+    return s;
+}
 
 void Similarities::test()
 {
@@ -233,5 +283,5 @@ void Similarities::test()
     //v.push_back(Dump ("F:\\Gabriel\\Programmation\\Data Carving\\Utils\\TestFiles\\MultiSim\\1.txt"));
     //v.push_back(Dump ("F:\\Gabriel\\Programmation\\Data Carving\\Utils\\TestFiles\\MultiSim\\2.txt"));
     //v.push_back(Dump ("F:\\Gabriel\\Programmation\\Data Carving\\Utils\\TestFiles\\MultiSim\\3.txt"));
-    //Similarities(v);
+    //Similarities s(v);
 }

@@ -10,7 +10,8 @@ public:
     Similarities(std::vector<Dump> dumps, int minSize = MIN_SIM_SIZE);
     int getDumpId(Dump d); //returns the Id of the dump or -1 if not found. Equality tested on dump names
     int getDumpCount();
-    std::list<std::pair<std::pair<int, int>, std::list<int> > > *getList();
+    std::list< SIM_TYPE > *getList();
+    std::string toString() const;
 
     static void test();
 
@@ -21,8 +22,8 @@ private:
     void addSimilarities(std::list< SIM_TYPE >* sim1, std::list<std::pair<int, int> >* sim2, int d1, int d2);
     void addSimList (std::list< SIM_TYPE >* list);
 
-    static std::list< SIM_TYPE > uniteSim(SIM_TYPE s1, SIM_TYPE s2); //only call if there is an intersection
-    static std::list< SIM_TYPE > intersectSim(SIM_TYPE s1, SIM_TYPE s2); //only call if there is an intersection
+    static std::list< SIM_TYPE > uniteSim(SIM_TYPE s1, SIM_TYPE s2, int minSize = 1); //only call if there is an intersection
+    static std::list< SIM_TYPE > intersectSim(SIM_TYPE s1, SIM_TYPE s2, int minSize = 1); //only call if there is an intersection
 };
 
 #endif // SIMILARITIES_H
