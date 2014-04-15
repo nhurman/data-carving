@@ -227,14 +227,38 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
     std::list< SIM_TYPE >* list = s->getList();
     for (std::list< SIM_TYPE >::iterator i = list->begin(); i != list->end(); i++ )
     {
+        if(m_bitstring->size() <= i->first.second) //if we arrived at the end of the dump
+        {
+            if(m_bitstring->size() > i->first.first) //if the beginning of the next similarity is not too far
+            {
+                //last similarity
+                partOfText = bitString.mid(pos,-1); //text until end
+                float ratio = (float) i->second.size()/s->getDumpCount();
+                if(std::find(i->second.begin(), i->second.end(), dumpId) != i->second.end()) //the similarity concerne the selected dump
+                    ui->textEdit->setTextColor( makeColor(QColor( SIM_COLOR ), QColor( DISSIM_COLOR ), ratio) );
+                else
+                    ui->textEdit->setTextColor( makeColor(QColor( OTHER_SIM_COLOR ), QColor( DISSIM_COLOR ), ratio) );
+                ui->textEdit->insertPlainText(partOfText);
+                ui->textEdit->setTextColor( QColor( DEFAULT_COLOR ) );
+            }
+
+            pos = -1; //means that we reached the end
+            break; //exit loop
+
+        }
+
         //dissimilarity until next value
         int length = convertCoords(i->first.first, true)-pos;
-        partOfText = bitString.mid(pos,length); //text until next highlight
-        ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
-        ui->textEdit->insertPlainText(partOfText);
+        if(length > 0) //the length can be of 0 or lower due to the encoding
+        {
+            partOfText = bitString.mid(pos,length); //text until next highlight
+            ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
+            ui->textEdit->insertPlainText(partOfText);
+
+            pos = convertCoords(i->first.first, true);
+        }
 
         //similarity
-        pos = convertCoords(i->first.first, true);
         length = convertCoords(i->first.second) - pos + 1;
         if(length > 0) //the length can be of 0 or lower due to the encoding
         {
@@ -249,11 +273,14 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
             pos = convertCoords(i->first.second) + 1;
         }
     }
-    //last dissimilarity
-    partOfText = bitString.mid(pos,-1); //text until end
-    ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
-    ui->textEdit->insertPlainText(partOfText);
-    ui->textEdit->setTextColor( QColor( DEFAULT_COLOR ) );
+    if(pos != -1) //if the end was not reached in the loop
+    {
+        //last dissimilarity
+        partOfText = bitString.mid(pos,-1); //text until end
+        ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
+        ui->textEdit->insertPlainText(partOfText);
+        ui->textEdit->setTextColor( QColor( DEFAULT_COLOR ) );
+    }
 }
 
 void MainWindow::on_actionAdd_Dump_to_Set_triggered()

@@ -15,6 +15,7 @@ SimilaritesDialog::SimilaritesDialog(QWidget *parent, DumpSet* ds, QString* sele
     QHBoxLayout* sLayout = new QHBoxLayout;
     sLayout->addWidget(new QLabel("Minimum string size : "));
     sLayout->addWidget(m_minSizeSpinBox = new QSpinBox(this));
+    m_minSizeSpinBox->setMinimum(1);
     m_layout->addLayout(sLayout);
 
     //+  -
