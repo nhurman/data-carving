@@ -11,44 +11,81 @@ BitString::BitString(size_t size) : m_size(size)
 }
 
 //Creates a BitString from an hexadecimal string
-BitString::BitString(std::string str)
+BitString::BitString(std::string str, InputFormat format)
 {
-    str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
-    if (str.length() % 2 == 1) {
-        str.append("0");
-    }
-
-    int bytes = str.length() / 2;
-    m_size = bytes * 8;
-    m_bytes = new char[bytes];
-
-    for (unsigned int i = 0; i < str.length(); i += 2) {
-        char byte = 0;
-        for (int j = 0; j < 2; ++j) {
-            char c = str[i + j];
-
-            if (c >= 'a' && c <= 'f') {
-                c -= 'a' - 'A';
-            }
-            if (c >= 'A' && c <= 'F') {
-                c += 10 - 'A';
-            }
-            else if (c >= '0' && c <= '9') {
-                c -= '0';
-            }
-            else {
-                c =  0;
-            }
-
-            byte = byte * 16 + c;
+    int bytes;
+    switch (format)
+    {
+    case HEXADECIMAL:
+        str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
+        if (str.length() % 2 == 1) {
+            str.append("0");
         }
 
-        m_bytes[i / 2] = 0;
-        for (int j = 0; j < 8; ++j) {
-            if (byte & (1 << j)) {
-                m_bytes[i / 2] |= 1 << (7 - j);
+        bytes = str.length() / 2;
+        m_size = bytes * 8;
+        m_bytes = new char[bytes];
+
+        for (unsigned int i = 0; i < str.length(); i += 2) {
+            char byte = 0;
+            for (int j = 0; j < 2; ++j) {
+                char c = str[i + j];
+
+                if (c >= 'a' && c <= 'f') {
+                    c -= 'a' - 'A';
+                }
+                if (c >= 'A' && c <= 'F') {
+                    c += 10 - 'A';
+                }
+                else if (c >= '0' && c <= '9') {
+                    c -= '0';
+                }
+                else {
+                    c =  0;
+                }
+
+                byte = byte * 16 + c;
+            }
+
+            m_bytes[i / 2] = 0;
+            for (int j = 0; j < 8; ++j) {
+                if (byte & (1 << j)) {
+                    m_bytes[i / 2] |= 1 << (7 - j);
+                }
             }
         }
+        break;
+
+    case BINARY:
+        str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
+        if (str.length() % 8 != 0) {
+            for(unsigned int i = 0; i < 8-str.length() % 8; i++)
+                str.append("0");
+        }
+
+        m_size = str.length();
+        bytes = str.length() / 8;
+        m_bytes = new char[bytes];
+
+        for(unsigned int i = 0; i < bytes; i++)
+        {
+            char c = 0;
+            for(int j = 0; j < 8; j++)
+            {
+                c += str[8*i+j] << (7-j);
+            }
+            m_bytes[i] = c;
+        }
+
+        break;
+
+    default: //RAW
+        m_bytes = new char[str.length()];
+        for(unsigned int i = 0; i < str.length(); i++)
+        {
+            m_bytes[i] = str[i];
+        }
+        break;
     }
 }
 

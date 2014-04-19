@@ -13,11 +13,13 @@
 #define MIN_DIAG_SIZE 6
 #define MIN_SIM_SIZE 4
 
+enum InputFormat {HEXADECIMAL, BINARY, RAW};
+
 class BitString
 {
 public:
     BitString(size_t size);
-    BitString(std::string str);
+    BitString(std::string str, InputFormat format = HEXADECIMAL);
     ~BitString();
 
     bool get(unsigned int index) const;
