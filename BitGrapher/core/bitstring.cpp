@@ -67,7 +67,7 @@ BitString::BitString(std::string str, InputFormat format)
         bytes = str.length() / 8;
         m_bytes = new char[bytes];
 
-        for(unsigned int i = 0; i < bytes; i++)
+        for(int i = 0; i < bytes; i++)
         {
             char c = 0;
             for(int j = 0; j < 8; j++)
