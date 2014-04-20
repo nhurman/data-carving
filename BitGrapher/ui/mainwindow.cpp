@@ -260,7 +260,7 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
 
         //similarity
         length = convertCoords(i->first.second) - pos + 1;
-        if(length > 0) //the length can be of 0 or lower due to the encoding
+        if(length > 0) //the length can be of 0 or lower because of the encoding
         {
             partOfText = bitString.mid(pos, length); //highlighted text
             float ratio = (float) i->second.size()/s->getDumpCount();
@@ -272,6 +272,49 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
 
             pos = convertCoords(i->first.second) + 1;
         }
+
+        //Bug Fix
+        std::list< SIM_TYPE >::iterator j = i; //j = i+1;
+        j++;
+        if(i->first.second >= j->first.first-1                      //if the next similarity is right next to this one (j is right after i)
+                && pos < convertCoords(j->first.first, true))        // but pos is before its converted starting point (pos is before the junction between i and j)
+        {
+            std::list<int> common = i->second; //will contain the dumps common to the similarities sharing the curent character
+            j--; //necessary for the next loop, it starts with j = i
+            do
+            {
+                if(j->first.second >= (j++)->first.first-1) //if the next similarity is right next to this one
+                {
+                    std::list<int> oldCommon = common;
+                    common.clear();
+                    //common.resize(oldCommon.size());
+                    std::set_intersection(oldCommon.begin(), oldCommon.end(), j->second.begin(), j->second.end(), std::back_inserter(common)); //common = common inter lj
+                }
+                else //nothing more to do here
+                {
+                    common.clear();
+                    break;
+                }
+            }
+            while(convertCoords((j)->first.second) < pos); //we look forward until we find a sim that ends at or beyond pos
+
+            if(common.size() > 1) //if there are at least 2 common elements
+            {
+                length = 1;
+                partOfText = bitString.mid(pos, length); //The character shared by the different similarities
+                float ratio = (float) common.size()/s->getDumpCount();
+
+                if(std::find(common.begin(), common.end(), dumpId) != common.end()) //if the current dump is common to both
+                    ui->textEdit->setTextColor( makeColor(QColor( SIM_COLOR ), QColor( DISSIM_COLOR ), ratio) );
+                else
+                    ui->textEdit->setTextColor( makeColor(QColor( OTHER_SIM_COLOR ), QColor( DISSIM_COLOR ), ratio) );
+
+                ui->textEdit->insertPlainText(partOfText);
+
+                pos++;
+            }
+        }
+        //Bug Fix End
     }
     if(pos != -1) //if the end was not reached in the loop
     {
