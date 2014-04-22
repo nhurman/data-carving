@@ -285,3 +285,15 @@ void Similarities::test()
     //v.push_back(Dump ("F:\\Gabriel\\Programmation\\Data Carving\\Utils\\TestFiles\\MultiSim\\3.txt"));
     //Similarities s(v);
 }
+
+int Similarities::minStringSize(std::list<int> sizes)
+{
+    int minSize = 0; //minimum size
+    for(std::list<int>::iterator i = sizes.begin(); i != sizes.end(); i++)
+    {
+        minSize = std::min(minSize, *i);
+    }
+    int nbDumps = sizes.size();
+    int t = minSize*nbDumps*(nbDumps-1)/2;
+    return 4.29 + std::log2(t) + .99; //+.99 : cheap way to round up the result
+}
