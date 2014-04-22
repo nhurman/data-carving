@@ -1,4 +1,5 @@
 #include "algorithms/diagonal.h"
+#include <cmath>
 
 Diagonal::Diagonal(unsigned int posX, unsigned int posY, size_t length) : m_x(posX), m_y(posY), m_length(length) {}
 
@@ -33,5 +34,5 @@ int Diagonal::minStringSize(std::list<int> sizes)
             t+= (*i)*(*j);
         }
     }
-    return 4.29 + std::log2(t) + .99; //+.99 : cheap way to round up the result
+    return 4.29 + LOG2(t) + .99; //+.99 : cheap way to round up the result
 }

@@ -295,5 +295,5 @@ int Similarities::minStringSize(std::list<int> sizes)
     }
     int nbDumps = sizes.size();
     int t = minSize*nbDumps*(nbDumps-1)/2;
-    return 4.29 + std::log2(t) + .99; //+.99 : cheap way to round up the result
+    return 4.29 + LOG2(t) + .99; //+.99 : cheap way to round up the result
 }

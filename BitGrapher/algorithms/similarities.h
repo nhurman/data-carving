@@ -2,6 +2,9 @@
 #define SIMILARITIES_H
 
 #include "core/dumpset.h"
+
+#define LOG2(x) std::log(x)/log(2)
+
 #define SIM_TYPE std::pair<std::pair<int, int>, std::list<int> >
 
 class Similarities

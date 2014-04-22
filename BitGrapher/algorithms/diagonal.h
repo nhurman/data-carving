@@ -6,6 +6,8 @@
 #include <sstream>
 #include <list>
 
+#define LOG2(x) std::log(x)/log(2)
+
 class Diagonal
 {
 public:
