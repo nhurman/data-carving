@@ -51,8 +51,7 @@ BitString::BitString(std::string str, InputFormat format)
             m_bytes[i / 2] = 0;
             for (int j = 0; j < 8; ++j) {
                 if (byte & (1 << j)) {
-                    //m_bytes[i / 2] |= 1 << (7 - j); //old
-					m_bytes[i / 2] |= 1 << j;
+                    m_bytes[i / 2] |= 1 << (7 - j);
                 }
             }
         }
@@ -74,7 +73,7 @@ BitString::BitString(std::string str, InputFormat format)
             char c = 0;
             for(int j = 0; j < 8; j++)
             {
-                c += (str[8*i+j]-'0') << (7-j);
+                c += (str[8*i+j]-'0') << j;
             }
             m_bytes[i] = c;
         }
@@ -86,7 +85,13 @@ BitString::BitString(std::string str, InputFormat format)
         m_size = str.length()*8;
         for(unsigned int i = 0; i < str.length(); i++)
         {
-            m_bytes[i] = str[i];
+            m_bytes[i] = 0;
+            for(int j = 0; j < 8; j++)
+            {
+                if(str[i] & (1 << j))
+                    m_bytes[i] |= 1 << (7-j);
+            }
+
         }
         break;
     }
@@ -128,7 +133,6 @@ bool BitString::set(unsigned int index, bool value)
     return value;
 }
 
-// ne
 void BitString::bitAnd(BitString const& bitstring)
 {
     for (unsigned int index = 0; index < m_size/8; ++index) {
@@ -195,8 +199,7 @@ std::string BitString::toString() const
 {
     std::string out;
     for (unsigned int index = 0; index < m_size; ++index) {
-        //out += (m_bytes[index / 8] & (1 << index % 8)) ? '1' : '0'; //old
-		out += (m_bytes[index / 8] & (1 << (7-index % 8))) ? '1' : '0';
+        out += (m_bytes[index / 8] & (1 << index % 8)) ? '1' : '0';
         if (index % 8 == 7 && index < m_size) {
             out += ' ';
         }
