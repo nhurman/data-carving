@@ -1,7 +1,8 @@
 #include "core/bitstring.h"
 #include <iostream>
 #include <iomanip>
-
+#include <iostream>
+#include <fstream>
 
 BitString::BitString(size_t size) : m_size(size)
 {
@@ -50,7 +51,8 @@ BitString::BitString(std::string str, InputFormat format)
             m_bytes[i / 2] = 0;
             for (int j = 0; j < 8; ++j) {
                 if (byte & (1 << j)) {
-                    m_bytes[i / 2] |= 1 << (7 - j);
+                    //m_bytes[i / 2] |= 1 << (7 - j); //old
+					m_bytes[i / 2] |= 1 << j;
                 }
             }
         }
@@ -72,7 +74,7 @@ BitString::BitString(std::string str, InputFormat format)
             char c = 0;
             for(int j = 0; j < 8; j++)
             {
-                c += str[8*i+j] << (7-j);
+                c += (str[8*i+j]-'0') << (7-j);
             }
             m_bytes[i] = c;
         }
@@ -81,6 +83,7 @@ BitString::BitString(std::string str, InputFormat format)
 
     default: //RAW
         m_bytes = new char[str.length()];
+        m_size = str.length()*8;
         for(unsigned int i = 0; i < str.length(); i++)
         {
             m_bytes[i] = str[i];
@@ -192,7 +195,8 @@ std::string BitString::toString() const
 {
     std::string out;
     for (unsigned int index = 0; index < m_size; ++index) {
-        out += (m_bytes[index / 8] & (1 << index % 8)) ? '1' : '0';
+        //out += (m_bytes[index / 8] & (1 << index % 8)) ? '1' : '0'; //old
+		out += (m_bytes[index / 8] & (1 << (7-index % 8))) ? '1' : '0';
         if (index % 8 == 7 && index < m_size) {
             out += ' ';
         }
@@ -322,4 +326,51 @@ std::list<std::pair<int,int> > BitString::similarities(BitString b1, BitString b
 int BitString::convertCoords(int pos)
 {
     return pos + pos/8;
+}
+
+InputFormat BitString::guessFileInputFormat(std::string fileName)
+{
+    std::ifstream f;
+    f.open (fileName);
+    if(!f.is_open())
+    {
+
+        std::cout << "Unable to open dump : The following dump could not be opened :\n"+fileName << std::endl;
+        return RAW;
+    }
+
+    InputFormat format = BINARY; //the lowest format, in terms of character usage
+    std::string buff = "";
+    while(std::getline(f, buff))
+    {
+        switch (guessTextInputFormat(buff))
+        {
+        case HEXADECIMAL:
+            format = HEXADECIMAL; //hexadecimal < raw but raw would return immediately if detected
+            break;
+
+        case RAW:
+            return RAW; //nothing greater than raw
+
+        default:
+            break;
+        }
+    }
+    return format;
+}
+
+InputFormat BitString::guessTextInputFormat(std::string text)
+{
+    InputFormat format = BINARY;; //the lowest format, in terms of character usage
+    for(unsigned int i = 0; i < text.size(); i++)
+    {
+        if(text[i] != '0' && text[i] != '1') {} //not binary
+        {
+            if ((text[i] >= '0' && text[i] <= '9') || (text[i] >= 'A' && text[i] <= 'F') || (text[i] >= 'a' && text[i] <= 'f'))
+                format = HEXADECIMAL; //hexadecimal < raw but raw would return immediately if detected
+            else //any other character
+                return RAW;
+        }
+    }
+    return format;
 }
