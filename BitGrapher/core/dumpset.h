@@ -1,40 +1,34 @@
 #ifndef DUMPSET_H
 #define DUMPSET_H
 
-#include "dump.h"
-#include <QString>
-#include <QTreeWidgetItem>
+#include <vector>
+#include <map>
+#include "Dump.h"
+#include <iostream>
 
 class DumpSet
 {
 public:
-    DumpSet(QString fileName = "");
-    void setFileName(QString fileName);
-    QString getShortName();
-    bool hasName();
-    bool isModified();
-    //loads a dump to the dumpSet
-    void addDump(Dump d);
-    void addDump(QString fileName);
-    //finds a dump in the dumpSet. Returns null if not found
-    Dump* find(QString name);
-    //removes a dump from the set
-    void remove(QString name);
-    std::vector<QString> getDumpNames();
-    int getDumpCount();
-    bool saveToFile(QString fileName);
-    bool save();
-    std::map<QString, Dump> getDumps();
+    DumpSet(std::string filePath = "");
+    ~DumpSet();
 
-    size_t size();
+    Dump const* add(std::string filePath);
+    void remove(std::string filePath);
+    bool save();
+    bool save(std::string filePath);
+
+    std::string fileName() const;
+    std::string filePath() const;
+    bool modified() const;
+    size_t size() const;
+
+    Dump const* find(std::string name) const;
+    std::map<std::string, Dump const*> dumps() const;
 
 private:
-    std::map<QString, Dump> m_dumps;
-    QString m_fileName;
+    std::map<std::string, Dump const*> m_dumps;
+    std::string m_filePath;
     bool m_modified;
-
-    static QString shortenFileName(QString filePath);
-    static QString shortenFileName(std::string fileName);
 };
 
 #endif // DUMPSET_H

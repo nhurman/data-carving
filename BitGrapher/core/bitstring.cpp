@@ -1,8 +1,9 @@
-#include "core/bitstring.h"
-#include <iostream>
-#include <iomanip>
-#include <iostream>
-#include <fstream>
+#include <algorithm>
+#include <cstring>
+#include <cmath>
+
+#include "BitString.h"
+#include "Exception.h"
 
 BitString::BitString(size_t size) : m_size(size)
 {
@@ -11,371 +12,210 @@ BitString::BitString(size_t size) : m_size(size)
     memset(m_bytes, 0, bytes);
 }
 
-//Creates a BitString from an hexadecimal string
-BitString::BitString(std::string str, InputFormat format)
+BitString::BitString(BitString const& other)
 {
-    int bytes;
-    switch (format)
-    {
-    case HEXADECIMAL:
-        str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
-        if (str.length() % 2 == 1) {
-            str.append("0");
-        }
+    operator=(other);
+}
 
-        bytes = str.length() / 2;
-        m_size = bytes * 8;
-        m_bytes = new char[bytes];
+BitString& BitString::operator=(BitString const& other)
+{
+    delete[] m_bytes;
+    m_size = other.m_size;
+    m_bytes = new char[m_size / 8];
+    memcpy(m_bytes, other.m_bytes, m_size / 8);
+    return *this;
+}
 
-        for (unsigned int i = 0; i < str.length(); i += 2) {
-            char byte = 0;
-            for (int j = 0; j < 2; ++j) {
-                char c = str[i + j];
+BitString BitString::fromHex(std::string str)
+{
+    // Remove spaces in str
+    str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
 
-                if (c >= 'a' && c <= 'f') {
-                    c -= 'a' - 'A';
-                }
-                if (c >= 'A' && c <= 'F') {
-                    c += 10 - 'A';
-                }
-                else if (c >= '0' && c <= '9') {
-                    c -= '0';
-                }
-                else {
-                    c =  0;
-                }
-
-                byte = byte * 16 + c;
-            }
-
-            m_bytes[i / 2] = 0;
-            for (int j = 0; j < 8; ++j) {
-                if (byte & (1 << j)) {
-                    m_bytes[i / 2] |= 1 << (7 - j);
-                }
-            }
-        }
-        break;
-
-    case BINARY:
-        str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
-        if (str.length() % 8 != 0) {
-            for(unsigned int i = 0; i < 8-str.length() % 8; i++)
-                str.append("0");
-        }
-
-        m_size = str.length();
-        bytes = str.length() / 8;
-        m_bytes = new char[bytes];
-
-        for(int i = 0; i < bytes; i++)
-        {
-            char c = 0;
-            for(int j = 0; j < 8; j++)
-            {
-                c += (str[8*i+j]-'0') << j;
-            }
-            m_bytes[i] = c;
-        }
-
-        break;
-
-    default: //RAW
-        m_bytes = new char[str.length()];
-        m_size = str.length()*8;
-        for(unsigned int i = 0; i < str.length(); i++)
-        {
-            m_bytes[i] = 0;
-            for(int j = 0; j < 8; j++)
-            {
-                if(str[i] & (1 << j))
-                    m_bytes[i] |= 1 << (7-j);
-            }
-
-        }
-        break;
+    // Incomplete string
+    if (str.length() % 2 == 1) {
+        std::string b = str.substr(str.length() - 1);
+        str.erase(str.length() - 1);
+        str.append("0" + b);
     }
+
+    // Reserve memory    
+    int bytes = str.length() / 2;
+    BitString bs(bytes * 8);
+
+    // Parse string
+    for (unsigned int i = 0; i < str.length(); i += 2) {
+        char byte = 0;
+        for (int j = 0; j < 2; ++j) {
+            char c = str[i + j];
+
+            if (c >= 'a' && c <= 'f') {
+                c -= 'a' - 'A';
+            }
+            if (c >= 'A' && c <= 'F') {
+                c += 10 - 'A';
+            }
+            else if (c >= '0' && c <= '9') {
+                c -= '0';
+            }
+            else {
+                c =  0;
+            }
+
+            byte = byte * 16 + c;
+        }
+
+        bs.m_bytes[i / 2] = 0;
+        for (int j = 0; j < 8; ++j) {
+            if (byte & (1 << j)) {
+                bs.m_bytes[i / 2] |= 1 << (7 - j);
+            }
+        }
+    }
+
+    return bs;
+}
+
+BitString BitString::fromStr(std::string str)
+{
+    BitString bs(str.size());
+    for (unsigned int i = 0; i < str.size(); ++i) {
+        bs.set(i, str[i] == '1');
+    }
+
+    return bs;
 }
 
 BitString::~BitString()
 {
-    //delete[] m_bytes; //<-- This caused an error on run (debug assertion failed)
+    delete[] m_bytes;
 }
 
+// Simple accessors
 size_t BitString::size() const
 {
     return m_size;
 }
 
-// Give the bit at position index; the first bit is index 0
-bool BitString::get(unsigned int index) const
-{
-    return m_bytes[index / 8] & (1 << (index % 8));
-}
-
-// Give the whole byte that contain the bit index
-char BitString::getByte(unsigned int index) const {
-    return  m_bytes[index / 8];
-}
-
+// Get the bit at the index (starts at 0)
 bool BitString::operator[](unsigned int index) const
 {
-    return get(index);
+    if (index >= m_size) {
+        throw BitStringException("BitString::get out of bounds");
+    }
+
+    return m_bytes[index / 8] & (1 << (index % 8));
 }
 
 bool BitString::set(unsigned int index, bool value)
 {
-    if(value)
+    if (index >= m_size) {
+        throw BitStringException("BitString::set out of bounds");
+    }
+
+    if(value) {
         m_bytes[index / 8] |= 1 << (index % 8);
-    else
+    }
+    else {
         m_bytes[index / 8] &= ~(1 << (index % 8));
+    }
 
     return value;
 }
 
-void BitString::bitAnd(BitString const& bitstring)
+// Bitwise operators
+BitString BitString::operator&(BitString const& other)
 {
+    BitString bs(m_size);
     for (unsigned int index = 0; index < m_size/8; ++index) {
-        m_bytes[index] = m_bytes[index] & bitstring.m_bytes[index];
+        bs.m_bytes[index] = m_bytes[index] & other.m_bytes[index];
     }
+
+    return bs;
 }
 
-void BitString::bitOr(BitString const& bitstring)
+BitString BitString::operator|(BitString const& other)
 {
+    BitString bs(m_size);
     for (unsigned int index = 0; index < m_size/8; ++index) {
-        m_bytes[index] = m_bytes[index] | bitstring.m_bytes[index];
+        bs.m_bytes[index] = m_bytes[index] | other.m_bytes[index];
     }
+
+    return bs;
 }
 
-void BitString::bitXor(BitString const& bitstring)
+BitString BitString::operator^(BitString const& other)
 {
+
+    BitString bs(m_size);
     for (unsigned int index = 0; index < m_size/8; ++index) {
-        m_bytes[index] = m_bytes[index] ^ bitstring.m_bytes[index];
+        bs.m_bytes[index] = m_bytes[index] ^ other.m_bytes[index];
     }
+
+    return bs;
 }
 
 
-unsigned int BitString::hammingWeight() const
+// Operations
+BitString BitString::substring(unsigned int start, size_t size) const
 {
-    unsigned int result = 0;
+    BitString out(size);
 
-    for (unsigned int index = 0; index < m_size; ++index) {
-        if (m_bytes[index / 8] & (1 << index % 8)){
-            result++;
+    if (start + size > m_size) {
+        throw BitStringException("BitString::substring overflow");
+    }
+
+    for (unsigned int index = 0; index < size; ++index) {
+        out.set(index, (*this)[index + start]);
+    }
+
+    return out;
+}
+
+bool BitString::operator==(BitString const& other) const
+{
+    if (m_size != other.m_size) {
+        return false;
+    }
+
+    unsigned int bytes = ceil(m_size / 8.);
+    for (unsigned int i = 0; i < bytes; ++i) {
+        if(m_bytes[i] != other.m_bytes[i]) {
+            return false;
         }
     }
-    return result;
+
+    return true;
 }
 
-// do the hamming weight on a substring of nbBit starting at index
-unsigned int BitString::hammingWeight(unsigned int index, unsigned int nbBit) const {
-    BitString b = this->substring(index, nbBit);
-    return b.hammingWeight();
-}
-
-unsigned int BitString::hammingDistance(BitString const& bitstring) const
+bool BitString::operator!=(BitString const& other) const
 {
-    unsigned int result = 0;
+    return !operator==(other);
+}
 
-    // If both BitStrings don't have the same size, we can't process their Hamming distance
-    if (m_size != bitstring.m_size){
-        // we could also add max(m_size, bitstring.m_size) - min(m_size, bitstring.m_size)
-        return -1;
+bool BitString::contains(BitString const& bs) const
+{
+    size_t size = bs.size();
+
+    if (size > m_size) {
+        return false;
     }
 
-    for (unsigned int index = 0; index < m_size; ++index) {
-        int a = m_bytes[index / 8] & (1 << index % 8);
-        int b = bitstring.m_bytes[index / 8] & (1 << index % 8);
-        // they have to be different, not equal
-        if (a != b){
-            result++;
+    for (unsigned int i = 0 ; i < m_size - size + 1 ; ++i) {
+        BitString sub = substring(i, size);
+        if (sub == bs) {
+            return true;
         }
     }
-    return result;
-}
 
+    return false;
+}
 
 std::string BitString::toString() const
 {
     std::string out;
     for (unsigned int index = 0; index < m_size; ++index) {
-        out += (m_bytes[index / 8] & (1 << index % 8)) ? '1' : '0';
-        if (index % 8 == 7 && index < m_size) {
-            out += ' ';
-        }
+        out += operator[](index) ? '1' : '0';
     }
 
     return out;
-}
-
-BitString BitString::substring(unsigned int start, size_t size) const
-{
-    BitString out(size);
-
-    for (unsigned int index = 0; index < size; ++index) {
-        if(m_bytes[(index+start) / 8] & (1 << (index+start) % 8))
-            out.set(index, 1);
-        else
-            out.set(index, 0);
-    }
-
-    return out;
-}
-
-bool BitString::equals(BitString const& bitstring) const
-{
-    for (unsigned int i = 0; i < m_size/8; ++i) {
-        if(m_bytes[i] != bitstring.m_bytes[i])
-            return false;
-    }
-    return true;
-}
-
-bool BitString::contains(BitString s) const
-{
-    size_t size = s.size();
-    for(unsigned int i=0 ; i < m_size-size+1 ; i++) {
-        BitString sub = this->substring(i, size);
-        if(sub.equals(s))
-            return true;
-    }
-    return false;
-}
-
-
-//Return a list with all the diagonals, without doubles
-std::list<Diagonal> BitString::dotPlotPattern(const BitString *dump) const {
-    std::list<Diagonal> listDiag;
-    unsigned int z;
-
-    for (unsigned int y = 0; y <= dump->m_size - MIN_DIAG_SIZE ; y++){
-        for (unsigned int x = 0; x <= this->m_size - MIN_DIAG_SIZE; x++ ){
-            if (( x!= 0 && y != 0) ? (((dump->m_bytes[(y-1) / 8] & (1 << ((y-1) % 8))) >> ((y+z) % 8)) != ((this->m_bytes[(x-1) / 8] & (1 << ((x-1) % 8))) >> ((x+z) % 8))) : true) {
-                for( z = 0; x+z < this->m_size && y+z < dump->m_size ; z++){
-                    std::cout << z << " " << (dump->m_bytes[(y+z) / 8] & (1 << ((y+z) % 8))) << " " << (this->m_bytes[(x+z) / 8] & (1 << ((x+z) % 8))) << std::endl;
-                    if (((dump->m_bytes[(y+z) / 8] & (1 << ((y+z) % 8))) >> ((y+z) % 8)) != (((this->m_bytes[(x+z) / 8] & (1 << ((x+z) % 8)))  >> ((x+z) % 8)))) {
-                       break;
-                    }
-                }
-                if (z >= MIN_DIAG_SIZE) {
-                    std::cout << "hello" << std::endl;
-                    listDiag.push_back(Diagonal(x, y, z));
-                }
-            }
-        }
-    }
-    return listDiag;
-}
-
-std::list<Diagonal> BitString::dotPlotPattern() const {
-    std::list<Diagonal> listDiag;
-    unsigned int z;
-
-    listDiag.push_back(Diagonal(0, 0, m_size));
-
-    for (unsigned int y = 0; y <= m_size - MIN_DIAG_SIZE ; y++){
-        for (unsigned int x = 0; x < y; x++ ){
-            if (( x!= 0) ? ((m_bytes[(y-1) / 8] & (1 << ((y-1) % 8))) != (m_bytes[(x-1) / 8] & (1 << ((x-1) % 8)))) : 1) {
-                for( z = 0; x+z < m_size && y+z < m_size ; z++){
-                    if (!((m_bytes[(y+z) / 8] & (1 << ((y+z) % 8))) == (m_bytes[(x+z) / 8] & (1 << ((x+z) % 8))))) {
-                       break;
-                    }
-                }
-                if (z >= MIN_DIAG_SIZE) {
-                    listDiag.push_back(Diagonal(x, y, z));
-                    listDiag.push_back(Diagonal(y, x, z));
-                }
-            }
-        }
-    }
-    return listDiag;
-}
-
-std::list<std::pair<int,int> > BitString::similarities(BitString b1, BitString b2, int minSize)
-{
-    std::list<std::pair<int,int> > sim;
-    int start = -1;
-    int min = std::min(b1.m_size, b2.m_size);
-    int i;
-    for (i = 0; i < min ; i++){
-        if(b1[i]==b2[i])
-        {
-            if(start == -1)
-                start = i;
-        }
-        else
-        {
-            if(start != -1)
-            {
-                if(i-start >= minSize)
-                {
-                    sim.push_back(std::pair<int,int>(start, i-1));
-                }
-                start = -1;
-            }
-        }
-    }
-    if(start != -1) //check for a last similarity at the end
-    {
-        if(i-start >= minSize)
-        {
-            sim.push_back(std::pair<int,int>(start, i-1));
-        }
-    }
-
-    return sim;
-}
-
-int BitString::convertCoords(int pos)
-{
-    return pos + pos/8;
-}
-
-InputFormat BitString::guessFileInputFormat(std::string fileName)
-{
-    std::ifstream f;
-    f.open (fileName);
-    if(!f.is_open())
-    {
-
-        std::cout << "Unable to open dump : The following dump could not be opened :\n"+fileName << std::endl;
-        return RAW;
-    }
-
-    InputFormat format = BINARY; //the lowest format, in terms of character usage
-    std::string buff = "";
-    while(std::getline(f, buff))
-    {
-        switch (guessTextInputFormat(buff))
-        {
-        case HEXADECIMAL:
-            format = HEXADECIMAL; //hexadecimal < raw but raw would return immediately if detected
-            break;
-
-        case RAW:
-            return RAW; //nothing greater than raw
-
-        default:
-            break;
-        }
-    }
-    return format;
-}
-
-InputFormat BitString::guessTextInputFormat(std::string text)
-{
-    std::string str = text;
-    str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
-    InputFormat format = BINARY;; //the lowest format, in terms of character usage
-    for(unsigned int i = 0; i < str.size(); i++)
-    {
-        if(str[i] != '0' && str[i] != '1') //not binary
-        {
-            if ((str[i] >= '0' && str[i] <= '9') || (str[i] >= 'A' && str[i] <= 'F') || (str[i] >= 'a' && str[i] <= 'f'))
-                format = HEXADECIMAL; //hexadecimal < raw but raw would return immediately if detected
-            else //any other character
-                return RAW;
-        }
-    }
-    return format;
 }

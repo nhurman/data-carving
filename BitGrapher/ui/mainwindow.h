@@ -1,30 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#define DEFAULT_DIRECTORY "../Utils/TestFiles"
-
-#define DISSIM_COLOR "red"
-#define SIM_COLOR "green"
-#define OTHER_SIM_COLOR "blue"
-#define DEFAULT_COLOR "black"
-
 #include <QMainWindow>
-#include <QListWidgetItem>
-#include <QTreeWidgetItem>
-#include "ui/bitgrapharea.h"
-#include "ui/dotplotview.h"
-#include "core/bitstring.h"
-#include "core/dumpset.h"
-#include "encodings/encoding.h"
-#include "ui/similaritesdialog.h"
-#include <iostream>
-#include <QFileDialog>
-#include <QInputDialog>
-#include <QMessageBox>
-#include "algorithms/similarities.h"
+#include "core/Dump.h"
+#include "BitmapWidget.h"
+#include "HexViewWidget.h"
+#include "TextViewWidget.h"
 
 namespace Ui {
-    class MainWindow;
+class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -36,53 +20,26 @@ public:
     ~MainWindow();
 
 private slots:
-    // File Menu
-    void on_actionOpen_triggered();
-    void on_actionSave_triggered();
-    void on_actionSave_as_triggered();
+    void on_selectedDumpChanged(Dump const* ds);
 
-    // View Menu
-    void on_actionDiagonals_View_triggered();
-    void on_actionBitmap_View_triggered();
+    void on_actionAdd_dump_triggered();
+    void on_actionNew_set_triggered();
+    void on_actionRemove_dump_triggered();
+    void on_actionClose_set_triggered();
+    void on_actionOpen_set_triggered();
+    void on_actionSave_set_triggered();
+    void on_actionSave_set_as_triggered();
+    void on_actionBitmap_triggered();
 
-    // Others
-    void on_actionAdd_Dump_to_Set_triggered();
+    void on_actionHexadecimal_triggered();
 
-    void on_actionNew_Dump_Set_triggered();
-
-    void on_treeWidget_selectedDumpSetChanged(DumpSet *);
-
-    void on_treeWidget_selectedDumpChanged(Dump);
-
-    void on_actionClose_triggered();
-
-    void on_actionSimilarities_triggered();
-
-    void on_actionEncodings_triggered();
-
-    void on_actionExit_triggered();
-
-    //returns false if the closure was aborted by the user
-    bool on_actionClose_all_triggered();
-
-    void saveDumpSet(DumpSet* ds);
-
-    void saveDumpSetAs(DumpSet* ds);
+    void on_actionText_triggered();
 
 private:
     Ui::MainWindow *ui;
-    BitString *m_bitstring;
-    DumpSet* m_dumpSet;
-    DotPlotView m_dpgraph;
-    std::map<DumpSet*, Similarities*> m_similarities;
-    Encoding m_currentEncoding;
-    int convertCoords(int c, bool roundUp = false);
-
-    //refreshes the display of the bitsrting
-    void refreshDisplay();
-    void drawSimilarities(Similarities* s, int dumpId);
-
-    static QColor makeColor(QColor c1, QColor c2, float ratio);
+    BitmapWidget* m_bitmap;
+    HexViewWidget* m_hexView;
+    TextViewWidget* m_textView;
 };
 
 #endif // MAINWINDOW_H

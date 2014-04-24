@@ -6,43 +6,55 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>674</width>
-    <height>463</height>
+    <width>979</width>
+    <height>483</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>BitGrapher</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
-     <widget class="DumpSetTreeWidget" name="treeWidget">
-      <property name="selectionMode">
-       <enum>QAbstractItemView::SingleSelection</enum>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
-      <column>
-       <property name="text">
-        <string>Dump Sets</string>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>720</width>
+         <height>440</height>
+        </rect>
        </property>
-      </column>
+      </widget>
      </widget>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QTextEdit" name="textEdit"/>
-      </item>
-      <item>
-       <widget class="BitGraphArea" name="graphArea" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </item>
    </layout>
   </widget>
@@ -51,120 +63,197 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>674</width>
-     <height>26</height>
+     <width>979</width>
+     <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
+   <widget class="QMenu" name="menuDumps">
     <property name="title">
-     <string>File</string>
+     <string>&amp;Dumps</string>
     </property>
-    <addaction name="actionNew_Dump_Set"/>
-    <addaction name="actionOpen"/>
-    <addaction name="actionAdd_Dump_to_Set"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSave_as"/>
-    <addaction name="actionClose"/>
-    <addaction name="actionClose_all"/>
-    <addaction name="actionExit"/>
+    <addaction name="actionNew_set"/>
+    <addaction name="actionOpen_set"/>
+    <addaction name="actionSave_set"/>
+    <addaction name="actionSave_set_as"/>
+    <addaction name="actionClose_set"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_dump"/>
+    <addaction name="actionRemove_dump"/>
+   </widget>
+   <widget class="QMenu" name="menuAlgorithms">
+    <property name="title">
+     <string>&amp;Algorithms</string>
+    </property>
+    <addaction name="actionSimilarities"/>
+   </widget>
+   <widget class="QMenu" name="menuLabels">
+    <property name="title">
+     <string>&amp;Labels</string>
+    </property>
+    <addaction name="actionNew_label"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>&amp;View</string>
     </property>
-    <addaction name="actionBitmap_View"/>
-    <addaction name="actionDiagonals_View"/>
+    <addaction name="actionBitmap"/>
+    <addaction name="actionHexadecimal"/>
+    <addaction name="actionText"/>
    </widget>
-   <widget class="QMenu" name="menuOperations">
-    <property name="title">
-     <string>Operations</string>
-    </property>
-    <addaction name="actionSimilarities"/>
-    <addaction name="actionEncodings"/>
-   </widget>
-   <addaction name="menuFile"/>
+   <addaction name="menuDumps"/>
+   <addaction name="menuAlgorithms"/>
+   <addaction name="menuLabels"/>
    <addaction name="menuView"/>
-   <addaction name="menuOperations"/>
   </widget>
-  <action name="actionOpen">
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QDockWidget" name="dockWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Dump Sets</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="DumpSetTreeWidget" name="treeWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="rootIsDecorated">
+        <bool>true</bool>
+       </property>
+       <property name="headerHidden">
+        <bool>true</bool>
+       </property>
+       <column>
+        <property name="text">
+         <string>Dump Sets</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <action name="actionNew_set">
    <property name="text">
-    <string>Open</string>
+    <string>&amp;New set</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
-   </property>
-  </action>
-  <action name="actionSave">
-   <property name="text">
-    <string>Save</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
-   </property>
-  </action>
-  <action name="actionSave_as">
-   <property name="text">
-    <string>Save as ...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
-   </property>
-  </action>
-  <action name="actionBitmap_View">
-   <property name="text">
-    <string>Bitmap View</string>
-   </property>
-  </action>
-  <action name="actionDiagonals_View">
-   <property name="text">
-    <string>Diagonals View</string>
-   </property>
-  </action>
-  <action name="actionNew_Dump_Set">
-   <property name="text">
-    <string>New Dump Set</string>
+   <property name="toolTip">
+    <string>New set</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
    </property>
   </action>
-  <action name="actionAdd_Dump_to_Set">
+  <action name="actionOpen_set">
    <property name="text">
-    <string>Add Dump to Set</string>
+    <string>&amp;Open set...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave_set">
+   <property name="text">
+    <string>&amp;Save set</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionAdd_dump">
+   <property name="text">
+    <string>&amp;Add dump</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
    </property>
   </action>
-  <action name="actionClose">
+  <action name="actionRemove_dump">
    <property name="text">
-    <string>Close</string>
+    <string>&amp;Remove dump</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actionSimilarities">
+   <property name="text">
+    <string>&amp;Similarities</string>
+   </property>
+  </action>
+  <action name="actionNew_label">
+   <property name="text">
+    <string>&amp;New label...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionClose_set">
+   <property name="text">
+    <string>&amp;Close set</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
    </property>
   </action>
-  <action name="actionSimilarities">
+  <action name="actionSave_set_as">
    <property name="text">
-    <string>Similarities</string>
-   </property>
-  </action>
-  <action name="actionExit">
-   <property name="text">
-    <string>Exit</string>
-   </property>
-  </action>
-  <action name="actionClose_all">
-   <property name="text">
-    <string>Close all</string>
+    <string>Sa&amp;ve set as...</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+W</string>
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
-  <action name="actionEncodings">
+  <action name="actionBitmap">
    <property name="text">
-    <string>Encodings</string>
+    <string>&amp;Bitmap</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionHexadecimal">
+   <property name="text">
+    <string>&amp;Hexadecimal</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="actionText">
+   <property name="text">
+    <string>Text</string>
    </property>
   </action>
  </widget>
@@ -173,13 +262,7 @@
   <customwidget>
    <class>DumpSetTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>ui/dumpsettreewidget.h</header>
-  </customwidget>
-  <customwidget>
-   <class>BitGraphArea</class>
-   <extends>QWidget</extends>
-   <header>ui/bitgrapharea.h</header>
-   <container>1</container>
+   <header>ui/DumpSetTreeWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

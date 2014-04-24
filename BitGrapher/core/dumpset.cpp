@@ -1,139 +1,103 @@
-#include "core/dumpset.h"
-#include <iostream>
+#include "DumpSet.h"
+#include "Exception.h"
 #include <fstream>
-#include <QMessageBox>
 
-DumpSet::DumpSet(QString fileName) : m_dumps(), m_fileName(fileName), m_modified(false)
+DumpSet::DumpSet(std::string filePath) : m_filePath(filePath), m_modified(false)
 {
-    if(fileName != "") //existing dump
-    {
-
-        QString shortName = shortenFileName(fileName);
-
+    if (filePath.size() > 0) { // existing dump
         std::ifstream f;
-        f.open (fileName.toUtf8());
-        if(f.is_open())
-        {
-            std::string buff = "";
-            while(std::getline(f, buff))
-            {
-                addDump(QString::fromStdString(buff));
-            }
+        f.open(filePath.c_str());
+        if (f.is_open()) {
+            std::string buff;
             m_modified = false;
+            while(std::getline(f, buff)) {
+                add(buff);
+            }
         }
-        else //could not open file
-        {
-
-            QMessageBox::warning(NULL, "Unable to open dump set",
-                                     "The following dump set could not be opened :\n"+fileName,
-                                     QMessageBox::Ok);
-            m_modified = true;
-            return;
+        else {
+            throw IOException("Could not open dump set " + filePath);
         }
     }
-    else //new dump
-    {
-        m_modified = true;
+}
+
+DumpSet::~DumpSet()
+{
+    for (auto i: m_dumps) {
+        delete i.second;
     }
 }
 
-void DumpSet::setFileName(QString fileName)
+Dump const* DumpSet::add(std::string filePath)
 {
-    m_fileName = fileName;
+    Dump* d = new Dump(filePath);
+    m_dumps.insert(std::make_pair(filePath, d));
+    m_modified = true;
+    return d;
 }
 
-QString DumpSet::getShortName()
+void DumpSet::remove(std::string filePath)
 {
-    return shortenFileName(m_fileName);
-}
-
-bool DumpSet::hasName()
-{
-    return m_fileName.size() != 0;
-}
-
-bool DumpSet::isModified()
-{
-    return m_modified;
-}
-
-void DumpSet::addDump(QString fileName)
-{
-    addDump(Dump(fileName));
-}
-
-void DumpSet::addDump(Dump d)
-{
-    QString shortName = shortenFileName(d.getFileName());
-    m_dumps[shortName] = d;
+    delete m_dumps[filePath];
+    m_dumps.erase(filePath);
     m_modified = true;
 }
 
-Dump* DumpSet::find(QString name)
-{
-    std::map<QString, Dump>::iterator i = m_dumps.find(name);
-    if( i != m_dumps.end())
-    {
-        return &(i->second);
-    }
-    return NULL;
-}
-
-void DumpSet::remove(QString name)
-{
-    m_dumps.erase(name);
-    m_modified = true;
-}
-
-std::vector<QString> DumpSet::getDumpNames()
-{
-    std::vector<QString> v;
-    for(std::map<QString,Dump>::iterator it = m_dumps.begin(); it != m_dumps.end(); ++it) {
-      v.push_back(it->first);
-    }
-    return v;
-}
-
-int DumpSet::getDumpCount()
-{
-    return m_dumps.size();
-}
-
-bool DumpSet::saveToFile(QString filePath)
+bool DumpSet::save()
 {
     std::ofstream file;
-    file.open (filePath.toUtf8());
-    if(!file.is_open())
+    file.open(m_filePath.c_str());
+    if (!file.is_open()) {
         return false;
-    for(std::map<QString, Dump>::iterator i = m_dumps.begin(); i != m_dumps.end(); i++)
-    {
-        file << i->second.getFileName().toStdString() << std::endl;
     }
+
+    for (std::map<std::string, Dump const*>::iterator i = m_dumps.begin(); i != m_dumps.end(); i++) {
+        file << i->second->filePath() << std::endl;
+    }
+
     file.close();
     m_modified = false;
 
     return true;
 }
 
-bool DumpSet::save()
+bool DumpSet::save(std::string filePath)
 {
-    return saveToFile(m_fileName);
+    m_filePath = filePath;
+    return save();
 }
 
-QString DumpSet::shortenFileName(QString fileName)
+std::string DumpSet::fileName() const
 {
-    return fileName.section('/',-1);
+    size_t pos = m_filePath.find_last_of('/');
+    if (std::string::npos == pos) {
+        return m_filePath;
+    }
+
+    return m_filePath.substr(pos + 1);
 }
 
-QString DumpSet::shortenFileName(std::string fileName)
+std::string DumpSet::filePath() const
 {
-    return QString::fromStdString(fileName).section('/',-1);
+    return m_filePath;
 }
 
-size_t DumpSet::size() {
+bool DumpSet::modified() const
+{
+    return m_modified;
+}
+
+size_t DumpSet::size() const
+{
     return m_dumps.size();
 }
 
-std::map<QString, Dump> DumpSet::getDumps(){
+Dump const* DumpSet::find(std::string filePath) const
+{
+    return m_dumps.at(filePath);
+}
+
+std::map<std::string, Dump const*> DumpSet::dumps() const
+{
     return m_dumps;
 }
+

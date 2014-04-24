@@ -2,8 +2,8 @@
 #define DUMPSETTREEWIDGET_H
 
 #include <QTreeWidget>
-#include "core/dump.h"
-#include "core/dumpset.h"
+#include "core/Dump.h"
+#include "core/DumpSet.h"
 
 class DumpSetTreeWidget : public QTreeWidget
 {
@@ -11,32 +11,37 @@ class DumpSetTreeWidget : public QTreeWidget
 public:
     explicit DumpSetTreeWidget(QWidget *parent = 0);
     void changeDumpSetName(QString name);
-    Dump getCurrentDump();
+    Dump const* getCurrentDump();
     DumpSet* getCurrentDumpSet();
+    void saveDumpSet();
+    void saveDumpSetAs();
+    void openDumpSet();
 
 signals:
-    void selectedDumpChanged(Dump);
+    void selectedDumpChanged(Dump const*);
     void selectedDumpSetChanged(DumpSet*);
     void dumpSetNeedsSaving(DumpSet*);
 
 public slots:
     void addDumpSet(DumpSet*);
-    void addDump(Dump);
+    void addDump(QString filePath);
     void onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
     //returns false if the closure was aborted by the user
     bool closeDumpSet();
+    void removeDump();
     //returns false if the closure was aborted by the user
     bool closeAll();
-    void selectDump(QString dumpName);
 
 private:
+    typedef std::map<DumpSet*, std::map<QTreeWidgetItem*, Dump const*>> DumpSetMap;
+
     int m_nbNewDumpSets;
-    Dump m_selectedDump;
     DumpSet* m_selectedDumpSet;
-    std::map<QString, DumpSet*> m_openedDumpSets;
+    Dump const* m_selectedDump;
+    std::map<QTreeWidgetItem*, DumpSet*> m_dumpSets;
+    DumpSetMap m_dumps;
 
     QTreeWidgetItem* getDumpSetItem();
-    //returns false if the closure was aborted by the user
     bool close(QTreeWidgetItem* item);
 };
 

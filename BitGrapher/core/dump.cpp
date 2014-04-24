@@ -1,57 +1,57 @@
-#include "core/dump.h"
 #include <iostream>
 #include <fstream>
-#include <QMessageBox>
 
-Dump::Dump(QString fileName, InputFormat format): m_fileName(fileName)
+#include "Exception.h"
+#include "Dump.h"
+
+Dump::Dump(std::string const& filePath): m_filePath(filePath)
 {
     std::ifstream f;
-    f.open (fileName.toUtf8());
-    if(!f.is_open())
-    {
-
-        QMessageBox::warning(NULL, QString("Unable to open dump"),
-                                 "The following dump could not be opened :\n"+fileName,
-                                 QMessageBox::Ok);
-        return;
+    f.open(m_filePath.c_str());
+    if (!f.is_open()) {
+        throw IOException("Could not open dump " + m_filePath);
     }
-    std::string str = "";
-    std::string buff = "";
-    while(std::getline(f, buff))
-    {
-        str += buff;
+
+    std::string str, buff;
+    while(std::getline(f, buff)) {
+        str.append(buff);
     }
-    m_bitstring = new BitString(str, format);
+
+    m_bitString = BitString::fromHex(str);
 }
 
-Dump::Dump()
+Dump::Dump(Dump const& other) : m_filePath(other.m_filePath)
 {
+    std::ifstream f;
+    f.open(m_filePath.c_str());
+    if (!f.is_open()) {
+        throw IOException("Could not open dump " + m_filePath);
+    }
+
+    std::string str, buff;
+    while(std::getline(f, buff)) {
+        str.append(buff);
+    }
+
+    m_bitString = BitString::fromHex(str);
 }
 
-Dump::~Dump()
-{}
-
-BitString* Dump::getBitString()
+BitString const* Dump::bitString() const
 {
-    return m_bitstring;
+    return &m_bitString;
 }
 
-QString Dump::getFileName()
+std::string Dump::filePath() const
 {
-    return m_fileName;
+    return m_filePath;
 }
 
-QString Dump::getShortName()
+std::string Dump::fileName() const
 {
-    return shortenFileName(m_fileName);
-}
+    size_t pos = m_filePath.find_last_of('/');
+    if (std::string::npos == pos) {
+        return m_filePath;
+    }
 
-QString Dump::shortenFileName(QString fileName)
-{
-    return fileName.section('/',-1);
-}
-
-QString Dump::shortenFileName(std::string fileName)
-{
-    return QString::fromStdString(fileName).section('/',-1);
+    return m_filePath.substr(pos + 1);
 }

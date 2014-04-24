@@ -1,27 +1,21 @@
 #ifndef DUMP_H
 #define DUMP_H
 
-#include <cstring>
-#include "bitstring.h"
-#include <QString>
+#include <string>
+#include "BitString.h"
 
 class Dump
 {
-protected:
-    BitString* m_bitstring;
-    QString m_fileName;
 public:
-    Dump();
-    Dump(QString fileName, InputFormat format = RAW);
-    ~Dump();
-
-    BitString* getBitString();
-    QString getFileName();
-    QString getShortName();
+    Dump(std::string const& filePath);
+    Dump(Dump const& other);
+    BitString const* bitString() const;
+    std::string filePath() const;
+    std::string fileName() const;
 
 private:
-    static QString shortenFileName(QString filePath);
-    static QString shortenFileName(std::string fileName);
+    BitString m_bitString;
+    std::string m_filePath;
 };
 
 #endif // DUMP_H
