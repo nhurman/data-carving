@@ -25,6 +25,7 @@ public:
 
     std::string encode(BitString b);
     static char toASCII(char c);
+    static char reverseASCII(char c);
     static char switchEndian(char c);
     static char toHexadecimal(char c);
     static char reverseHexadecimal(char c);
