@@ -40,7 +40,7 @@ std::string Encoding::encode(BitString b) {
     else if(m_encodingName == "Hexadecimal")
         encodeChar =  Encoding::reverseHexadecimal;
     else
-        encodeChar =  Encoding::reverseASCII;
+        encodeChar =  Encoding::toASCII;
 
     while (i + m_charSize <= b.size()) {
 
