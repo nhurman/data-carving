@@ -364,12 +364,14 @@ InputFormat BitString::guessFileInputFormat(std::string fileName)
 
 InputFormat BitString::guessTextInputFormat(std::string text)
 {
+    std::string str = text;
+    str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
     InputFormat format = BINARY;; //the lowest format, in terms of character usage
-    for(unsigned int i = 0; i < text.size(); i++)
+    for(unsigned int i = 0; i < str.size(); i++)
     {
-        if(text[i] != '0' && text[i] != '1') {} //not binary
+        if(str[i] != '0' && str[i] != '1') //not binary
         {
-            if ((text[i] >= '0' && text[i] <= '9') || (text[i] >= 'A' && text[i] <= 'F') || (text[i] >= 'a' && text[i] <= 'f'))
+            if ((str[i] >= '0' && str[i] <= '9') || (str[i] >= 'A' && str[i] <= 'F') || (str[i] >= 'a' && str[i] <= 'f'))
                 format = HEXADECIMAL; //hexadecimal < raw but raw would return immediately if detected
             else //any other character
                 return RAW;

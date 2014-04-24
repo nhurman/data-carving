@@ -25,7 +25,17 @@ TEST(Read_raw)
   CHECK("00110000 00110001 01000001 " == b.toString());
 }
 
-//TEST(Guess_format)
-//{
-//  CHECK(true);
-//}
+TEST(Guess_binary)
+{
+  CHECK(BINARY == BitString::guessTextInputFormat("00110101"));
+}
+
+TEST(Guess_hexa)
+{
+  CHECK(HEXADECIMAL == BitString::guessTextInputFormat("00F0"));
+}
+
+TEST(Guess_raw)
+{
+  CHECK(RAW == BitString::guessTextInputFormat("01Z"));
+}

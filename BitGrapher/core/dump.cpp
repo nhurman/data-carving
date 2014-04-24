@@ -3,7 +3,7 @@
 #include <fstream>
 #include <QMessageBox>
 
-Dump::Dump(QString fileName): m_fileName(fileName)
+Dump::Dump(QString fileName, InputFormat format): m_fileName(fileName)
 {
     std::ifstream f;
     f.open (fileName.toUtf8());
@@ -21,7 +21,7 @@ Dump::Dump(QString fileName): m_fileName(fileName)
     {
         str += buff;
     }
-    m_bitstring = new BitString(str);
+    m_bitstring = new BitString(str, format);
 }
 
 Dump::Dump()

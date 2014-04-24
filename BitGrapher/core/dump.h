@@ -12,7 +12,7 @@ protected:
     QString m_fileName;
 public:
     Dump();
-    Dump(QString fileName);
+    Dump(QString fileName, InputFormat format = RAW);
     ~Dump();
 
     BitString* getBitString();
