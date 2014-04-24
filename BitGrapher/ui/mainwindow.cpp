@@ -338,8 +338,54 @@ void MainWindow::on_actionAdd_Dump_to_Set_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open dump file"),
                                                      DEFAULT_DIRECTORY,
                                                      tr("Files (*.*)"));
+
     if(fileName.size() > 0)
-        ui->treeWidget->addDump(Dump(fileName));
+    {
+        //asking for file format
+        QStringList availableImputModes;
+        InputFormat guessedFormat = BitString::guessFileInputFormat(fileName.toStdString());
+        if(guessedFormat != RAW)
+        {
+            if(guessedFormat == BINARY)
+            {
+                availableImputModes.push_back("Binary"); //only available if the guess returns binary (i.e. there were only 0s and 1s in the file)
+            }
+            availableImputModes.push_back("Hexadecimal"); //only available if not RAW (i.e. if HEXA orBINARY)
+        }
+        availableImputModes.push_back("Raw data"); //always available
+
+        InputFormat inputFormat;
+        if(availableImputModes.size() > 1) //more than 1 available
+        {
+            bool ok;
+            QString chosenFormat = QInputDialog::getItem(this,"Select input format", "Input format : ", availableImputModes, 0, false, &ok);
+            if(ok) //cancel was not pressed
+            {
+                if(chosenFormat == "Binary")
+                {
+                    inputFormat = BINARY;
+                }
+                else if(chosenFormat == "Hexadecimal")
+                {
+                    inputFormat = HEXADECIMAL;
+                }
+                else //Raw data
+                {
+                    inputFormat = RAW;
+                }
+            }
+            else
+            {
+                inputFormat = RAW; //default value
+            }
+        }
+        else
+        {
+            inputFormat = RAW; //default value
+        }
+
+        ui->treeWidget->addDump(Dump(fileName, inputFormat));
+    }
 }
 
 void MainWindow::on_actionNew_Dump_Set_triggered()

@@ -47,6 +47,9 @@ public:
 
     static std::list<std::pair<int,int> > similarities(BitString b1, BitString b2, int minSize = MIN_SIM_SIZE);
 
+    static InputFormat guessFileInputFormat(std::string fileName);
+    static InputFormat guessTextInputFormat(std::string text);
+
     //convert between byte pos and char pos in string (because of blanks between bytes)
     static int convertCoords(int pos);
 

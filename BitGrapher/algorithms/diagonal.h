@@ -4,6 +4,9 @@
 #include <cmath>
 #include <string>
 #include <sstream>
+#include <list>
+
+#define LOG2(x) std::log(x)/log(2)
 
 class Diagonal
 {
@@ -15,6 +18,8 @@ public:
     size_t length() const;
     std::string toString() const;
 
+    //probabilities
+    static int minStringSize(std::list<int> sizes); //give it the dump sizes
 
 private:
     unsigned int m_x;
