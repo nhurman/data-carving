@@ -379,3 +379,32 @@ InputFormat BitString::guessTextInputFormat(std::string text)
     }
     return format;
 }
+
+InputFormat BitString::stringToFormat(std::string formatStr)
+{
+    if(formatStr == "Binary")
+    {
+        return BINARY;
+    }
+    else if(formatStr == "Hexadecimal")
+    {
+        return HEXADECIMAL;
+    }
+    else //Raw data
+    {
+        return RAW;
+    }
+}
+
+std::string BitString::formatToString(InputFormat format)
+{
+    switch(format)
+    {
+    case BINARY:
+        return "Binary";
+    case HEXADECIMAL:
+        return "Hexadecimal";
+    default: //RAW
+        return "Raw data";
+    }
+}

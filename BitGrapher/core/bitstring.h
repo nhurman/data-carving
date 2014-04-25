@@ -49,6 +49,8 @@ public:
 
     static InputFormat guessFileInputFormat(std::string fileName);
     static InputFormat guessTextInputFormat(std::string text);
+    static InputFormat stringToFormat(std::string formatStr);
+    static std::string formatToString(InputFormat format);
 
     //convert between byte pos and char pos in string (because of blanks between bytes)
     static int convertCoords(int pos);
