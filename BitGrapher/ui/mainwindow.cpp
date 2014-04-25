@@ -361,7 +361,7 @@ void MainWindow::on_actionAdd_Dump_to_Set_triggered()
             QString chosenFormat = QInputDialog::getItem(this,"Select input format", "Input format : ", availableImputModes, 0, false, &ok);
             if(ok) //cancel was not pressed
             {
-                inputFormat = BitString::stringToFormat(chosenFormat);
+                inputFormat = BitString::stringToFormat(chosenFormat.toStdString());
             }
             else
             {
