@@ -8,6 +8,8 @@ Similarities* SimilaritesDialog::m_result;
 SimilaritesDialog::SimilaritesDialog(QWidget *parent, DumpSet* ds, QString* selectedDump) :
     QDialog(parent), m_dumpSet(ds), m_selectedDump(selectedDump)
 {
+    setWindowTitle("Similarities");
+
     m_layout = new QVBoxLayout;
     setLayout(m_layout);
 
@@ -17,6 +19,11 @@ SimilaritesDialog::SimilaritesDialog(QWidget *parent, DumpSet* ds, QString* sele
     sLayout->addWidget(m_minSizeSpinBox = new QSpinBox(this));
     m_minSizeSpinBox->setMinimum(1);
     m_layout->addLayout(sLayout);
+
+    QPushButton* defaultButton = new QPushButton("Default", this);
+    sLayout->addWidget(defaultButton);
+    QObject::connect(defaultButton, SIGNAL( clicked() ),
+                          this, SLOT( displayDefaultSize() ));
 
     //+  -
     QHBoxLayout* pmLayout = new QHBoxLayout;
@@ -160,4 +167,23 @@ Similarities* SimilaritesDialog::getSimilarities(DumpSet* ds, QString* selectedD
     Similarities* res = m_result;
     m_result = NULL;
     return res;
+}
+
+int SimilaritesDialog::preferredStringSize()
+{
+    std::list<int> sizes;
+    for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
+    {
+        sizes.push_back(getDump(i).getSize());
+    }
+
+    int s = Similarities::minStringSize(sizes);
+    if(s > 0)
+        return s;
+    return 1;
+}
+
+void SimilaritesDialog::displayDefaultSize()
+{
+    m_minSizeSpinBox->setValue(preferredStringSize());
 }

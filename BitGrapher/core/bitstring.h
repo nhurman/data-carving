@@ -26,6 +26,7 @@ public:
     char getByte(unsigned int index) const;
     bool operator[](unsigned int index) const;
     bool set(unsigned int index, bool value);
+    int getSize() { return m_size; }
 
     void bitAnd(BitString const& bitstring);
     void bitOr(BitString const& bitstring);

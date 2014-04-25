@@ -288,12 +288,17 @@ void Similarities::test()
 
 int Similarities::minStringSize(std::list<int> sizes)
 {
-    int minSize = 0; //minimum size
-    for(std::list<int>::iterator i = sizes.begin(); i != sizes.end(); i++)
+    if(!sizes.empty())
     {
-        minSize = std::min(minSize, *i);
+        std::list<int>::iterator i = sizes.begin();
+        int minSize = *i; //minimum size (initialized at first one)
+        for(i++; i != sizes.end(); i++)
+        {
+            minSize = std::min(minSize, *i);
+        }
+        int nbDumps = sizes.size();
+        int t = minSize*nbDumps*(nbDumps-1)/2;
+        return 4.29 + LOG2(t) + .99; //+.99 : cheap way to round up the result
     }
-    int nbDumps = sizes.size();
-    int t = minSize*nbDumps*(nbDumps-1)/2;
-    return 4.29 + LOG2(t) + .99; //+.99 : cheap way to round up the result
+    return 1; //default value if empty list
 }

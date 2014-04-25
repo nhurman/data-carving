@@ -20,6 +20,7 @@ public:
     QString getFileName();
     QString getShortName();
     InputFormat getFormat() { return m_format; }
+    int getSize() { return m_bitstring->getSize(); }
 
 private:
     static QString shortenFileName(QString filePath);
