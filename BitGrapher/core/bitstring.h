@@ -3,20 +3,25 @@
 
 #include <string>
 
+enum InputFormat {HEXADECIMAL, BINARY, RAW};
+
 class BitString
 {
 public:
     BitString(size_t size = 0);
     BitString(BitString const& other);
     BitString& operator=(BitString const& other);
+    static BitString fromBin(std::string str);
     static BitString fromHex(std::string str);
-    static BitString fromStr(std::string str);
+    static BitString fromRaw(std::string str);
+    static BitString makeBitString(std::string str, InputFormat format = HEXADECIMAL);
     ~BitString();
 
     // Simple accessors
     size_t size() const;
     bool operator[](unsigned int index) const;
     bool set(unsigned int index, bool value);
+    int getSize();
 
     // Bitwise operators
     BitString operator&(BitString const& other);

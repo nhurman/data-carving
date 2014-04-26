@@ -28,12 +28,18 @@ TEST(BitString_hex)
   CHECK(true == c[7]);
 }
 
-TEST(BitString_str)
+TEST(BitString_bin)
 {
-  BitString b = BitString::fromStr("010");
+  BitString b = BitString::fromBin("010");
   CHECK(!b[0]);
   CHECK(b[1]);
   CHECK(!b[2]);
+}
+
+TEST(BitString_raw)
+{
+  BitString b = BitString::fromRaw("01A");
+  CHECK("001100000011000101000001" == b.toString());
 }
 
 TEST(BitString_set)
@@ -48,8 +54,8 @@ TEST(BitString_set)
 TEST(BitString_equals)
 {
   BitString a = BitString::fromHex("011");
-  BitString b = BitString::fromStr("0000000100001010");
-  BitString c = BitString::fromStr("0000000100000001");
+  BitString b = BitString::fromBin("0000000100001010");
+  BitString c = BitString::fromBin("0000000100000001");
 
   CHECK(a != b);
   CHECK(a == c);
@@ -83,9 +89,9 @@ TEST(BitString_xor)
 
 TEST(BitString_contains)
 {
-  BitString a = BitString::fromStr("0111010");
-  BitString b = BitString::fromStr("111");
-  BitString c = BitString::fromStr("11111");
+  BitString a = BitString::fromBin("0111010");
+  BitString b = BitString::fromBin("111");
+  BitString c = BitString::fromBin("11111");
   CHECK(a.contains(b));
   CHECK(!a.contains(c));
   CHECK(!b.contains(a));
@@ -93,8 +99,8 @@ TEST(BitString_contains)
 
 TEST(BitString_substring)
 {
-  BitString a = BitString::fromStr("0111010");
-  BitString expected = BitString::fromStr("110");
+  BitString a = BitString::fromBin("0111010");
+  BitString expected = BitString::fromBin("110");
   CHECK(a.substring(2, 3) == expected);
   CHECK_THROW(a.substring(1, 10), BitStringException);
   CHECK_THROW(a.substring(10, 0), BitStringException);

@@ -75,7 +75,7 @@ BitString BitString::fromHex(std::string str)
     return bs;
 }
 
-BitString BitString::fromStr(std::string str)
+BitString BitString::fromBin(std::string str)
 {
     BitString bs(str.size());
     for (unsigned int i = 0; i < str.size(); ++i) {
@@ -83,6 +83,34 @@ BitString BitString::fromStr(std::string str)
     }
 
     return bs;
+}
+
+BitString BitString::fromRaw(std::string str)
+{
+    BitString bs(str.length()*8);
+    for(unsigned int i = 0; i < str.length(); i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            bs.set(8*i+j, str[i] & (1 << (7-j)));
+        }
+
+    }
+
+    return bs;
+}
+
+BitString BitString::makeBitString(std::string str, InputFormat format)
+{
+    switch(format)
+    {
+    case BINARY:
+        return fromBin(str);
+    case HEXADECIMAL:
+        return fromHex(str);
+    default: //RAW
+        return fromRaw(str);
+    }
 }
 
 BitString::~BitString()
@@ -120,6 +148,12 @@ bool BitString::set(unsigned int index, bool value)
     }
 
     return value;
+}
+
+
+int BitString::getSize()
+{
+    return m_size;
 }
 
 // Bitwise operators

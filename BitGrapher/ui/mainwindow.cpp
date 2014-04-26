@@ -17,10 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     QObject::connect(ui->treeWidget, SIGNAL(selectedDumpChanged(Dump const*)),
         this, SLOT(on_selectedDumpChanged(Dump const*)));
-    on_actionNew_set_triggered();
-    ui->treeWidget->addDump("C:/Users/Nicolas/Desktop/dimp.txt");
 
-    on_actionText_triggered();
+    //on_actionNew_set_triggered();
+    //ui->treeWidget->addDump("C:/Users/Nicolas/Desktop/dimp.txt");
+    //on_actionText_triggered();
 
     //resize(BitmapWidget::SquareSize * BitmapWidget::BitsPerLine + 200, 400);
 }
