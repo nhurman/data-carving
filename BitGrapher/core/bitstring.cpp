@@ -79,6 +79,9 @@ BitString BitString::fromHex(std::string str)
 
 BitString BitString::fromBin(std::string str)
 {
+    // Remove spaces in str
+    str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
+
     BitString bs(str.size());
     for (unsigned int i = 0; i < str.size(); ++i) {
         bs.set(i, str[i] == '1');
@@ -89,6 +92,9 @@ BitString BitString::fromBin(std::string str)
 
 BitString BitString::fromRaw(std::string str)
 {
+    // Remove spaces in str
+    str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
+
     BitString bs(str.length()*8);
     for(unsigned int i = 0; i < str.length(); i++)
     {
@@ -150,12 +156,6 @@ bool BitString::set(unsigned int index, bool value)
     }
 
     return value;
-}
-
-
-int BitString::getSize()
-{
-    return m_size;
 }
 
 // Bitwise operators

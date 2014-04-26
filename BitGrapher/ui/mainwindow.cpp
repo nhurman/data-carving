@@ -4,6 +4,7 @@
 
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QScrollArea>
 #include <QLabel>
 #include <QImage>
@@ -43,7 +44,31 @@ void MainWindow::on_actionAdd_dump_triggered()
         NULL, tr("Files (*.*)"));
 
     if(filePath.size() > 0) {
-        ui->treeWidget->addDump(filePath);
+        //asking for file format
+        bool ok; //false if cancel was pressed
+        QStringList availableImputModes;
+        InputFormat guessedFormat = BitString::guessFileInputFormat(filePath.toStdString());
+        if(guessedFormat != RAW){
+            if(guessedFormat == BINARY){
+                availableImputModes.push_back("Binary"); //only available if the guess returns binary (i.e. there were only 0s and 1s in the file)
+            }
+            availableImputModes.push_back("Hexadecimal"); //only available if not RAW (i.e. if HEXA orBINARY)
+        }
+        availableImputModes.push_back("Raw data"); //always available
+
+        InputFormat inputFormat;
+        if(availableImputModes.size() > 1){ //more than 1 available
+            QString chosenFormat = QInputDialog::getItem(this,"Select input format", "Input format : ", availableImputModes, 0, false, &ok);
+            if(ok){ //cancel was not pressed
+                inputFormat = BitString::stringToFormat(chosenFormat.toStdString());
+            }
+            //else we won't add the dump, so nothing more to do
+        }
+        else{
+            inputFormat = RAW; //default value
+        }
+        if(ok)
+            ui->treeWidget->addDump(filePath, inputFormat);
     }
 }
 

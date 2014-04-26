@@ -4,7 +4,7 @@
 #include "Exception.h"
 #include "Dump.h"
 
-Dump::Dump(std::string const& filePath): m_filePath(filePath)
+Dump::Dump(std::string const& filePath, InputFormat format): m_filePath(filePath)
 {
     std::ifstream f;
     f.open(m_filePath.c_str());
@@ -17,10 +17,10 @@ Dump::Dump(std::string const& filePath): m_filePath(filePath)
         str.append(buff);
     }
 
-    m_bitString = BitString::fromHex(str);
+    m_bitString = BitString::makeBitString(str, format);
 }
 
-Dump::Dump(Dump const& other) : m_filePath(other.m_filePath)
+Dump::Dump(Dump const& other) : m_filePath(other.m_filePath), m_format(other.m_format)
 {
     std::ifstream f;
     f.open(m_filePath.c_str());
@@ -33,7 +33,7 @@ Dump::Dump(Dump const& other) : m_filePath(other.m_filePath)
         str.append(buff);
     }
 
-    m_bitString = BitString::fromHex(str);
+    m_bitString = BitString::makeBitString(str, m_format);
 }
 
 BitString const* Dump::bitString() const
@@ -54,4 +54,14 @@ std::string Dump::fileName() const
     }
 
     return m_filePath.substr(pos + 1);
+}
+
+InputFormat Dump::getFormat() const
+{
+    return m_format;
+}
+
+int Dump::getSize() const
+{
+    return m_bitString.size();
 }

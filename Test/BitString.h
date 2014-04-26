@@ -26,6 +26,7 @@ TEST(BitString_hex)
   }
 
   CHECK(true == c[7]);
+  CHECK(8 == b.size());
 }
 
 TEST(BitString_bin)
@@ -34,12 +35,14 @@ TEST(BitString_bin)
   CHECK(!b[0]);
   CHECK(b[1]);
   CHECK(!b[2]);
+  CHECK(3 == b.size());
 }
 
 TEST(BitString_raw)
 {
   BitString b = BitString::fromRaw("01A");
   CHECK("001100000011000101000001" == b.toString());
+  CHECK(24 == b.size());
 }
 
 TEST(BitString_set)

@@ -21,7 +21,7 @@ public:
     size_t size() const;
     bool operator[](unsigned int index) const;
     bool set(unsigned int index, bool value);
-    int getSize();
+    int getSize() const;
 
     // Bitwise operators
     BitString operator&(BitString const& other);

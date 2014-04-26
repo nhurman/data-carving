@@ -24,7 +24,7 @@ signals:
 
 public slots:
     void addDumpSet(DumpSet*);
-    void addDump(QString filePath);
+    void addDump(QString filePath, InputFormat format = RAW);
     void onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
     //returns false if the closure was aborted by the user
     bool closeDumpSet();

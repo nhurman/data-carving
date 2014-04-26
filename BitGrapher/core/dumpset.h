@@ -12,7 +12,7 @@ public:
     DumpSet(std::string filePath = "");
     ~DumpSet();
 
-    Dump const* add(std::string filePath);
+    Dump const* add(std::string filePath, InputFormat format = RAW);
     void remove(std::string filePath);
     bool save();
     bool save(std::string filePath);

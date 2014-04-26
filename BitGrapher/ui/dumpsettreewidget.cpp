@@ -47,7 +47,7 @@ void DumpSetTreeWidget::addDumpSet(DumpSet* ds)
     }
 }
 
-void DumpSetTreeWidget::addDump(QString filePath)
+void DumpSetTreeWidget::addDump(QString filePath, InputFormat format)
 {
     if (NULL == m_selectedDumpSet) {
         return;
@@ -60,7 +60,7 @@ void DumpSetTreeWidget::addDump(QString filePath)
         }
     }
 
-    Dump const* dump = m_selectedDumpSet->add(filePath.toUtf8().constData());
+    Dump const* dump = m_selectedDumpSet->add(filePath.toUtf8().constData(), format);
     QTreeWidgetItem* dumpSetItem = getDumpSetItem();
     QTreeWidgetItem* dumpItem = new QTreeWidgetItem(QStringList(dump->fileName().c_str()));
     m_dumps[m_selectedDumpSet].insert(std::make_pair(dumpItem, dump));
