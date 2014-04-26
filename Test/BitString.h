@@ -105,3 +105,18 @@ TEST(BitString_substring)
   CHECK_THROW(a.substring(1, 10), BitStringException);
   CHECK_THROW(a.substring(10, 0), BitStringException);
 }
+
+TEST(Guess_binary)
+{
+  CHECK(BINARY == BitString::guessTextInputFormat("00110101"));
+}
+
+TEST(Guess_hexa)
+{
+  CHECK(HEXADECIMAL == BitString::guessTextInputFormat("00F0"));
+}
+
+TEST(Guess_raw)
+{
+  CHECK(RAW == BitString::guessTextInputFormat("01Z"));
+}

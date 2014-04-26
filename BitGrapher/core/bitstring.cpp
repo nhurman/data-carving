@@ -1,6 +1,8 @@
 #include <algorithm>
 #include <cstring>
 #include <cmath>
+#include <fstream>
+#include <iostream>
 
 #include "BitString.h"
 #include "Exception.h"
@@ -252,4 +254,82 @@ std::string BitString::toString() const
     }
 
     return out;
+}
+
+InputFormat BitString::guessFileInputFormat(std::string fileName)
+{
+    std::ifstream f;
+    f.open (fileName);
+    if(!f.is_open())
+    {
+
+        std::cout << "Unable to open dump : The following dump could not be opened :\n"+fileName << std::endl;
+        return RAW;
+    }
+
+    InputFormat format = BINARY; //the lowest format, in terms of character usage
+    std::string buff = "";
+    while(std::getline(f, buff))
+    {
+        switch (guessTextInputFormat(buff))
+        {
+        case HEXADECIMAL:
+            format = HEXADECIMAL; //hexadecimal < raw but raw would return immediately if detected
+            break;
+
+        case RAW:
+            return RAW; //nothing greater than raw
+
+        default:
+            break;
+        }
+    }
+    return format;
+}
+
+InputFormat BitString::guessTextInputFormat(std::string text)
+{
+    std::string str = text;
+    str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
+    InputFormat format = BINARY;; //the lowest format, in terms of character usage
+    for(unsigned int i = 0; i < str.size(); i++)
+    {
+        if(str[i] != '0' && str[i] != '1') //not binary
+        {
+            if ((str[i] >= '0' && str[i] <= '9') || (str[i] >= 'A' && str[i] <= 'F') || (str[i] >= 'a' && str[i] <= 'f'))
+                format = HEXADECIMAL; //hexadecimal < raw but raw would return immediately if detected
+            else //any other character
+                return RAW;
+        }
+    }
+    return format;
+}
+
+InputFormat BitString::stringToFormat(std::string formatStr)
+{
+    if(formatStr == "Binary")
+    {
+        return BINARY;
+    }
+    else if(formatStr == "Hexadecimal")
+    {
+        return HEXADECIMAL;
+    }
+    else //Raw data
+    {
+        return RAW;
+    }
+}
+
+std::string BitString::formatToString(InputFormat format)
+{
+    switch(format)
+    {
+    case BINARY:
+        return "Binary";
+    case HEXADECIMAL:
+        return "Hexadecimal";
+    default: //RAW
+        return "Raw data";
+    }
 }

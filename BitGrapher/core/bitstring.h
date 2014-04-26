@@ -36,6 +36,11 @@ public:
 
     std::string toString() const;
 
+    static InputFormat guessFileInputFormat(std::string fileName);
+    static InputFormat guessTextInputFormat(std::string text);
+    static InputFormat stringToFormat(std::string formatStr);
+    static std::string formatToString(InputFormat format);
+
 private:
     size_t m_size;
     char*  m_bytes;
