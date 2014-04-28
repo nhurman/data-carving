@@ -15,7 +15,7 @@ public:
     bool isModified();
     //loads a dump to the dumpSet
     void addDump(Dump d);
-    void addDump(QString fileName);
+    void addDump(QString fileName, InputFormat format = RAW);
     //finds a dump in the dumpSet. Returns null if not found
     Dump* find(QString name);
     //removes a dump from the set

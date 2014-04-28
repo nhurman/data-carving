@@ -1,0 +1,4 @@
+Extension : .ds
+1 ligne per dump
+FILEPATH;INPUTFORMAT
+INPUTFORMAT in {Binary, Hexadecimal, Raw data}

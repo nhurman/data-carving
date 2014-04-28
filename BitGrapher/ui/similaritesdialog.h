@@ -27,6 +27,7 @@ public slots:
     void cancelAndClose();
     void addComboBox();
     void removeComboBox();
+    void displayDefaultSize();
 
 private:
     QVBoxLayout* m_layout;
@@ -36,6 +37,7 @@ private:
     QSpinBox* m_minSizeSpinBox;
 
     void refreshComboBox(int index);
+    int preferredStringSize();
 
     //the result is tored here, to be recovered after window closure
     static Similarities* m_result;

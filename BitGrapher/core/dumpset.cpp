@@ -14,10 +14,15 @@ DumpSet::DumpSet(QString fileName) : m_dumps(), m_fileName(fileName), m_modified
         f.open (fileName.toUtf8());
         if(f.is_open())
         {
-            std::string buff = "";
-            while(std::getline(f, buff))
+            std::string name;
+            std::string formatStr;
+            while(std::getline(f, name, ';'))
             {
-                addDump(QString::fromStdString(buff));
+                std::cout << "Name : " << name << std::endl;
+                std::getline(f, formatStr);
+                std::cout << "Format : " << formatStr << std::endl;
+
+                addDump(QString::fromStdString(name), BitString::stringToFormat(formatStr));
             }
             m_modified = false;
         }
@@ -57,9 +62,9 @@ bool DumpSet::isModified()
     return m_modified;
 }
 
-void DumpSet::addDump(QString fileName)
+void DumpSet::addDump(QString fileName, InputFormat format)
 {
-    addDump(Dump(fileName));
+    addDump(Dump(fileName, format));
 }
 
 void DumpSet::addDump(Dump d)
@@ -107,7 +112,7 @@ bool DumpSet::saveToFile(QString filePath)
         return false;
     for(std::map<QString, Dump>::iterator i = m_dumps.begin(); i != m_dumps.end(); i++)
     {
-        file << i->second.getFileName().toStdString() << std::endl;
+        file << i->second.getFileName().toStdString() << ";" << BitString::formatToString(i->second.getFormat()) << std::endl;
     }
     file.close();
     m_modified = false;

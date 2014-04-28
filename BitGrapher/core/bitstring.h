@@ -26,6 +26,7 @@ public:
     char getByte(unsigned int index) const;
     bool operator[](unsigned int index) const;
     bool set(unsigned int index, bool value);
+    int getSize() { return m_size; }
 
     void bitAnd(BitString const& bitstring);
     void bitOr(BitString const& bitstring);
@@ -49,6 +50,8 @@ public:
 
     static InputFormat guessFileInputFormat(std::string fileName);
     static InputFormat guessTextInputFormat(std::string text);
+    static InputFormat stringToFormat(std::string formatStr);
+    static std::string formatToString(InputFormat format);
 
     //convert between byte pos and char pos in string (because of blanks between bytes)
     static int convertCoords(int pos);

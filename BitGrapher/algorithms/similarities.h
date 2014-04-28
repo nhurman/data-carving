@@ -16,6 +16,9 @@ public:
     std::list< SIM_TYPE > *getList();
     std::string toString() const;
 
+    //probabilities
+    static int minStringSize(std::list<int> sizes); //give it the dump sizes
+
     static void test();
 
 private:
@@ -28,8 +31,6 @@ private:
     static std::list< SIM_TYPE > uniteSim(SIM_TYPE s1, SIM_TYPE s2, int minSize = 1); //only call if there is an intersection
     static std::list< SIM_TYPE > intersectSim(SIM_TYPE s1, SIM_TYPE s2, int minSize = 1); //only call if there is an intersection
 
-    //probabilities
-    static int minStringSize(std::list<int> sizes); //give it the dump sizes
 };
 
 #endif // SIMILARITIES_H

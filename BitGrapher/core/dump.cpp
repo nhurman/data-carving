@@ -3,7 +3,7 @@
 #include <fstream>
 #include <QMessageBox>
 
-Dump::Dump(QString fileName, InputFormat format): m_fileName(fileName)
+Dump::Dump(QString fileName, InputFormat format): m_fileName(fileName), m_format(format)
 {
     std::ifstream f;
     f.open (fileName.toUtf8());
