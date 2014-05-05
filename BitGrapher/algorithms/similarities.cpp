@@ -372,14 +372,14 @@ std::string Similarities::toString() const
     {
         char c[8];
         s += "[";
-        s += itoa(sim.first.first, c, 10);
+        //s += itoa(sim.first.first, c, 10);
         s += " ; ";
-        s += itoa(sim.first.second, c, 10);
+        //s += itoa(sim.first.second, c, 10);
         s += "] :";
         for(int i: sim.second)
         {
             s += " ";
-            s += itoa(i, c, 10);
+            //s += itoa(i, c, 10);
         }
         s += "\n";
     }
