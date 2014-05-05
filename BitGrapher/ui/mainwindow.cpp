@@ -224,8 +224,8 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
     ui->textEdit->clear();
     QString partOfText;
     int pos = 0;
-    std::list< SIM_TYPE >* list = s->getList();
-    for (std::list< SIM_TYPE >::iterator i = list->begin(); i != list->end(); i++ )
+    std::list< Similarity >* list = s->getList();
+    for (std::list< Similarity >::iterator i = list->begin(); i != list->end(); i++ )
     {
         if(m_bitstring->size() <= i->first.second) //if we arrived at the end of the dump
         {
@@ -274,7 +274,7 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
         }
 
         //Bug Fix
-        std::list< SIM_TYPE >::iterator j = i; //j = i+1;
+        std::list< Similarity >::iterator j = i; //j = i+1;
         j++;
         if(i->first.second >= j->first.first-1                      //if the next similarity is right next to this one (j is right after i)
                 && pos < convertCoords(j->first.first, true))        // but pos is before its converted starting point (pos is before the junction between i and j)

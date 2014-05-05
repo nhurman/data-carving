@@ -5,7 +5,7 @@ Similarities::Similarities(std::vector<Dump> dumps, int minSize) : m_dumps(dumps
 {
     for(unsigned int i = 0; i < m_dumps.size(); i++)
     {
-        std::list< SIM_TYPE > simi;
+        std::list< Similarity > simi;
         for(unsigned int j = i+1; j < m_dumps.size(); j++)
         {
             std::list<std::pair<int, int> > l = BitString::similarities(*m_dumps[i].getBitString(), *m_dumps[j].getBitString(), minSize);
@@ -31,14 +31,14 @@ int Similarities::getDumpCount()
     return m_dumps.size();
 }
 
-std::list< SIM_TYPE >* Similarities::getList()
+std::list< Similarity >* Similarities::getList()
 {
     return &m_similarities;
 }
 
-void Similarities::addSimilarities(std::list<SIM_TYPE>* sim1, std::list<std::pair<int, int> >* sim2, int d1, int d2)
+void Similarities::addSimilarities(std::list<Similarity>* sim1, std::list<std::pair<int, int> >* sim2, int d1, int d2)
 {
-    std::list< SIM_TYPE >::iterator j = sim1->begin();
+    std::list< Similarity >::iterator j = sim1->begin();
     for (std::list<std::pair<int,int> >::iterator i = sim2->begin(); i != sim2->end(); i++ )
     {
         if(j == sim1->end())
@@ -46,7 +46,7 @@ void Similarities::addSimilarities(std::list<SIM_TYPE>* sim1, std::list<std::pai
             std::list<int> l;
             l.push_back(d1);
             l.push_back(d2);
-            sim1->push_back(SIM_TYPE (*i, l) );
+            sim1->push_back(Similarity (*i, l) );
         }
         else
         {
@@ -58,14 +58,14 @@ void Similarities::addSimilarities(std::list<SIM_TYPE>* sim1, std::list<std::pai
                 if(j->first.first < i->second) //if(a < y)
                 {
                     //[a,b] inter [x,y] != NULL
-                    std::list< SIM_TYPE > newSim = uniteSim(*j, SIM_TYPE (*i, l));
+                    std::list< Similarity > newSim = uniteSim(*j, Similarity (*i, l));
                     j = sim1->erase(j);
                     sim1->insert(j, newSim.begin(), newSim.end() );
                 }
                 else
                 {
                     //we add the new similarity as it doesn't collide with any existing ones
-                    sim1->insert(j, SIM_TYPE (*i, l) );
+                    sim1->insert(j, Similarity (*i, l) );
                 }
             }
             else
@@ -78,10 +78,10 @@ void Similarities::addSimilarities(std::list<SIM_TYPE>* sim1, std::list<std::pai
     }
 }
 
-void Similarities::addSimList (std::list< SIM_TYPE >* list)
+void Similarities::addSimList (std::list< Similarity >* list)
 {
-    std::list< SIM_TYPE >::iterator j = m_similarities.begin();
-    for (std::list< SIM_TYPE >::iterator i = list->begin(); i != list->end(); i++ )
+    std::list< Similarity >::iterator j = m_similarities.begin();
+    for (std::list< Similarity >::iterator i = list->begin(); i != list->end(); i++ )
     {
         if(j == m_similarities.end())
         {
@@ -94,7 +94,7 @@ void Similarities::addSimList (std::list< SIM_TYPE >* list)
                 if(j->first.first < i->first.second) //if(a < y)
                 {
                     //[a,b] inter [x,y] != NULL
-                    std::list< SIM_TYPE > newSim = intersectSim(*j, *i);
+                    std::list< Similarity > newSim = intersectSim(*j, *i);
                     j = m_similarities.erase(j);
                     m_similarities.insert(j, newSim.begin(), newSim.end() );
                 }
@@ -114,9 +114,9 @@ void Similarities::addSimList (std::list< SIM_TYPE >* list)
     }
 }
 
-std::list< SIM_TYPE > Similarities::uniteSim(SIM_TYPE s1, SIM_TYPE s2, int minSize)
+std::list< Similarity > Similarities::uniteSim(Similarity s1, Similarity s2, int minSize)
 {
-    std::list< SIM_TYPE > l;
+    std::list< Similarity > l;
     std::list<int> s1secondUs2second = s1.second; //union of s1.second and s2.second
     for (std::list<int>::iterator i = s2.second.begin(); i != s2.second.end(); i++ )
         s1secondUs2second.push_back(*i);
@@ -129,23 +129,23 @@ std::list< SIM_TYPE > Similarities::uniteSim(SIM_TYPE s1, SIM_TYPE s2, int minSi
         if(s1.first.second > s2.first.second) //s2 C s1
         {
             if(s2.first.first - s1.first.first >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
+                l.push_back(Similarity (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
 
-            l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s2.first.second), s1secondUs2second));
+            l.push_back(Similarity (std::pair<int,int>(s2.first.first, s2.first.second), s1secondUs2second));
 
             if(s1.first.second - s2.first.second >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
+                l.push_back(Similarity (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
         }
         else //s1.end e s2 && s2.begin e s1
         {
             if(s2.first.first - s1.first.first >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
+                l.push_back(Similarity (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
 
             if(s1.first.second - s2.first.first +1 >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.second), s1secondUs2second));
+                l.push_back(Similarity (std::pair<int,int>(s2.first.first, s1.first.second), s1secondUs2second));
 
             if(s2.first.second - s1.first.second >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
+                l.push_back(Similarity (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
         }
     }
     else
@@ -153,31 +153,31 @@ std::list< SIM_TYPE > Similarities::uniteSim(SIM_TYPE s1, SIM_TYPE s2, int minSi
         if(s1.first.second < s2.first.second) //s1 C s2
         {
             if(s1.first.first - s2.first.first >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
+                l.push_back(Similarity (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
 
-            l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s1.first.second), s1secondUs2second));
+            l.push_back(Similarity (std::pair<int,int>(s1.first.first, s1.first.second), s1secondUs2second));
 
             if(s2.first.second - s1.first.second >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
+                l.push_back(Similarity (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
         }
         else //s2.end e s1 && s1.begin e s2
         {
             if(s1.first.first - s2.first.first >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
+                l.push_back(Similarity (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
 
             if(s2.first.second - s1.first.first +1 >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.second), s1secondUs2second));
+                l.push_back(Similarity (std::pair<int,int>(s1.first.first, s2.first.second), s1secondUs2second));
 
             if(s1.first.second - s2.first.second >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
+                l.push_back(Similarity (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
         }
     }
     return l;
 }
 
-std::list< SIM_TYPE > Similarities::intersectSim(SIM_TYPE s1, SIM_TYPE s2, int minSize)
+std::list< Similarity > Similarities::intersectSim(Similarity s1, Similarity s2, int minSize)
 {
-    std::list< SIM_TYPE > l;
+    std::list< Similarity > l;
     std::list<int> maxSecond; //max of s1.second and s2.second (in terms of nb of elts)
     bool is1greater;
     if(s1.second.size() < s2.second.size())
@@ -202,24 +202,24 @@ std::list< SIM_TYPE > Similarities::intersectSim(SIM_TYPE s1, SIM_TYPE s2, int m
             else
             {
                 if(s2.first.first - s1.first.first >= minSize)
-                    l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
+                    l.push_back(Similarity (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
 
-                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s2.first.second), maxSecond));
+                l.push_back(Similarity (std::pair<int,int>(s2.first.first, s2.first.second), maxSecond));
 
                 if(s1.first.second - s2.first.second >= minSize)
-                    l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
+                    l.push_back(Similarity (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
             }
         }
         else //s1.end e s2 && s2.begin e s1
         {
             if(s2.first.first - s1.first.first >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
+                l.push_back(Similarity (std::pair<int,int>(s1.first.first, s2.first.first-1), s1.second));
 
             if(s1.first.second - s2.first.first +1 >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.second), maxSecond));
+                l.push_back(Similarity (std::pair<int,int>(s2.first.first, s1.first.second), maxSecond));
 
             if(s2.first.second - s1.first.second >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
+                l.push_back(Similarity (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
         }
     }
     else
@@ -233,24 +233,24 @@ std::list< SIM_TYPE > Similarities::intersectSim(SIM_TYPE s1, SIM_TYPE s2, int m
             else
             {
                 if(s1.first.first - s2.first.first >= minSize)
-                    l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
+                    l.push_back(Similarity (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
 
-                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s1.first.second), maxSecond));
+                l.push_back(Similarity (std::pair<int,int>(s1.first.first, s1.first.second), maxSecond));
 
                 if(s2.first.second - s1.first.second >= minSize)
-                    l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
+                    l.push_back(Similarity (std::pair<int,int>(s1.first.second+1, s2.first.second), s2.second));
             }
         }
         else //s2.end e s1 && s1.begin e s2
         {
             if(s1.first.first - s2.first.first >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
+                l.push_back(Similarity (std::pair<int,int>(s2.first.first, s1.first.first-1), s2.second));
 
             if(s2.first.second - s1.first.first +1 >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s1.first.first, s2.first.second), maxSecond));
+                l.push_back(Similarity (std::pair<int,int>(s1.first.first, s2.first.second), maxSecond));
 
             if(s1.first.second - s2.first.second >= minSize)
-                l.push_back(SIM_TYPE (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
+                l.push_back(Similarity (std::pair<int,int>(s2.first.second+1, s1.first.second), s1.second));
         }
     }
     return l;
@@ -259,7 +259,7 @@ std::list< SIM_TYPE > Similarities::intersectSim(SIM_TYPE s1, SIM_TYPE s2, int m
 std::string Similarities::toString() const
 {
     std::string s = "Similarities :\n";
-    for(SIM_TYPE sim: m_similarities)
+    for(Similarity sim: m_similarities)
     {
         char c[8];
         s += "[";
