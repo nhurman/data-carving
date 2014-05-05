@@ -36,6 +36,115 @@ std::list< Similarity >* Similarities::getList()
     return &m_similarities;
 }
 
+std::list<std::pair<float, int> > * Similarities::getSimilarities(Dump d, int charSize = 1)
+{
+    return getSimilarities(getDumpId(d), charSize);
+}
+
+std::list< std::pair<float, int> >* Similarities::getSimilarities(int dumpId, int charSize)
+{
+    std::list< std::pair<float, int> >* sims = new std::list< std::pair<float, int> >();
+    int pos = 0;
+    float oldColor = 0;
+    float currColor = 0;
+    for (std::list< Similarity >::iterator i = m_similarities.begin(); i != m_similarities.end() /*&& pos != -1*/; i++ )
+    {
+        if(m_dumps[dumpId].getSize() <= i->first.second) //if we arrived at the end of the dump
+        {
+            if(m_dumps[dumpId].getSize() > i->first.first) //if the beginning of the next similarity is not too far
+            {
+                //last similarity
+                float ratio = (float) i->second.size()/getDumpCount();
+                if(std::find(i->second.begin(), i->second.end(), dumpId) != i->second.end()) //the similarity concerns the selected dump
+                    currColor = ratio;
+                else
+                    currColor = -ratio;
+
+                pos = -1; //going until end of dump
+
+                addColor(sims, currColor, oldColor, pos);
+
+                oldColor = currColor;
+            }
+
+            break; //exit loop
+
+        }
+
+        //dissimilarity until next value
+        pos = convertCoords(i->first.first, charSize, true) -1; //-1 because it is the beginning fo the next similarity
+        if(pos > sims->back().second) //the length can be of 0 or lower due to the encoding
+        {
+            currColor = 0;
+
+            addColor(sims, currColor, oldColor, pos);
+        }
+
+        //similarity
+        pos = convertCoords(i->first.second, charSize);
+        if(pos > sims->back().second) //the length can be of 0 or lower due to the encoding
+        {
+            float ratio = (float) i->second.size()/getDumpCount();
+
+            if(std::find(i->second.begin(), i->second.end(), dumpId) != i->second.end()) //the similarity concerns the selected dump
+                currColor = ratio;
+            else
+                currColor = -ratio;
+
+            addColor(sims, currColor, oldColor, pos);
+        }
+
+        //Bug Fix
+        std::list< Similarity >::iterator j = i; //j = i+1;
+        j++;
+        pos = sims->back().second + 1;              //We consider the next character, in case it was shared by more than 1 similarity
+        if(i->first.second >= j->first.first-1                              //if the next similarity is right next to this one (j is right after i)
+                && pos < convertCoords(j->first.first, charSize, true))     // but we are before its converted starting point (pos is before the junction between i and j)
+        {
+            std::list<int> common = i->second; //will contain the dumps common to the similarities sharing the curent character
+            j--; //necessary for the next loop, it starts with j = i
+            do
+            {
+                if(j->first.second >= (j++)->first.first-1) //if the next similarity is right next to this one
+                {
+                    std::list<int> oldCommon = common;
+                    common.clear();
+                    std::set_intersection(oldCommon.begin(), oldCommon.end(), j->second.begin(), j->second.end(), std::back_inserter(common)); //common = common inter lj
+                }
+                else //nothing more to do here
+                {
+                    common.clear();
+                    break;
+                }
+            }
+            while(convertCoords((j)->first.second, charSize) < pos); //we look forward until we find a sim that ends at or beyond pos
+
+            if(common.size() > 1) //if there are at least 2 common elements
+            {
+                float ratio = (float) common.size()/getDumpCount();
+
+                if(std::find(i->second.begin(), i->second.end(), dumpId) != i->second.end()) //the similarity concerns the selected dump
+                    currColor = ratio;
+                else
+                    currColor = -ratio;
+
+                addColor(sims, currColor, oldColor, pos);
+            }
+        }
+        //Bug Fix End
+    }
+    if(pos != -1) //if the end was not reached in the loop
+    {
+        //last dissimilarity
+        pos = -1; //text until end
+        currColor = 0;
+
+        addColor(sims, currColor, oldColor, pos);
+    }
+
+    return sims;
+}
+
 void Similarities::addSimilarities(std::list<Similarity>* sim1, std::list<std::pair<int, int> >* sim2, int d1, int d2)
 {
     std::list< Similarity >::iterator j = sim1->begin();
@@ -301,4 +410,30 @@ int Similarities::minStringSize(std::list<int> sizes)
         return 4.29 + LOG2(t) + .99; //+.99 : cheap way to round up the result
     }
     return 1; //default value if empty list
+}
+
+int Similarities::convertCoords(int c, int charSize, bool roundUp)
+{
+    if(charSize == 1)
+        return BitString::convertCoords(c);
+
+    //else
+    int res = c/charSize;
+
+    if(roundUp && c%charSize != 0)
+        res ++;
+    else if(!roundUp && c%charSize != charSize-1)
+        res--;
+
+    return res;
+}
+
+void Similarities::addColor(std::list<std::pair<float, int> >* list, float color, float &oldColor, int endIndex)
+{
+    if(color == oldColor)
+        list->back().second = endIndex;
+    else
+        list->push_back(std::pair<float, int>(color, endIndex));
+
+    oldColor = color;
 }
