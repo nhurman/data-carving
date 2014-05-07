@@ -1,44 +1,40 @@
-#include "ASCII.h"
+#include "Sixbit.h"
 #include <sstream>
 #include <iomanip>
 #include <QDebug>
 
-ASCII::ASCII() : Encoding()
+Sixbit::Sixbit() : Encoding()
 {
 
 }
 
-ASCII::ASCII(BitString const* bs) : Encoding(bs)
+Sixbit::Sixbit(BitString const* bs) : Encoding(bs)
 {
 
 }
 
-ASCII::~ASCII()
+Sixbit::~Sixbit()
 {
 
 }
 
-size_t ASCII::BytesPerLine() const
+
+size_t Sixbit::BytesPerLine() const
 {
     return 16;
 }
 
-size_t ASCII::LineHeight() const
+size_t Sixbit::LineHeight() const
 {
     return 17;
 }
 
-size_t ASCII::LineWidth() const
+size_t Sixbit::LineWidth() const
 {
     return 150;
 }
 
-size_t ASCII::BitPerChar() const
-{
-    return 8;
-}
-
-size_t ASCII::lines() const
+size_t Sixbit::lines() const
 {
     if (!m_bitString) {
         return 0;
@@ -47,7 +43,12 @@ size_t ASCII::lines() const
     return ceil((float)m_bitString->size() / (BitPerChar() * BytesPerLine()));
 }
 
-std::string ASCII::toHTML() const
+size_t Sixbit::BitPerChar() const
+{
+    return 6;
+}
+
+std::string Sixbit::toHTML() const
 {
     if (!m_bitString) {
         return std::string();
@@ -58,13 +59,15 @@ std::string ASCII::toHTML() const
     os << "b{font-weight:normal}";
     os << "i,b{font-size:14px}</style>";
 
-    for (size_t i = 0; i < m_bitString->size(); i += BitPerChar()) {
+    for (size_t i = 0; i < m_bitString->size(); i += 8) {
         unsigned char byte = 0;
-        for (char j = 0; j < BitPerChar(); ++j) {
+        for (char j = 0; j < 8; ++j) {
             byte += ((*m_bitString)[i + j] ? 1 : 0) << (7 - j);
+            // magic for sixbit, should not be here
+            byte+=32;
         }
 
-        int mod = (i/BitPerChar()) % BytesPerLine();
+        int mod = (i/8) % BytesPerLine();
         if (i == 0 || mod == 0) {
             if (i != 0) {
                 os.seekp(-1, std::ios_base::cur);
@@ -90,4 +93,3 @@ std::string ASCII::toHTML() const
 
     return os.str();
 }
-

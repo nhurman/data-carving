@@ -1,25 +1,25 @@
-#ifndef ASCII_H
-#define ASCII_H
+#ifndef SIXBIT_H
+#define SIXBIT_H
 
 #include <string>
 #include "core/BitString.h"
 #include "Encoding.h"
 
-class ASCII : public Encoding
+class Sixbit : public Encoding
 {
 public:
-    ASCII();
-    ASCII(BitString const* bs);
-    ~ASCII();
+    Sixbit();
+    Sixbit(BitString const* bs);
+    ~Sixbit();
     std::string toHTML() const;
     size_t lines() const;
 
     size_t BytesPerLine() const;
     size_t LineHeight() const;
     size_t LineWidth() const;
-
     size_t BitPerChar() const;
+
 
 };
 
-#endif // ASCII_H
+#endif // SIXBIT_H

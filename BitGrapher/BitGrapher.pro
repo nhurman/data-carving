@@ -20,7 +20,9 @@ SOURCES += \
     encoding/Encoding.cpp \
     encoding/ASCII.cpp \
     ui/TextViewWidget.cpp \
-    ui/ViewWidget.cpp
+    ui/ViewWidget.cpp \
+    encoding/Sixbit.cpp \
+    core/Association.cpp
 
 HEADERS  += \
   ui/MainWindow.h \
@@ -35,7 +37,9 @@ HEADERS  += \
     encoding/Hexadecimal.h \
     encoding/Encoding.h \
     ui/TextViewWidget.h \
-    ui/ViewWidget.h
+    ui/ViewWidget.h \
+    encoding/Sixbit.h \
+    core/Association.h
 
 FORMS    += \
   ui/MainWindow.ui
