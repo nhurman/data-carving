@@ -37,3 +37,14 @@ void Association::remove(unsigned int pos) {
     m_fieldsList.erase(m_fieldsList.begin() + pos);
 
 }
+Field Association::itemAt(unsigned int x){
+    return m_fieldsList[x];
+}
+
+std::vector<struct Field>* Association::fieldsLists() {
+    return &m_fieldsList;
+}
+
+BitString const* Association::getBitString() {
+    return m_data;
+}

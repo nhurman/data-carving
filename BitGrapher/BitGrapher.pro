@@ -22,7 +22,8 @@ SOURCES += \
     ui/TextViewWidget.cpp \
     ui/ViewWidget.cpp \
     encoding/Sixbit.cpp \
-    core/Association.cpp
+    core/Association.cpp \
+    ui/AssociationViewWidget.cpp
 
 HEADERS  += \
   ui/MainWindow.h \
@@ -39,7 +40,8 @@ HEADERS  += \
     ui/TextViewWidget.h \
     ui/ViewWidget.h \
     encoding/Sixbit.h \
-    core/Association.h
+    core/Association.h \
+    ui/AssociationViewWidget.h
 
 FORMS    += \
   ui/MainWindow.ui
