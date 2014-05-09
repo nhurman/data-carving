@@ -29,6 +29,9 @@ private:
     std::map<std::string, Dump const*> m_dumps;
     std::string m_filePath;
     bool m_modified;
+
+    std::string toAbsolute(const std::string relativePath) const;
+    std::string toRelative(const std::string absolutePath) const;
 };
 
 #endif // DUMPSET_H
