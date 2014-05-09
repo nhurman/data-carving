@@ -36,7 +36,7 @@ std::list< Similarity >* Similarities::getList()
     return &m_similarities;
 }
 
-std::list<std::pair<float, int> > * Similarities::getSimilarities(Dump d, int charSize = 1)
+std::list<std::pair<float, int> > * Similarities::getSimilarities(Dump d, int charSize)
 {
     return getSimilarities(getDumpId(d), charSize);
 }
@@ -123,7 +123,7 @@ std::list< std::pair<float, int> >* Similarities::getSimilarities(int dumpId, in
             {
                 float ratio = (float) common.size()/getDumpCount();
 
-                if(std::find(i->second.begin(), i->second.end(), dumpId) != i->second.end()) //the similarity concerns the selected dump
+                if(std::find(common.begin(), common.end(), dumpId) != common.end()) //the similarity concerns the selected dump
                     currColor = ratio;
                 else
                     currColor = -ratio;

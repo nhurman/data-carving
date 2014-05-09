@@ -223,8 +223,22 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
     QString bitString = QString::fromStdString(m_currentEncoding.encode(*m_bitstring));
     ui->textEdit->clear();
     QString partOfText;
-    int pos = 0;
-    std::list< Similarity >* list = s->getList();
+    int pos = -1;
+    int charSize = m_currentEncoding.getCharSize();
+    std::list<std::pair<float, int> >* list = s->getSimilarities(dumpId, charSize);
+    for(std::pair<float, int> p : *list)
+    {
+        int newPos = p.second;
+        //if(charSize == 1)
+        //    newPos += newPos/8; //corrects the space problem when displaying binary
+        int length = newPos - pos;
+        partOfText = bitString.mid(pos + 1, length);
+        ui->textEdit->setTextColor( toSimColor(p.first) );
+        ui->textEdit->insertPlainText(partOfText);
+        pos = newPos;
+    }
+    ui->textEdit->setTextColor( QColor( DEFAULT_COLOR ) );
+    /*std::list< Similarity >* list = s->getList();
     for (std::list< Similarity >::iterator i = list->begin(); i != list->end(); i++ )
     {
         if(m_bitstring->size() <= i->first.second) //if we arrived at the end of the dump
@@ -323,7 +337,7 @@ void MainWindow::drawSimilarities(Similarities* s, int dumpId)
         ui->textEdit->setTextColor( QColor( DISSIM_COLOR ) );
         ui->textEdit->insertPlainText(partOfText);
         ui->textEdit->setTextColor( QColor( DEFAULT_COLOR ) );
-    }
+    }*/
 }
 
 void MainWindow::on_actionAdd_Dump_to_Set_triggered()
@@ -475,4 +489,12 @@ int MainWindow::convertCoords(int c, bool roundUp)
        res--;
 
     return res;
+}
+
+QColor MainWindow::toSimColor(const float f)
+{
+    if(f >= 0)
+        return makeColor( QColor( SIM_COLOR ), QColor( DISSIM_COLOR ), f );
+    //else
+    return makeColor( QColor( OTHER_SIM_COLOR ), QColor( DISSIM_COLOR ), -f );
 }

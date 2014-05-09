@@ -83,6 +83,7 @@ private:
     void drawSimilarities(Similarities* s, int dumpId);
 
     static QColor makeColor(QColor c1, QColor c2, float ratio);
+    static QColor toSimColor(const float f);
 };
 
 #endif // MAINWINDOW_H
