@@ -9,14 +9,14 @@ DumpSet::DumpSet(std::string filePath) : m_filePath(filePath), m_modified(false)
         std::ifstream f;
         f.open(filePath.c_str());
         if (f.is_open()) {
-            m_modified = false;
+            //m_modified = false;
 
             std::string name;
             std::string formatStr;
 
             while(std::getline(f, name, ';')){
                 std::getline(f, formatStr);
-                add(name, BitString::stringToFormat(formatStr));
+                add(toAbsolute(name), BitString::stringToFormat(formatStr));
             }
         }
         else {
@@ -56,7 +56,7 @@ bool DumpSet::save()
     }
 
     for (std::map<std::string, Dump const*>::iterator i = m_dumps.begin(); i != m_dumps.end(); i++) {
-        file << i->second->filePath() << ";" << BitString::formatToString(i->second->getFormat()) << std::endl;
+        file << toRelative( i->second->filePath() ) << ";" << BitString::formatToString(i->second->getFormat()) << std::endl;
     }
 
     file.close();
