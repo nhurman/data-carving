@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>979</width>
-    <height>483</height>
+    <height>688</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,9 +50,19 @@
          <x>0</x>
          <y>0</y>
          <width>720</width>
-         <height>430</height>
+         <height>635</height>
         </rect>
        </property>
+       <widget class="AssociationViewWidget" name="AssociationWidget" native="true">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>350</y>
+          <width>701</width>
+          <height>281</height>
+         </rect>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -263,6 +273,12 @@
    <class>DumpSetTreeWidget</class>
    <extends>QTreeWidget</extends>
    <header>ui/DumpSetTreeWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AssociationViewWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/AssociationViewWidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

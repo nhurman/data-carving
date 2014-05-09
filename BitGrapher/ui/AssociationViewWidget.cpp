@@ -73,8 +73,6 @@ void AssociationViewWidget::openMask() {
         }
     }
 
-
-
     /*Association *a = new Association();
     std::vector<struct Field>* fl = a->fieldsLists();
 
