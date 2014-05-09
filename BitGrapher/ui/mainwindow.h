@@ -6,6 +6,7 @@
 #include "BitmapWidget.h"
 #include "HexViewWidget.h"
 #include "TextViewWidget.h"
+#include "AssociationViewWidget.h"
 
 namespace Ui {
 class MainWindow;
