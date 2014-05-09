@@ -1,6 +1,7 @@
 #include "DumpSet.h"
 #include "Exception.h"
 #include <fstream>
+#include <sstream>
 
 DumpSet::DumpSet(std::string filePath) : m_filePath(filePath), m_modified(false)
 {
@@ -8,16 +9,14 @@ DumpSet::DumpSet(std::string filePath) : m_filePath(filePath), m_modified(false)
         std::ifstream f;
         f.open(filePath.c_str());
         if (f.is_open()) {
-            m_modified = false;
+            //m_modified = false;
 
             std::string name;
             std::string formatStr;
 
             while(std::getline(f, name, ';')){
-                std::cout << "Name : " << name << std::endl;
                 std::getline(f, formatStr);
-                std::cout << "Format : " << formatStr << std::endl;
-                add(name, BitString::stringToFormat(formatStr));
+                add(toAbsolute(name), BitString::stringToFormat(formatStr));
             }
         }
         else {
@@ -57,7 +56,7 @@ bool DumpSet::save()
     }
 
     for (std::map<std::string, Dump const*>::iterator i = m_dumps.begin(); i != m_dumps.end(); i++) {
-        file << i->second->filePath() << ";" << BitString::formatToString(i->second->getFormat()) << std::endl;
+        file << toRelative( i->second->filePath() ) << ";" << BitString::formatToString(i->second->getFormat()) << std::endl;
     }
 
     file.close();
@@ -107,3 +106,54 @@ std::map<std::string, Dump const*> DumpSet::dumps() const
     return m_dumps;
 }
 
+std::string DumpSet::toAbsolute(const std::string relativePath) const
+{
+    char separator = '/';
+    if(m_filePath.find('/') == std::string::npos) //if there is no '/' in the dumpset's filepath
+        separator == '\\'; //change the separator to '\'
+
+    int nbParent = 0; //nb of times we go back to a parent folder
+    std::string absolutePath = m_filePath.substr(0, m_filePath.find_last_of(separator)); //we take back the name of the bitString
+    std::istringstream relativeSS( relativePath );
+    std::string token;
+    while( std::getline( relativeSS, token, separator ) && token == ".." )
+    {
+        nbParent++;
+    }
+    for( ; nbParent > 0 ; nbParent-- )
+    {
+        absolutePath = absolutePath.substr(0, absolutePath.find_last_of(separator)); //we go backwards as many times as the nuber of ..
+    }
+    absolutePath = absolutePath.append(separator + token); //last thing we read, and it was not "..", remember ?
+
+    if( std::getline( relativeSS, token ) )
+        absolutePath = absolutePath.append(separator + token); //we read until the end of the path, and we add it all no the result
+
+    return absolutePath;
+}
+
+std::string DumpSet::toRelative(const std::string absolutePath) const
+{
+    char separator = '/';
+    if(m_filePath.find('/') == std::string::npos) //if there is no '/' in the dumpset's filepath
+        separator == '\\'; //change the separator to '\'
+
+    std::string relativepPath = "";
+    std::istringstream dumpSS( absolutePath );
+    std::istringstream dumpSetSS( m_filePath );
+    std::string dumpToken;
+    std::string dumpSetToken;
+    while( std::getline( dumpSS, dumpToken, separator ) && std::getline( dumpSetSS, dumpSetToken, separator ) && dumpToken == dumpSetToken );//we read the common folders
+    while( std::getline( dumpSetSS, dumpSetToken, separator ) ) //we read the nuber of tokens remaining in the dumpSet file.
+    {                                                           //The last one doesn't count but since we skipped the first one (the last one read in the first loop) it evens up
+        relativepPath += ".."; //that gives us the nuber of folders to go back
+        relativepPath += separator;
+    }
+    relativepPath = relativepPath.append(dumpToken);    //then we add the end of the dump path
+    while( std::getline( dumpSS, dumpToken, separator ) )
+    {
+        relativepPath = relativepPath.append(separator+dumpToken);
+    }
+
+    return relativepPath;
+}
