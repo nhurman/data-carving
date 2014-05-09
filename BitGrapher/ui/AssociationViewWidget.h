@@ -6,9 +6,12 @@
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <vector>
-
+#include <sstream>
 #include <string>
 #include <iostream>
+#include <fstream>
+#include <QFileDialog>
+#include <QTextStream>
 
 namespace Ui {
 class AssociationViewWidget;
@@ -26,10 +29,13 @@ private slots:
     void newLine();
     void deleteLine();
     void openMask();
+    bool saveMaskAs();
+    bool saveMask();
 
 
 private:
     Ui::AssociationViewWidget *ui;
+    QString m_filePath;
 };
 
 #endif // ASSOCIATIONVIEWWIDGET_H

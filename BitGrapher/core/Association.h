@@ -9,7 +9,7 @@
 struct Field {
     std::string fieldName;
     unsigned int start;
-    unsigned int end;
+    unsigned int length;
     //Encoding decoder;
 };
 class Association
