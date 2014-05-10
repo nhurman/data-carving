@@ -2,6 +2,16 @@
 #define BITSTRING_H
 
 #include <string>
+#include <list>
+#include <algorithm>
+#include <cstring>
+#include <cmath>
+#include <fstream>
+#include <iostream>
+
+#include "Exception.h"
+#include "algorithms/DotPlotPattern.h"
+#include "algorithms/Diagonal.h"
 
 enum InputFormat {HEXADECIMAL, BINARY, RAW};
 
@@ -40,6 +50,11 @@ public:
     static InputFormat guessTextInputFormat(std::string text);
     static InputFormat stringToFormat(std::string formatStr);
     static std::string formatToString(InputFormat format);
+
+
+    //
+    std::list<Diagonal> dotPlotPattern(const BitString *dump) const;
+    std::list<Diagonal> dotPlotPattern() const;
 
 private:
     size_t m_size;

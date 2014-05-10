@@ -1,14 +1,5 @@
 #include "MainWindow.h"
-#include "ui_MainWindow.h"
-#include "DumpSetTreeWidget.h"
 
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QInputDialog>
-#include <QScrollArea>
-#include <QLabel>
-#include <QImage>
-#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -173,4 +164,9 @@ void MainWindow::on_actionText_triggered()
     if (ui->scrollArea->widget() != m_textView) {
         ui->scrollArea->setWidget(m_textView);
     }
+}
+
+void MainWindow::on_action_Dot_Plot_Pattern_triggered() {
+   QWidget *wid = new DotPlotView();
+   wid->show();
 }

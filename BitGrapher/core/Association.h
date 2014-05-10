@@ -2,9 +2,10 @@
 #define ASSOCIATION_H
 
 #include <string>
+#include <vector>
+
 #include "bitstring.h"
 #include "encoding/Encoding.h"
-#include <vector>
 
 struct Field {
     std::string fieldName;

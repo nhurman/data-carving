@@ -3,8 +3,14 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QPainter>
+#include <QDebug>
+#include <QTextDocument>
+
 #include "core/BitString.h"
 #include "encoding/Encoding.h"
+#include "encoding/Hexadecimal.h"
+#include "encoding/ASCII.h"
 
 class HexViewWidget : public QWidget
 {

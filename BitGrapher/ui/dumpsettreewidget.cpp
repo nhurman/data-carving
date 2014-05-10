@@ -1,6 +1,5 @@
 #include "ui/dumpsettreewidget.h"
-#include <QMessageBox>
-#include <QFileDialog>
+
 
 DumpSetTreeWidget::DumpSetTreeWidget(QWidget *parent) :
     QTreeWidget(parent), m_nbNewDumpSets(0), m_selectedDumpSet(NULL), m_selectedDump(NULL)

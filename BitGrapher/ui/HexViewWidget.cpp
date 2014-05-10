@@ -1,10 +1,5 @@
 #include "HexViewWidget.h"
-#include "encoding/Hexadecimal.h"
-#include "encoding/ASCII.h"
 
-#include <QPainter>
-#include <QDebug>
-#include <QTextDocument>
 
 HexViewWidget::HexViewWidget(QWidget *parent) :
     QWidget(parent)

@@ -1,7 +1,5 @@
 #include "Sixbit.h"
-#include <sstream>
-#include <iomanip>
-#include <QDebug>
+
 
 Sixbit::Sixbit() : Encoding()
 {

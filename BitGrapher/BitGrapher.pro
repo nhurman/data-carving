@@ -23,7 +23,10 @@ SOURCES += \
     ui/ViewWidget.cpp \
     encoding/Sixbit.cpp \
     core/Association.cpp \
-    ui/AssociationViewWidget.cpp
+    ui/AssociationViewWidget.cpp \
+    ui/DotPlotView.cpp \
+    algorithms/Diagonal.cpp \
+    algorithms/DotPlotPattern.cpp
 
 HEADERS  += \
   ui/MainWindow.h \
@@ -41,8 +44,12 @@ HEADERS  += \
     ui/ViewWidget.h \
     encoding/Sixbit.h \
     core/Association.h \
-    ui/AssociationViewWidget.h
+    ui/AssociationViewWidget.h \
+    ui/DotPlotView.h \
+    algorithms/Diagonal.h \
+    algorithms/DotPlotPattern.h
 
 FORMS    += \
   ui/MainWindow.ui \
-    ui/AssociationViewWidget.ui
+    ui/AssociationViewWidget.ui \
+    ui/DotPlotView.ui

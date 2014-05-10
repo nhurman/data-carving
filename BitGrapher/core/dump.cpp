@@ -1,7 +1,3 @@
-#include <iostream>
-#include <fstream>
-
-#include "Exception.h"
 #include "Dump.h"
 
 Dump::Dump(std::string const& filePath, InputFormat format): m_filePath(filePath)

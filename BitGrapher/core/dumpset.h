@@ -3,9 +3,12 @@
 
 #include <vector>
 #include <map>
-#include "Dump.h"
+#include <fstream>
+#include <sstream>
 #include <iostream>
 
+#include "Dump.h"
+#include "Exception.h"
 class DumpSet
 {
 public:

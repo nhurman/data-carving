@@ -1,12 +1,27 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
+
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QScrollArea>
+#include <QLabel>
+#include <QImage>
+#include <QDebug>
 #include <QMainWindow>
+
+#include "ui_MainWindow.h"
+
+#include "DumpSetTreeWidget.h"
 #include "core/Dump.h"
 #include "BitmapWidget.h"
 #include "HexViewWidget.h"
 #include "TextViewWidget.h"
 #include "AssociationViewWidget.h"
+#include "DotPlotView.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -35,6 +50,9 @@ private slots:
     void on_actionHexadecimal_triggered();
 
     void on_actionText_triggered();
+
+    void on_action_Dot_Plot_Pattern_triggered();
+
 
 private:
     Ui::MainWindow *ui;

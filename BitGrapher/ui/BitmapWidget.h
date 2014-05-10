@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QDebug>
+
 #include "ViewWidget.h"
 
 class BitmapWidget : public ViewWidget

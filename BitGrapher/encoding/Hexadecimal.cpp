@@ -1,7 +1,4 @@
 #include "Hexadecimal.h"
-#include <sstream>
-#include <iomanip>
-#include <QDebug>
 
 Hexadecimal::Hexadecimal() : Encoding()
 {

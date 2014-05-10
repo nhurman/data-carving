@@ -2,6 +2,10 @@
 #define DUMP_H
 
 #include <string>
+#include <iostream>
+#include <fstream>
+
+#include "Exception.h"
 #include "BitString.h"
 
 class Dump

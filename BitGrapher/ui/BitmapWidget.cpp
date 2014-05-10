@@ -1,7 +1,5 @@
 #include "BitmapWidget.h"
 
-#include <QDebug>
-
 BitmapWidget::BitmapWidget(QWidget *parent) :
     ViewWidget(parent)
 {

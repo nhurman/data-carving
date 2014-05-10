@@ -53,16 +53,6 @@
          <height>635</height>
         </rect>
        </property>
-       <widget class="AssociationViewWidget" name="AssociationWidget" native="true">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>350</y>
-          <width>701</width>
-          <height>281</height>
-         </rect>
-        </property>
-       </widget>
       </widget>
      </widget>
     </item>
@@ -95,6 +85,7 @@
      <string>&amp;Algorithms</string>
     </property>
     <addaction name="actionSimilarities"/>
+    <addaction name="action_Dot_Plot_Pattern"/>
    </widget>
    <widget class="QMenu" name="menuLabels">
     <property name="title">
@@ -110,10 +101,20 @@
     <addaction name="actionHexadecimal"/>
     <addaction name="actionText"/>
    </widget>
+   <widget class="QMenu" name="menuMasks">
+    <property name="title">
+     <string>Masks</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionClose"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_As"/>
+   </widget>
    <addaction name="menuDumps"/>
    <addaction name="menuAlgorithms"/>
    <addaction name="menuLabels"/>
    <addaction name="menuView"/>
+   <addaction name="menuMasks"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -266,6 +267,31 @@
     <string>Text</string>
    </property>
   </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>&amp;Open Mask</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>&amp;Close Mask</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>&amp;Save Mask</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="text">
+    <string>&amp;Save Mask As ...</string>
+   </property>
+  </action>
+  <action name="action_Dot_Plot_Pattern">
+   <property name="text">
+    <string>&amp;Dot Plot Pattern</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -273,12 +299,6 @@
    <class>DumpSetTreeWidget</class>
    <extends>QTreeWidget</extends>
    <header>ui/DumpSetTreeWidget.h</header>
-  </customwidget>
-  <customwidget>
-   <class>AssociationViewWidget</class>
-   <extends>QWidget</extends>
-   <header>ui/AssociationViewWidget.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -1,6 +1,5 @@
 #include "ViewWidget.h"
-#include <QDebug>
-#include <QPainter>
+
 
 ViewWidget::ViewWidget(QWidget *parent) : QWidget(parent)
 {

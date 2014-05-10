@@ -1,7 +1,5 @@
 #include "TextViewWidget.h"
-#include "encoding/Hexadecimal.h"
-#include <QPainter>
-#include <QDebug>
+
 
 TextViewWidget::TextViewWidget(QWidget *parent) : ViewWidget(parent)
 {

@@ -1,10 +1,13 @@
 #ifndef TEXTVIEWWIDGET_H
 #define TEXTVIEWWIDGET_H
 
+#include <QPainter>
+#include <QDebug>
+#include <QPixmapCache>
+
 #include "ViewWidget.h"
 #include "encoding/Encoding.h"
-
-#include <QPixmapCache>
+#include "encoding/Hexadecimal.h"
 
 class TextViewWidget : public ViewWidget
 {

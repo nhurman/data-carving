@@ -1,7 +1,5 @@
 #include "ASCII.h"
-#include <sstream>
-#include <iomanip>
-#include <QDebug>
+
 
 ASCII::ASCII() : Encoding()
 {

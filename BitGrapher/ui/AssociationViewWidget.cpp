@@ -1,5 +1,4 @@
 #include "AssociationViewWidget.h"
-#include "ui_AssociationViewWidget.h"
 
 AssociationViewWidget::AssociationViewWidget(QWidget *parent) :
     QWidget(parent),
@@ -45,6 +44,7 @@ void AssociationViewWidget::newLine()
     ui->tableWidget->setItem(line, 3, item);
 
 }
+
 void AssociationViewWidget::deleteLine()
 {
     std::cout << "coin" << std::endl;
@@ -92,6 +92,7 @@ void AssociationViewWidget::openMask() {
         //model.setItem(i, 4, item);
     }*/
 }
+
 bool AssociationViewWidget::saveMaskAs() {
     m_filePath = QFileDialog::getSaveFileName(this, tr("Save this mask as..."),
         NULL, tr("Masks (*.mk)"));
@@ -113,11 +114,20 @@ bool AssociationViewWidget::saveMask() {
         }
         for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
             for (int j = 0; j < ui->tableWidget->columnCount(); j++) {
-                os << ui->tableWidget->item(i,j)->text().toStdString() << ";";
+                if (j != 1) { //to avoid writing data field
+                    os << ui->tableWidget->item(i,j)->text().toStdString() << ";";
+                }
             }
             os << std::endl;
         }
         os.close();
         return true;
     }
+}
+
+bool AssociationViewWidget::closeMask(){
+    while(ui->tableWidget->rowCount() > 0) {
+        ui->tableWidget->removeRow(0);
+    }
+    return true;
 }

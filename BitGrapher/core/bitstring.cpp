@@ -1,11 +1,5 @@
-#include <algorithm>
-#include <cstring>
-#include <cmath>
-#include <fstream>
-#include <iostream>
-
 #include "BitString.h"
-#include "Exception.h"
+
 
 BitString::BitString(size_t size) : m_size(size)
 {

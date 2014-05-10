@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QPixmap>
+#include <QDebug>
+#include <QPainter>
+
 #include "core/BitString.h"
 
 class ViewWidget : public QWidget

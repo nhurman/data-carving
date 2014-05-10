@@ -2,6 +2,10 @@
 #define HEXADECIMAL_H
 
 #include <string>
+#include <sstream>
+#include <iomanip>
+#include <QDebug>
+
 #include "core/BitString.h"
 #include "Encoding.h"
 

@@ -2,7 +2,6 @@
 #define ASSOCIATIONVIEWWIDGET_H
 
 #include <QWidget>
-#include "core/Association.h"
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <vector>
@@ -12,6 +11,11 @@
 #include <fstream>
 #include <QFileDialog>
 #include <QTextStream>
+
+#include "ui_AssociationViewWidget.h"
+
+#include "core/Association.h"
+
 
 namespace Ui {
 class AssociationViewWidget;
@@ -31,6 +35,8 @@ private slots:
     void openMask();
     bool saveMaskAs();
     bool saveMask();
+    bool closeMask();
+
 
 
 private:

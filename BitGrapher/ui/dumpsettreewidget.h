@@ -2,6 +2,9 @@
 #define DUMPSETTREEWIDGET_H
 
 #include <QTreeWidget>
+#include <QMessageBox>
+#include <QFileDialog>
+
 #include "core/Dump.h"
 #include "core/DumpSet.h"
 
