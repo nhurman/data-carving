@@ -3,19 +3,19 @@
 //Return a list with all the diagonals, without doubles
 std::list<Diagonal> BitString::dotPlotPattern(const BitString *dump) const {
     std::list<Diagonal> listDiag;
-    unsigned int z;
+    unsigned int z = 0;
 
     for (unsigned int y = 0; y <= dump->m_size - MIN_DIAG_SIZE ; y++){
         for (unsigned int x = 0; x <= this->m_size - MIN_DIAG_SIZE; x++ ){
             if (( x!= 0 && y != 0) ? (((dump->m_bytes[(y-1) / 8] & (1 << ((y-1) % 8))) >> ((y+z) % 8)) != ((this->m_bytes[(x-1) / 8] & (1 << ((x-1) % 8))) >> ((x+z) % 8))) : true) {
                 for( z = 0; x+z < this->m_size && y+z < dump->m_size ; z++){
-                    std::cout << z << " " << (dump->m_bytes[(y+z) / 8] & (1 << ((y+z) % 8))) << " " << (this->m_bytes[(x+z) / 8] & (1 << ((x+z) % 8))) << std::endl;
+                    //std::cout << z << " " << (dump->m_bytes[(y+z) / 8] & (1 << ((y+z) % 8))) << " " << (this->m_bytes[(x+z) / 8] & (1 << ((x+z) % 8))) << std::endl;
                     if (((dump->m_bytes[(y+z) / 8] & (1 << ((y+z) % 8))) >> ((y+z) % 8)) != (((this->m_bytes[(x+z) / 8] & (1 << ((x+z) % 8))) >> ((x+z) % 8)))) {
                        break;
                     }
                 }
                 if (z >= MIN_DIAG_SIZE) {
-                    std::cout << "hello" << std::endl;
+                    //std::cout << "hello" << std::endl;
                     listDiag.push_back(Diagonal(x, y, z));
                 }
             }

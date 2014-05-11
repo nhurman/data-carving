@@ -26,7 +26,8 @@ SOURCES += \
     ui/AssociationViewWidget.cpp \
     ui/DotPlotView.cpp \
     algorithms/Diagonal.cpp \
-    algorithms/DotPlotPattern.cpp
+    algorithms/DotPlotPattern.cpp \
+    ui/DiagonalViewItem.cpp
 
 HEADERS  += \
   ui/MainWindow.h \
@@ -47,7 +48,8 @@ HEADERS  += \
     ui/AssociationViewWidget.h \
     ui/DotPlotView.h \
     algorithms/Diagonal.h \
-    algorithms/DotPlotPattern.h
+    algorithms/DotPlotPattern.h \
+    ui/DiagonalViewItem.h
 
 FORMS    += \
   ui/MainWindow.ui \
