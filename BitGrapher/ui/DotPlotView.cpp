@@ -13,7 +13,7 @@ DotPlotView::DotPlotView(QWidget *parent) :
     BitString b = BitString::fromHex("AAF63E4");
     this->setBitStrings(&a, &b);
     this->drawDiagonals();
-    connect(this, SIGNAL(clicked()), this, SLOT(diagClicked(new DiagonalViewItem(5, 7, 15, 17,*m_classicPen))));
+    //connect(this, SIGNAL(clicked()), this, SLOT(diagClicked(new DiagonalViewItem(5, 7, 15, 17,*m_classicPen))));
 
 }
 
@@ -60,7 +60,7 @@ void DotPlotView::drawDiagonals() {
         unsigned int l = (*it).length();
         DiagonalViewItem *diag = new DiagonalViewItem(x*mw, y*mh, (x+l)*mw, (y+l)*mh, *m_classicPen);
         m_scene.addItem(diag);
-        //connect(diag, SIGNAL(diagonalClicked(DiagonalViewItem*)), this, SLOT(diagClicked(DiagonalViewItem*)));
+        connect(diag, SIGNAL(diagonalClicked(DiagonalViewItem*)), this, SLOT(diagClicked(DiagonalViewItem*)));
         //m_scene.addLine(x*mw, y*mh, (x+l)*mw, (y+l)*mh, *m_classicPen);
         std::cout << "Diag " << (*it).toString() << std::endl ;
 
@@ -93,33 +93,3 @@ void DotPlotView::diagClicked(DiagonalViewItem *d) {
     this->setSelectedDiagonal(d);
     this->refreshValues(d->line().x1(), d->line().y1(), d->line().dx());
 }
-
-
-/*void DotPlotView::mousePressEvent ( QMouseEvent * event ){
-    if (event->buttons() == Qt::LeftButton) {
-        int xm = event->localPos().x();
-        int ym = event->localPos().y();
-        if( xm >= ui->DotPlotZone->geometry().x() + 11
-                && ym >= ui->DotPlotZone->geometry().y() + 11
-                && xm <= ui->DotPlotZone->geometry().right()+1 + 11
-                && ym <= ui->DotPlotZone->geometry().bottom()+1 + 11) {
-            std::cout << xm << " " << ym << std::endl;
-            std::cout << "touche" << ui->DotPlotZone->geometry().x() << " " << ui->DotPlotZone->geometry().y() << std::endl;
-
-            QList<QGraphicsItem *> l = ui->DotPlotZone->items();
-            QGraphicsLineItem *selectedDiagonal = static_cast<QGraphicsLineItem*>(l.first());
-            //QGraphicsLineItem *selectedDiagonal = dynamic_cast<QGraphicsLineItem*>(m_scene.itemAt(ui->DotPlotZone->cursor().pos().x(), ui->DotPlotZone->cursor().pos().y(), QTransform()));
-            if(selectedDiagonal != NULL){
-                    if (m_selectedDiagonal != NULL) {
-                        m_selectedDiagonal->setPen(*m_classicPen);
-                    }
-                    m_selectedDiagonal = selectedDiagonal;
-                    m_selectedDiagonal->setPen(*m_selectedPen);
-                    std::cout << m_selectedDiagonal->line().x1() << " " << m_selectedDiagonal->pos().y() << std::endl;
-                    std::cout << "DEATH PENIS" << std::endl;
-
-            }
-        }
-    }
-}*/
-

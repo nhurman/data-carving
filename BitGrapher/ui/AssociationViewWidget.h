@@ -11,17 +11,11 @@
 #include <fstream>
 #include <QFileDialog>
 #include <QTextStream>
-
-#include "ui_AssociationViewWidget.h"
-
-#include "core/Association.h"
+#include <QTableWidget>
 
 
-namespace Ui {
-class AssociationViewWidget;
-}
 
-class AssociationViewWidget : public QWidget
+class AssociationViewWidget : public QTableWidget
 {
     Q_OBJECT
 
@@ -40,7 +34,6 @@ private slots:
 
 
 private:
-    Ui::AssociationViewWidget *ui;
     QString m_filePath;
 };
 

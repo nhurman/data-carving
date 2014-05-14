@@ -1,47 +1,27 @@
 #include "AssociationViewWidget.h"
 
 AssociationViewWidget::AssociationViewWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::AssociationViewWidget)
+    QTableWidget(parent)
 {
-    ui->setupUi(this);
-    ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Field" << "Value" << "Start" << "Length" << "Encoding");
-
-    connect(ui->Add, SIGNAL(clicked()), this, SLOT(newLine()));
-    connect(ui->Delete, SIGNAL(clicked()), this, SLOT(deleteLine()));
-
-    /*ui->tableWidget->insertRow( ui->tableWidget->rowCount() );
-    QTableWidgetItem *item = new QTableWidgetItem(QString("coin"));
-    ui->tableWidget->setItem(0, 0, item);
-    item = new QTableWidgetItem(QString("coin"));
-    ui->tableWidget->setItem(0, 1, item);
-    item = new QTableWidgetItem(QString("coin"));
-    ui->tableWidget->setItem(0, 2, item);
-    item = new QTableWidgetItem(QString("coin"));
-    ui->tableWidget->setItem(0, 3, item);
-    std::cout << ui->tableWidget->rowCount() << " " << ui->tableWidget->columnCount() << std::endl;
-    ui->tableWidget->mode*/
-
 }
 
 AssociationViewWidget::~AssociationViewWidget()
 {
-    delete ui;
 }
 
 void AssociationViewWidget::newLine()
 {
 
-    int line = ui->tableWidget->currentRow();
-    ui->tableWidget->insertRow(line++);
+    int line = this->currentRow();
+    this->insertRow(line++);
     QTableWidgetItem *item = new QTableWidgetItem (QString());
-    ui->tableWidget->setItem(line, 0, item);
+    this->setItem(line, 0, item);
     item = new QTableWidgetItem (QString());
-    ui->tableWidget->setItem(line, 1, item);
+    this->setItem(line, 1, item);
     item = new QTableWidgetItem (QString());
-    ui->tableWidget->setItem(line, 2, item);
+    this->setItem(line, 2, item);
     item = new QTableWidgetItem (QString());
-    ui->tableWidget->setItem(line, 3, item);
+    this->setItem(line, 3, item);
 
 }
 
@@ -64,10 +44,10 @@ void AssociationViewWidget::openMask() {
             QTextStream in(&f);
             line = in.readLine();
             while(!line.isNull()) {
-                ui->tableWidget->insertRow(ui->tableWidget->rowCount());
+                this->insertRow(this->rowCount());
                 rowFields = line.split(";");
                 for (int column = 0; column < rowFields.size(); column++) {
-                    ui->tableWidget->item(ui->tableWidget->rowCount(),column)->setText(rowFields[column]);
+                    this->item(this->rowCount(),column)->setText(rowFields[column]);
                 }
             }
         }
@@ -78,16 +58,16 @@ void AssociationViewWidget::openMask() {
 
     QTableWidgetItem *item;
     for (int i = 0; i < fl->size(); i++) {
-        ui->tableWidget->insertRow( ui->tableWidget->rowCount() );
+        this->insertRow( this->rowCount() );
         item = new QTableWidgetItem(QString(fl->at(i).fieldName.c_str()));
-        ui->tableWidget->setItem(i, 0, item);
+        this->setItem(i, 0, item);
         //need to decode it ^^
         item = new QTableWidgetItem (QString(a->getBitString()->substring(fl->at(i).start, fl->at(i).end - fl->at(i).start).toString().c_str()));
-        ui->tableWidget->setItem(i, 1, item);
+        this->setItem(i, 1, item);
         item = new QTableWidgetItem (QString(fl->at(i).start));
-        ui->tableWidget->setItem(i, 2, item);
+        this->setItem(i, 2, item);
         item = new QTableWidgetItem (QString(fl->at(i).end));
-        ui->tableWidget->setItem(i, 3, item);
+        this->setItem(i, 3, item);
         //item = new QTableWidgetItem (QString(fl->at(i).decoder.encodingName));
         //model.setItem(i, 4, item);
     }*/
@@ -112,10 +92,10 @@ bool AssociationViewWidget::saveMask() {
         if (!os.is_open()) {
             return false;
         }
-        for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
-            for (int j = 0; j < ui->tableWidget->columnCount(); j++) {
+        for (int i = 0; i < this->rowCount(); i++) {
+            for (int j = 0; j < this->columnCount(); j++) {
                 if (j != 1) { //to avoid writing data field
-                    os << ui->tableWidget->item(i,j)->text().toStdString() << ";";
+                    os << this->item(i,j)->text().toStdString() << ";";
                 }
             }
             os << std::endl;
@@ -126,8 +106,8 @@ bool AssociationViewWidget::saveMask() {
 }
 
 bool AssociationViewWidget::closeMask(){
-    while(ui->tableWidget->rowCount() > 0) {
-        ui->tableWidget->removeRow(0);
+    while(this->rowCount() > 0) {
+        this->removeRow(0);
     }
     return true;
 }

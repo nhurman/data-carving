@@ -18,7 +18,7 @@
 #include "core/BitString.h"
 
 #include "DiagonalViewItem.h"
-//class DiagonalViewItem;
+
 
 
 
@@ -42,18 +42,10 @@ public:
     void setSelectedDiagonal(DiagonalViewItem *d);
     void refreshValues(qreal x, qreal y, qreal l);
 
-
-
-
 signals:
 
 public slots:
     void diagClicked(DiagonalViewItem *d);
-
-
-protected:
-    //void mousePressEvent ( QMouseEvent * event );
-
 
 private:
     Ui::DotPlotView *ui;
@@ -63,7 +55,6 @@ private:
     BitString const* m_bitstring2;
     unsigned int m_height;
     unsigned int m_width;
-    //QGraphicsItem *m_selectedDiagonal;
     QPen *m_classicPen;
     QPen *m_selectedPen;
     QGraphicsLineItem *m_selectedDiagonal;
