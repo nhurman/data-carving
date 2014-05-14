@@ -113,8 +113,6 @@
     </item>
    </layout>
   </widget>
-  <zorder>verticalLayoutWidget</zorder>
-  <zorder>widget</zorder>
  </widget>
  <resources/>
  <connections/>

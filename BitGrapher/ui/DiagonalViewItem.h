@@ -8,7 +8,7 @@
 #include <iostream>
 
 
-class DiagonalViewItem : public QGraphicsLineItem
+class DiagonalViewItem : public QObject, public QGraphicsLineItem
 {
     Q_OBJECT
 

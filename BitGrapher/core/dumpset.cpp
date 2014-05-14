@@ -108,7 +108,7 @@ std::string DumpSet::toAbsolute(const std::string relativePath) const
 {
     char separator = '/';
     if(m_filePath.find('/') == std::string::npos) //if there is no '/' in the dumpset's filepath
-        separator == '\\'; //change the separator to '\'
+        separator = '\\'; //change the separator to '\'
 
     int nbParent = 0; //nb of times we go back to a parent folder
     std::string absolutePath = m_filePath.substr(0, m_filePath.find_last_of(separator)); //we take back the name of the bitString
@@ -134,7 +134,7 @@ std::string DumpSet::toRelative(const std::string absolutePath) const
 {
     char separator = '/';
     if(m_filePath.find('/') == std::string::npos) //if there is no '/' in the dumpset's filepath
-        separator == '\\'; //change the separator to '\'
+        separator = '\\'; //change the separator to '\'
 
     std::string relativepPath = "";
     std::istringstream dumpSS( absolutePath );

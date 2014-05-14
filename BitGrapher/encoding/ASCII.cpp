@@ -58,7 +58,7 @@ std::string ASCII::toHTML() const
 
     for (size_t i = 0; i < m_bitString->size(); i += BitPerChar()) {
         unsigned char byte = 0;
-        for (char j = 0; j < BitPerChar(); ++j) {
+        for (uchar j = 0; j < BitPerChar(); ++j) {
             byte += ((*m_bitString)[i + j] ? 1 : 0) << (7 - j);
         }
 
