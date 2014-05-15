@@ -2,3 +2,9 @@ build/
 Test/out/
 Test/Makefile.local
 BitGrapher/BitGrapher.pro.user
+Rapport/*.aux
+Rapport/*.bbl
+Rapport/*.blg
+Rapport/*.log
+Rapport/*.pdf
+Rapport/*.synctex.gz
