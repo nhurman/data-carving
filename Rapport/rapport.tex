@@ -10,12 +10,19 @@
 \usepackage{exptech}       % Fichier (./exptech.sty) contenant les styles pour
                            % l'expose technique (ne pas le modifier)
 
-\setlength{\parskip}{2ex}
 
 %\linespread{1,6}          % Pour une version destinée à un relecteur,
                            % décommenter cette commande (double interligne)
 
 % UTILISEZ SPELL (correcteur orthographique) à accès simplifié depuis XEmacs
+
+
+%\setlength{\parskip}{2ex}
+\usepackage{color}
+\usepackage{graphicx}
+\definecolor{simColor}{rgb}{0.0, 0.5, 0.0}
+\definecolor{dissimColor}{rgb}{0.8, 0.0, 0.0}
+\definecolor{otherSimColor}{rgb}{0.0, 0.28, 0.67}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -56,8 +63,7 @@ Au cours de cette étude pratique, nous avons essayé de développer un logiciel
   \subsection{Fonctionnalités}
 \section{Algorithmique}
   \subsection{Aide à la décision}
-  \subsection{Analyse}
-\section{Implémentation}
+  \subsection{Analyse} \input{parts/04-1-analyse.tex}
   \subsection{Pseudo-code}
   \subsection{Complexité}
   \subsection{Performances}
