@@ -59,15 +59,10 @@ std::string Hexadecimal::toHTML() const
         }
 
         char str[3];
-        itoa(byte, str, 16);
-        if (str[1] == '\0') {
-            str[1] = str[0];
-            str[0] = '0';
-            str[2] = '\0';
-        }
+        sprintf(str, "%2X", byte);
 
-        str[0] = toupper(str[0]);
-        str[1] = toupper(str[1]);
+        //str[0] = toupper(str[0]);
+        //str[1] = toupper(str[1]);
 
         int mod = (i/8) % BytesPerLine();
         if (i == 0 || mod == 0) {

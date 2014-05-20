@@ -1,4 +1,4 @@
-#include "ui/dumpsettreewidget.h"
+#include "ui/DumpSetTreeWidget.h"
 
 
 DumpSetTreeWidget::DumpSetTreeWidget(QWidget *parent) :

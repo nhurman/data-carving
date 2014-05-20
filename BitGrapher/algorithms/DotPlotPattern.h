@@ -6,7 +6,7 @@
 #include <list>
 #include <iostream>
 
-#include "core/bitstring.h"
+#include "core/BitString.h"
 #include "Diagonal.h"
 
 #define MIN_DIAG_SIZE 6

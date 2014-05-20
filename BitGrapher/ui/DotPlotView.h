@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QPen>
-#include <Qpainter>
+#include <QPainter>
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QScrollArea>
