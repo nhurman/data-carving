@@ -1,0 +1,29 @@
+Le format Dump Set (.ds) comprte une ligne par dump.
+Ces lignes sont écrites comme suit :
+
+\begin{itemize}
+        \item Le chemin du dump, relatif à l'empalcement du Dump Set
+        \item Le format du dump, parmi les suivants :
+        \begin{itemize}
+                \item Binary, pour un fichier composé de '0' et de  '1' en ASCII
+                \item Hexadecimal, pour un fichier écrit en hexadeximal avec des caractères ASCII
+                \item Raw data, pour que le fichier soit lu directement
+        \end{itemize}
+\end{itemize}
+
+Ces deux champs sont séparés par un point virgule.
+Voici un exemple de fichier Dump Set : 
+
+\begin{figure}[!h]
+  \begin{center}
+  RawData/TestRaw.txt;Raw data
+
+
+  TestBin.txt;Binary
+
+
+  ../TestHex.txt;Hexadecimal
+  \end{center}
+  \caption{MyDumpSet.ds}
+  \label{dump_set_fromat}
+\end{figure}
