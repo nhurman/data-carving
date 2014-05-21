@@ -22,14 +22,14 @@ class AssociationViewWidget : public QTableWidget
 public:
     explicit AssociationViewWidget(QWidget *parent = 0);
     ~AssociationViewWidget();
-
-private slots:
     void newLine();
     void deleteLine();
     void openMask();
     bool saveMaskAs();
     bool saveMask();
     bool closeMask();
+    bool newLabelDialog();
+
 
 
 

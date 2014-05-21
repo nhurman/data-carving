@@ -54,6 +54,18 @@ private slots:
     void on_action_Dot_Plot_Pattern_triggered();
 
 
+    void on_actionOpen_Mask_triggered();
+
+    void on_actionSave_Mask_triggered();
+
+    void on_actionClose_Mask_triggered();
+
+    void on_actionSave_As_triggered();
+
+    void on_actionNew_Line_triggered();
+
+    void on_actionDelete_Line_triggered();
+
 private:
     Ui::MainWindow *ui;
     BitmapWidget* m_bitmap;

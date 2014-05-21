@@ -170,3 +170,36 @@ void MainWindow::on_action_Dot_Plot_Pattern_triggered() {
    QWidget *wid = new DotPlotView();
    wid->show();
 }
+
+
+
+void MainWindow::on_actionOpen_Mask_triggered()
+{
+    ui->tableWidget->openMask();
+}
+
+void MainWindow::on_actionClose_Mask_triggered()
+{
+    ui->tableWidget->closeMask();
+}
+
+void MainWindow::on_actionSave_Mask_triggered()
+{
+    ui->tableWidget->saveMask();
+}
+
+
+void MainWindow::on_actionSave_As_triggered()
+{
+    ui->tableWidget->saveMaskAs();
+}
+
+void MainWindow::on_actionNew_Line_triggered()
+{
+    ui->tableWidget->newLine();
+}
+
+void MainWindow::on_actionDelete_Line_triggered()
+{
+    ui->tableWidget->deleteLine();
+}

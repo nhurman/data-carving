@@ -50,7 +50,7 @@
          <x>0</x>
          <y>0</y>
          <width>463</width>
-         <height>644</height>
+         <height>635</height>
         </rect>
        </property>
       </widget>
@@ -64,7 +64,7 @@
      <x>0</x>
      <y>0</y>
      <width>979</width>
-     <height>20</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDumps">
@@ -92,6 +92,8 @@
      <string>&amp;Labels</string>
     </property>
     <addaction name="actionNew_label"/>
+    <addaction name="actionNew_Line"/>
+    <addaction name="actionDelete_Line"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -112,9 +114,9 @@
    </widget>
    <addaction name="menuDumps"/>
    <addaction name="menuAlgorithms"/>
-   <addaction name="menuLabels"/>
    <addaction name="menuView"/>
    <addaction name="menuMasks"/>
+   <addaction name="menuLabels"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -233,17 +235,17 @@
        </column>
        <column>
         <property name="text">
-         <string>Value</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
          <string>Length</string>
         </property>
        </column>
        <column>
         <property name="text">
          <string>Encoding</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Value</string>
         </property>
        </column>
       </widget>
@@ -367,6 +369,16 @@
   <action name="action_Dot_Plot_Pattern">
    <property name="text">
     <string>&amp;Dot Plot Pattern</string>
+   </property>
+  </action>
+  <action name="actionNew_Line">
+   <property name="text">
+    <string>New Line</string>
+   </property>
+  </action>
+  <action name="actionDelete_Line">
+   <property name="text">
+    <string>Delete Line</string>
    </property>
   </action>
  </widget>
