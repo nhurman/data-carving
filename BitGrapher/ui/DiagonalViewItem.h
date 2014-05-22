@@ -17,7 +17,8 @@ public:
     DiagonalViewItem(qreal x1, qreal y1, qreal x2, qreal y2, QPen pen, QGraphicsItem * parent = 0);
 
 protected:
-    void mousePressEvent ( QMouseEvent * event );
+    void mousePressEvent (QGraphicsSceneMouseEvent *event );
+
 
 signals:
     void diagonalClicked(DiagonalViewItem *d);

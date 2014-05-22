@@ -83,9 +83,10 @@ void DotPlotView::setSelectedDiagonal(DiagonalViewItem *d) {
 }
 
 void DotPlotView::refreshValues(qreal x, qreal y, qreal l) {
-    ui->PosDump1Value->setText(QString((int) x));
-    ui->PosDump2Value->setText(QString((int) y));
-    ui->SizeDiagValue->setText(QString((int) l));
+    std::cout << x << " " << y << " " << l << std::endl;
+    ui->PosDump1Value->setText(QString::number(x));
+    ui->PosDump2Value->setText(QString::number(y));
+    ui->SizeDiagValue->setText(QString::number(l));
     ui->textZone->setText(QString(m_bitstring->substring(x, l).toString().c_str()));
 }
 
