@@ -21,6 +21,7 @@
 #include "TextViewWidget.h"
 #include "AssociationViewWidget.h"
 #include "DotPlotView.h"
+#include "DotPlotDialog.h"
 
 
 namespace Ui {

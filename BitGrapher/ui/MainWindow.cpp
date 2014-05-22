@@ -167,8 +167,16 @@ void MainWindow::on_actionText_triggered()
 }
 
 void MainWindow::on_action_Dot_Plot_Pattern_triggered() {
-   QWidget *wid = new DotPlotView();
-   wid->show();
+    DotPlotView *wid = new DotPlotView();
+    //DotPlotDialog *dialog = new DotPlotDialog(this, &d, &s);
+    //dialog->show();
+    /*if (un dump) {
+        wid->setBitString(b1);
+    }
+    else {
+        wid->setBitStrings(b1, b2);
+    }*/
+    wid->show();
 }
 
 
@@ -187,7 +195,6 @@ void MainWindow::on_actionSave_Mask_triggered()
 {
     ui->tableWidget->saveMask();
 }
-
 
 void MainWindow::on_actionSave_As_triggered()
 {

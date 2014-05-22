@@ -7,6 +7,7 @@ DotPlotView::DotPlotView(QWidget *parent) :
     m_selectedPen(new QPen(Qt::red))
 {
     ui->setupUi(this);
+    setWindowTitle("Dot Plot Pattern between XXXX");
     ui->DotPlotZone->setScene(&m_scene);
 
     BitString a = BitString::fromHex("AAF63E4");
