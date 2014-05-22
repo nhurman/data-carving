@@ -26,7 +26,9 @@ SOURCES += \
     ui/DotPlotView.cpp \
     algorithms/Diagonal.cpp \
     algorithms/DotPlotPattern.cpp \
-    ui/DiagonalViewItem.cpp
+    ui/DiagonalViewItem.cpp \
+    ui/DumpComboBox.cpp \
+    ui/DotPlotDialog.cpp
 
 HEADERS  += \
   ui/MainWindow.h \
@@ -47,7 +49,9 @@ HEADERS  += \
     ui/DotPlotView.h \
     algorithms/Diagonal.h \
     algorithms/DotPlotPattern.h \
-    ui/DiagonalViewItem.h
+    ui/DiagonalViewItem.h \
+    ui/DumpComboBox.h \
+    ui/DotPlotDialog.h
 
 FORMS    += \
   ui/MainWindow.ui \

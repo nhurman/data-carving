@@ -27,6 +27,7 @@ public:
 
     Dump const* find(std::string name) const;
     std::map<std::string, Dump const*> dumps() const;
+    std::vector<std::string> getDumpNames() const;
 
 private:
     std::map<std::string, Dump const*> m_dumps;
