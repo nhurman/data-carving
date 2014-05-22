@@ -104,6 +104,17 @@ std::map<std::string, Dump const*> DumpSet::dumps() const
     return m_dumps;
 }
 
+
+std::vector<std::string> DumpSet::getDumpNames() const
+{
+    std::vector<std::string> v;
+    for(std::map<std::string, Dump const*>::const_iterator it = m_dumps.begin(); it != m_dumps.end(); ++it) {
+      v.push_back(it->first);
+    }
+    return v;
+}
+
+
 std::string DumpSet::toAbsolute(const std::string relativePath) const
 {
     char separator = '/';
