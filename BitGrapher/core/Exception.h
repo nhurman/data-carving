@@ -7,6 +7,7 @@ class Exception
 {
 public:
     Exception(std::string message);
+    std::string getMessage();
 
 private:
     std::string m_message;
