@@ -6,7 +6,7 @@
 DotPlotDialog::DotPlotDialog(QWidget *parent, DumpSet* ds, QString* selectedDump) :
     QDialog(parent), m_dumpSet(ds), m_selectedDump(selectedDump)
 {
-    setWindowTitle("Bitmap");
+    setWindowTitle("DotPlot");
 
     m_layout = new QVBoxLayout;
     setLayout(m_layout);
@@ -22,20 +22,6 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, DumpSet* ds, QString* selectedDump
     sLayout->addWidget(defaultButton);
     QObject::connect(defaultButton, SIGNAL( clicked() ),
                           this, SLOT( displayDefaultSize() ));
-
-    //+  -
-    QHBoxLayout* pmLayout = new QHBoxLayout;
-    m_layout->addLayout(pmLayout);
-
-    QPushButton* bPlus = new QPushButton("Add dump");
-    QPushButton* bMinus = new QPushButton("Remove dump");
-    pmLayout->addWidget(bPlus);
-    pmLayout->addWidget(bMinus);
-
-    QObject::connect(bPlus, SIGNAL(clicked()),
-                          this, SLOT(addComboBox()));
-    QObject::connect(bMinus, SIGNAL(clicked()),
-                          this, SLOT(removeComboBox()));
 
     //dumps
     m_dumpCBs.push_back(new DumpComboBox(this));
