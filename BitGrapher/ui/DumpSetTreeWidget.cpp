@@ -213,6 +213,8 @@ void DumpSetTreeWidget::saveDumpSetAs()
         NULL, tr("Dump Sets (*.ds)"));
 
     m_selectedDumpSet->save(filePath.toUtf8().constData());
+
+    getDumpSetItem()->setText(0, m_selectedDumpSet->fileName().c_str());
 }
 
 void DumpSetTreeWidget::openDumpSet()
