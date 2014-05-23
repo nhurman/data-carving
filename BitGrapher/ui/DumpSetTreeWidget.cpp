@@ -51,59 +51,71 @@ void DumpSetTreeWidget::addDumpSet(DumpSet* ds)
 
 void DumpSetTreeWidget::addDump(QString filePath, InputFormat format)
 {
-    //Checks if a dumpSet was selected
-    if (NULL == m_selectedDumpSet) {
+    try
+    {
+        //Checks if a dumpSet was selected
+        if (NULL == m_selectedDumpSet) {
+            throw Exception("Please select a dump set.");
+        }
+
+        //Prevents duplicates
+        std::string filePath_c = filePath.toUtf8().constData();
+        for (auto i: m_dumps[m_selectedDumpSet]) {
+            if (i.second->filePath() == filePath_c) {
+                throw Exception(("The dump "  + filePath + " already exists in the current set.").toUtf8().constData());
+            }
+        }
+
+        Dump const* dump = m_selectedDumpSet->add(filePath.toUtf8().constData(), format); //Adds the dump to the dumpSet
+        //Creates the item for TreeWidget
+        QTreeWidgetItem* dumpSetItem = getDumpSetItem();
+        QTreeWidgetItem* dumpItem = new QTreeWidgetItem(QStringList(dump->fileName().c_str()));
+        m_dumps[m_selectedDumpSet].insert(std::make_pair(dumpItem, dump)); //Adds the dump to the model
+        dumpSetItem->addChild(dumpItem); //Adds the item to treeWidget
+        setCurrentItem(dumpItem); //Selects the item
+    }
+    catch(Exception e)
+    {
         QMessageBox::information(this, "Unable to add dump to set",
-            "Please select a dump set.",
+            QString::fromStdString(e.getMessage()),
             QMessageBox::Ok);
         return;
     }
-
-    //Prevents duplicates
-    std::string filePath_c = filePath.toUtf8().constData();
-    for (auto i: m_dumps[m_selectedDumpSet]) {
-        if (i.second->filePath() == filePath_c) {
-            QMessageBox::information(this, "Unable to add dump to set",
-                "The dump "  + filePath + " already exists in the current set.",
-                QMessageBox::Ok);
-            return;
-        }
-    }
-
-    Dump const* dump = m_selectedDumpSet->add(filePath.toUtf8().constData(), format); //Adds the dump to the dumpSet
-    //Creates the item for TreeWidget
-    QTreeWidgetItem* dumpSetItem = getDumpSetItem();
-    QTreeWidgetItem* dumpItem = new QTreeWidgetItem(QStringList(dump->fileName().c_str()));
-    m_dumps[m_selectedDumpSet].insert(std::make_pair(dumpItem, dump)); //Adds the dump to the model
-    dumpSetItem->addChild(dumpItem); //Adds the item to treeWidget
-    setCurrentItem(dumpItem); //Selects the item
 }
 
 void DumpSetTreeWidget::removeDump()
 {
-    //Checks if a dump was selected
-    if (NULL == m_selectedDump) {
-        QMessageBox::information(this, "Unable to remove dump",
-            "Please select a dump.",
-            QMessageBox::Ok);
-    }
-
-    //Finds the corresponding item
-    QTreeWidgetItem *dumpItem = NULL;
-    for (auto i: m_dumps[m_selectedDumpSet]) {
-        if (i.second == m_selectedDump) {
-            dumpItem = i.first;
-            break;
+    try
+    {
+        //Checks if a dump was selected
+        if (NULL == m_selectedDump) {
+            throw Exception("Please select a dump.");
         }
-    }
 
-    //Removes the item from TreeWidget
-    QTreeWidgetItem* dumpSetItem = getDumpSetItem();
-    dumpSetItem->removeChild(dumpItem);
-    m_selectedDumpSet->remove(m_selectedDump->filePath()); //Removes the dump from the dumpSet
-    m_dumps[m_selectedDumpSet].erase(dumpItem); //Removes the dump from the model
-    m_selectedDump = NULL; //Unselects the dump
-    emit selectedDumpChanged(m_selectedDump);
+        //Finds the corresponding item
+        QTreeWidgetItem *dumpItem = NULL;
+        for (auto i: m_dumps[m_selectedDumpSet]) {
+            if (i.second == m_selectedDump) {
+                dumpItem = i.first;
+                break;
+            }
+        }
+
+        //Removes the item from TreeWidget
+        QTreeWidgetItem* dumpSetItem = getDumpSetItem();
+        dumpSetItem->removeChild(dumpItem);
+        m_selectedDumpSet->remove(m_selectedDump->filePath()); //Removes the dump from the dumpSet
+        m_dumps[m_selectedDumpSet].erase(dumpItem); //Removes the dump from the model
+        m_selectedDump = NULL; //Unselects the dump
+        emit selectedDumpChanged(m_selectedDump);
+    }
+    catch(Exception e)
+    {
+        QMessageBox::information(this, "Unable to remove dump",
+            QString::fromStdString(e.getMessage()),
+            QMessageBox::Ok);
+        return;
+    }
 }
 
 bool DumpSetTreeWidget::closeDumpSet()
@@ -208,42 +220,56 @@ bool DumpSetTreeWidget::close(QTreeWidgetItem* item)
 
 void DumpSetTreeWidget::saveDumpSet()
 {
-    //Checks if a dumpSet was selected
-    if (NULL == m_selectedDumpSet) {
+    try
+    {
+        //Checks if a dumpSet was selected
+        if (NULL == m_selectedDumpSet) {
+            throw Exception("Please select a dump set.");
+        }
+
+        //Checks if thd DumpSet already exists, if so it is saved
+        if (m_selectedDumpSet->filePath().size() > 0) {
+            m_selectedDumpSet->save();
+        }
+        else { // Else it is saved as... instead
+            saveDumpSetAs();
+        }
+    }
+    catch(Exception e)
+    {
         QMessageBox::information(this, "Unable to save dump set",
-            "Please select a dump set.",
+            QString::fromStdString(e.getMessage()),
             QMessageBox::Ok);
         return;
-    }
-
-    //Checks if thd DumpSet already exists, if so it is saved
-    if (m_selectedDumpSet->filePath().size() > 0) {
-        m_selectedDumpSet->save();
-    }
-    else { // Else it is saved as... instead
-        saveDumpSetAs();
     }
 }
 
 void DumpSetTreeWidget::saveDumpSetAs()
 {
-    //Checks if a dumpSet was selected
-    if (NULL == m_selectedDumpSet) {
+    try
+    {
+        //Checks if a dumpSet was selected
+        if (NULL == m_selectedDumpSet) {
+            throw Exception("Please select a dump set.");
+        }
+
+        //Asks the user for a file path
+        QString filePath = QFileDialog::getSaveFileName(this, tr("Save dump set as..."),
+            NULL, tr("Dump Sets (*.ds)"));
+
+        //Saves the DumpSet
+        m_selectedDumpSet->save(filePath.toUtf8().constData());
+
+        //Change the item's name in the TreeWidget
+        getDumpSetItem()->setText(0, m_selectedDumpSet->fileName().c_str());
+    }
+    catch(Exception e)
+    {
         QMessageBox::information(this, "Unable to save dump set",
-            "Please select a dump set.",
+            QString::fromStdString(e.getMessage()),
             QMessageBox::Ok);
         return;
     }
-
-    //Asks the user for a file path
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Save dump set as..."),
-        NULL, tr("Dump Sets (*.ds)"));
-
-    //Saves the DumpSet
-    m_selectedDumpSet->save(filePath.toUtf8().constData());
-
-    //Change the item's name in the TreeWidget
-    getDumpSetItem()->setText(0, m_selectedDumpSet->fileName().c_str());
 }
 
 void DumpSetTreeWidget::openDumpSet()
@@ -252,8 +278,18 @@ void DumpSetTreeWidget::openDumpSet()
     QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"),
         NULL, tr("Dump Sets (*.ds)"));
 
-    //Opens the DumpSet if the user didn't press cancel
-    if(filePath.size() > 0) {
-        addDumpSet(new DumpSet(filePath.toUtf8().constData()));
+    try
+    {
+        //Opens the DumpSet if the user didn't press cancel
+        if(filePath.size() > 0) {
+            addDumpSet(new DumpSet(filePath.toUtf8().constData()));
+        }
+    }
+    catch(Exception e)
+    {
+        QMessageBox::information(this, "Unable to open dump set",
+            QString::fromStdString(e.getMessage()),
+            QMessageBox::Ok);
+        return;
     }
 }
