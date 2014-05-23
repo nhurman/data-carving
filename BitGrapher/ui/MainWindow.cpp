@@ -168,14 +168,15 @@ void MainWindow::on_actionText_triggered()
 
 void MainWindow::on_action_Dot_Plot_Pattern_triggered() {
     DotPlotView *wid = new DotPlotView();
-    //DotPlotDialog *dialog = new DotPlotDialog(this, &d, &s);
-    //dialog->show();
-    /*if (un dump) {
-        wid->setBitString(b1);
+    DotPlotDialog *dialog = new DotPlotDialog(this);
+    dialog->exec();
+    if (dialog->getResult()->sameDump()) {
+        wid->setBitString(dialog->getResult()->getDump1().bitString());
     }
     else {
-        wid->setBitStrings(b1, b2);
-    }*/
+        wid->setBitStrings(dialog->getResult()->getDump1().bitString(),
+                           dialog->getResult()->getDump2().bitString());
+    }
     wid->show();
 }
 

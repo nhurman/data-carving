@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include "core/DumpSet.h"
 #include "ui/DumpComboBox.h"
+#include "algorithms/DotPlotResult.h"
 namespace Ui {
 class DotPlotDialog;
 }
@@ -19,7 +20,8 @@ public:
     // selectedDump : where the compared dump's name (the one to display) will be stored
     //static Similarities* getSimilarities(DumpSet* ds, QString* selectedDump = NULL);
     Dump getDump(int index);
-    int getMinSize();
+    int getMinSize() const;
+    DotPlotResult* getResult() const;
 
 signals:
 
@@ -39,8 +41,8 @@ private:
     void refreshComboBox(int index);
     int preferredStringSize();
 
-    //the result is tored here, to be recovered after window closure
-    //static Similarities* m_result;
+    //the result is stored here, to be recovered after window closure
+    static DotPlotResult* m_result;
 
 };
 

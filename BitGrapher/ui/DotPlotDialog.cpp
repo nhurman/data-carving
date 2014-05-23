@@ -3,6 +3,8 @@
 #include <QPushButton>
 #include <QLabel>
 
+DotPlotResult* DotPlotDialog::m_result;
+
 DotPlotDialog::DotPlotDialog(QWidget *parent, DumpSet* ds, QString* selectedDump) :
     QDialog(parent), m_dumpSet(ds), m_selectedDump(selectedDump)
 {
@@ -57,9 +59,14 @@ Dump DotPlotDialog::getDump(int index)
     return *m_dumpSet->find((m_dumpCBs[index]->currentText()).toStdString());
 }
 
-int DotPlotDialog::getMinSize()
+int DotPlotDialog::getMinSize() const
 {
     return m_minSizeSpinBox->value();
+}
+
+DotPlotResult* DotPlotDialog::getResult() const
+{
+    return m_result;
 }
 
 void DotPlotDialog::refreshComboBoxes(int modifiedIndex)
@@ -107,13 +114,13 @@ void DotPlotDialog::processAndClose()
         v.push_back(getDump(i));
 
     //Here we put the call to dotplot
-    //m_result = new Similarities(v, getMinSize());//To be replaced
+    m_result = new DotPlotResult(v.at(0), v.at(1));
     done(0);
 }
 
 void DotPlotDialog::cancelAndClose()
 {
-    //m_result = NULL; //To be replaced/removed
+    m_result = NULL;
     done(0);
 }
 
