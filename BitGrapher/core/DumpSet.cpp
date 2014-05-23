@@ -7,8 +7,6 @@ DumpSet::DumpSet(std::string filePath) : m_filePath(filePath), m_modified(false)
         std::ifstream f;
         f.open(filePath.c_str());
         if (f.is_open()) {
-            //m_modified = false;
-
             std::string name;
             std::string formatStr;
 
@@ -16,6 +14,8 @@ DumpSet::DumpSet(std::string filePath) : m_filePath(filePath), m_modified(false)
                 std::getline(f, formatStr);
                 add(toAbsolute(name), BitString::stringToFormat(formatStr));
             }
+
+            m_modified = false;
         }
         else {
             throw IOException("Could not open dump set " + filePath);
