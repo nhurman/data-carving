@@ -90,10 +90,6 @@ void DotPlotDialog::refreshComboBox(int index)
     {
         dumps.push_back(QString::fromStdString(dumpsVect.at(i)));
     }
-    for(int i = 0; i < index; i++) //removind dumps selected in the boxes above
-    {
-        dumps.removeOne(m_dumpCBs[i]->currentText());
-    }
 
     m_dumpCBs[index]->clear();
     m_dumpCBs[index]->addItems(dumps);
@@ -113,7 +109,6 @@ void DotPlotDialog::processAndClose()
     for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
         v.push_back(getDump(i));
 
-    //Here we put the call to dotplot
     m_result = new DotPlotResult(v.at(0), v.at(1));
     done(0);
 }
