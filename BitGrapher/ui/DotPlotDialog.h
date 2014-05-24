@@ -7,19 +7,41 @@
 #include <QVBoxLayout>
 #include "core/DumpSet.h"
 #include "ui/DumpComboBox.h"
+#include "algorithms/DotPlotResult.h"
 namespace Ui {
 class DotPlotDialog;
 }
+
+/// \class DotPlotDialog
+///
+/// \brief Dialog that appears to select the dumps and the minimum string size for a DotPlot operation
+///
+/// \author Gabriel Prevosto
+/// \author Alexandre Audinot
+///
+/// \date 23/05/2014
 
 class DotPlotDialog : public QDialog
 {
     Q_OBJECT
 public:
+    /// \brief Constructor for DotPlotDialog.
+    /// \param parent The parent Widget (optional).
+    /// \param ds DumpSet from which to choose for the DotPlot operation
     explicit DotPlotDialog(QWidget *parent = 0, DumpSet* ds = NULL, QString* selectedDump = NULL);
-    // selectedDump : where the compared dump's name (the one to display) will be stored
-    //static Similarities* getSimilarities(DumpSet* ds, QString* selectedDump = NULL);
+
+    /// \brief Getter for m_dumpSet
+    /// \param index index of the dump to get
+    /// \return the dump at the given position
     Dump getDump(int index);
-    int getMinSize();
+
+    /// \brief Getter for the minimum size
+    /// \return the minimum diagonal size
+    int getMinSize() const;
+
+    /// \brief Getter for m_result
+    /// \return the DotPlotResult resulting from the execution of this dialog
+    DotPlotResult* getResult() const;
 
 signals:
 
@@ -39,8 +61,8 @@ private:
     void refreshComboBox(int index);
     int preferredStringSize();
 
-    //the result is tored here, to be recovered after window closure
-    //static Similarities* m_result;
+    //the result is stored here, to be recovered after window closure
+    static DotPlotResult* m_result;
 
 };
 

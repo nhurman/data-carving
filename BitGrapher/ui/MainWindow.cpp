@@ -166,16 +166,39 @@ void MainWindow::on_actionText_triggered()
     }
 }
 
-void MainWindow::on_action_Dot_Plot_Pattern_triggered() {
+void MainWindow::on_action_Dot_Plot_Pattern_triggered()
+{
+    if(ui->treeWidget->getCurrentDumpSet() == NULL) //no dump selected
+    {
+        QMessageBox::information(this, "Could not perform operation",
+                                 "Please select a dump in a dump set.",
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    if(ui->treeWidget->getCurrentDumpSet()->getDumpNames().size() < 1) //not enough dumps for comparison
+    {
+        QMessageBox::information(this, "Could not perform operation",
+                                 "Not enough dumps in the dump set (at least 1 necessary)",
+                                 QMessageBox::Ok);
+        return;
+    }
+
     DotPlotView *wid = new DotPlotView();
-    //DotPlotDialog *dialog = new DotPlotDialog(this, &d, &s);
-    //dialog->show();
-    /*if (un dump) {
-        wid->setBitString(b1);
+    DotPlotDialog *dialog = new DotPlotDialog(this, ui->treeWidget->getCurrentDumpSet());
+
+    dialog->exec();
+    DotPlotResult* result = dialog->getResult();
+    if(result == NULL)
+        return;
+    if (result->sameDump()) {
+        wid->setBitString(result->getDump1().bitString());
     }
     else {
-        wid->setBitStrings(b1, b2);
-    }*/
+        wid->setBitStrings(result->getDump1().bitString(),
+                           result->getDump2().bitString());
+    }
+    wid->drawDiagonals();
     wid->show();
 }
 

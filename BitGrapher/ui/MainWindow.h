@@ -20,6 +20,7 @@
 #include "HexViewWidget.h"
 #include "TextViewWidget.h"
 #include "AssociationViewWidget.h"
+#include "DotPlotDialog.h"
 #include "DotPlotView.h"
 #include "DotPlotDialog.h"
 

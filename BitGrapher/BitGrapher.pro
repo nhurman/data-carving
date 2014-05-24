@@ -28,7 +28,10 @@ SOURCES += \
     algorithms/DotPlotPattern.cpp \
     ui/DiagonalViewItem.cpp \
     ui/DumpComboBox.cpp \
-    ui/DotPlotDialog.cpp
+    ui/DotPlotDialog.cpp \
+    algorithms/DotPlotResult.cpp \
+    algorithms/Similarities.cpp \
+    ui/SimilaritiesDialog.cpp
 
 HEADERS  += \
   ui/MainWindow.h \
@@ -51,7 +54,10 @@ HEADERS  += \
     algorithms/DotPlotPattern.h \
     ui/DiagonalViewItem.h \
     ui/DumpComboBox.h \
-    ui/DotPlotDialog.h
+    ui/DotPlotDialog.h \
+    algorithms/DotPlotResult.h \
+    algorithms/Similarities.h \
+    ui/SimilaritiesDialog.h
 
 FORMS    += \
   ui/MainWindow.ui \

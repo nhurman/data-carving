@@ -1,14 +1,14 @@
-#include "ui/DotPlotDialog.h"
+#include "ui/SimilaritiesDialog.h"
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QLabel>
 
-DotPlotResult* DotPlotDialog::m_result;
+Similarities* SimilaritiesDialog::m_result;
 
-DotPlotDialog::DotPlotDialog(QWidget *parent, DumpSet* ds, QString* selectedDump) :
-    QDialog(parent), m_dumpSet(ds), m_selectedDump(selectedDump)
+SimilaritiesDialog::SimilaritiesDialog(QWidget *parent, DumpSet* ds, QString* selectedDump) :
+    QDialog(parent), m_selectedDump(selectedDump), m_dumpSet(ds)
 {
-    setWindowTitle("DotPlot");
+    setWindowTitle("Similarities");
 
     m_layout = new QVBoxLayout;
     setLayout(m_layout);
@@ -24,6 +24,20 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, DumpSet* ds, QString* selectedDump
     sLayout->addWidget(defaultButton);
     QObject::connect(defaultButton, SIGNAL( clicked() ),
                           this, SLOT( displayDefaultSize() ));
+
+    //+  -
+    QHBoxLayout* pmLayout = new QHBoxLayout;
+    m_layout->addLayout(pmLayout);
+
+    QPushButton* bPlus = new QPushButton("Add dump");
+    QPushButton* bMinus = new QPushButton("Remove dump");
+    pmLayout->addWidget(bPlus);
+    pmLayout->addWidget(bMinus);
+
+    QObject::connect(bPlus, SIGNAL(clicked()),
+                          this, SLOT(addComboBox()));
+    QObject::connect(bMinus, SIGNAL(clicked()),
+                          this, SLOT(removeComboBox()));
 
     //dumps
     m_dumpCBs.push_back(new DumpComboBox(this));
@@ -54,22 +68,17 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, DumpSet* ds, QString* selectedDump
     refreshComboBoxes(-1);
 }
 
-Dump DotPlotDialog::getDump(int index)
+Dump SimilaritiesDialog::getDump(const int index) const
 {
-    return *m_dumpSet->find((m_dumpCBs[index]->currentText()).toStdString());
+    return *m_dumpSet->find(m_dumpCBs[index]->currentText().toUtf8().constData());
 }
 
-int DotPlotDialog::getMinSize() const
+int SimilaritiesDialog::getMinSize() const
 {
     return m_minSizeSpinBox->value();
 }
 
-DotPlotResult* DotPlotDialog::getResult() const
-{
-    return m_result;
-}
-
-void DotPlotDialog::refreshComboBoxes(int modifiedIndex)
+void SimilaritiesDialog::refreshComboBoxes(int modifiedIndex)
 {
     if(modifiedIndex <= 0)
         if(m_selectedDump != NULL)
@@ -81,7 +90,7 @@ void DotPlotDialog::refreshComboBoxes(int modifiedIndex)
     }
 }
 
-void DotPlotDialog::refreshComboBox(int index)
+void SimilaritiesDialog::refreshComboBox(const int index)
 {
     QString selection = m_dumpCBs[index]->currentText();
     std::vector<std::string> dumpsVect = m_dumpSet->getDumpNames();
@@ -89,6 +98,10 @@ void DotPlotDialog::refreshComboBox(int index)
     for(unsigned int i = 0; i < dumpsVect.size(); i++) //std::list to QStringList
     {
         dumps.push_back(QString::fromStdString(dumpsVect.at(i)));
+    }
+    for(int i = 0; i < index; i++) //removind dumps selected in the boxes above
+    {
+        dumps.removeOne(m_dumpCBs[i]->currentText());
     }
 
     m_dumpCBs[index]->clear();
@@ -103,32 +116,60 @@ void DotPlotDialog::refreshComboBox(int index)
 
 }
 
-void DotPlotDialog::processAndClose()
+void SimilaritiesDialog::addComboBox()
+{
+    if(m_dumpCBs.size() >= m_dumpSet->size()) //not enough dumps
+    {
+        return;
+    }
+    //else
+    m_dumpCBs.push_back(new DumpComboBox(this, m_dumpCBs.size()));
+    m_layout->insertWidget(m_layout->count()-1, m_dumpCBs.back());
+
+    QObject::connect(m_dumpCBs.back(), SIGNAL(currentDumpChanged( int ) ),
+                          this, SLOT(refreshComboBoxes( int )));
+
+    refreshComboBox(m_dumpCBs.size()-1);
+}
+
+void SimilaritiesDialog::removeComboBox()
+{
+    if(m_dumpCBs.size() <= 2) //you have to leave at least 2 dumps
+    {
+        return;
+    }
+    //else
+    m_layout->removeWidget(m_dumpCBs.back());
+    delete m_dumpCBs.back();
+    m_dumpCBs.pop_back();
+}
+
+void SimilaritiesDialog::processAndClose()
 {
     std::vector<Dump> v;
     for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
         v.push_back(getDump(i));
 
-    m_result = new DotPlotResult(v.at(0), v.at(1));
+    m_result = new Similarities(v, getMinSize());
     done(0);
 }
 
-void DotPlotDialog::cancelAndClose()
+void SimilaritiesDialog::cancelAndClose()
 {
-    m_result = NULL;
+    m_result = NULL; //probably useless now
     done(0);
 }
 
-/*Similarities* DotPlotDialog::getSimilarities(DumpSet* ds, QString* selectedDump)
+Similarities* SimilaritiesDialog::getSimilarities(DumpSet* ds, QString* selectedDump)
 {
-    SimilaritesDialog dialog(0, ds, selectedDump);
+    SimilaritiesDialog dialog(0, ds, selectedDump);
     dialog.exec();
     Similarities* res = m_result;
     m_result = NULL;
     return res;
-}*/
+}
 
-int DotPlotDialog::preferredStringSize()
+int SimilaritiesDialog::preferredStringSize() const
 {
     std::list<int> sizes;
     for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
@@ -136,13 +177,13 @@ int DotPlotDialog::preferredStringSize()
         sizes.push_back(getDump(i).getSize());
     }
 
-    int s = MIN_DIAG_SIZE;
+    int s = Similarities::minStringSize(sizes);
     if(s > 0)
         return s;
     return 1;
 }
 
-void DotPlotDialog::displayDefaultSize()
+void SimilaritiesDialog::displayDefaultSize()
 {
     m_minSizeSpinBox->setValue(preferredStringSize());
 }
