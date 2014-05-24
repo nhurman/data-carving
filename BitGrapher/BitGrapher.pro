@@ -30,7 +30,8 @@ SOURCES += \
     ui/DumpComboBox.cpp \
     ui/DotPlotDialog.cpp \
     algorithms/DotPlotResult.cpp \
-    algorithms/Similarities.cpp
+    algorithms/Similarities.cpp \
+    ui/SimilaritesDialog.cpp
 
 HEADERS  += \
   ui/MainWindow.h \
@@ -55,7 +56,8 @@ HEADERS  += \
     ui/DumpComboBox.h \
     ui/DotPlotDialog.h \
     algorithms/DotPlotResult.h \
-    algorithms/Similarities.h
+    algorithms/Similarities.h \
+    ui/SimilaritesDialog.h
 
 FORMS    += \
   ui/MainWindow.ui \

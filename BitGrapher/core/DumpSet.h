@@ -63,7 +63,7 @@ public:
     bool modified() const;
 
     /// \brief Returns the size of the DumpSet.
-    /// \return The size of the DumpSet.
+    /// \return The number of Dumps currently in the DumpSet.
     size_t size() const;
 
     /// \brief Finds a Dump by its name.
