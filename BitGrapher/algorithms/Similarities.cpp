@@ -13,7 +13,6 @@ Similarities::Similarities(const std::vector<Dump> dumps, const int minSize) : m
         }
         addSimList(&simi);
     }
-    //std::cout << toString() << std::endl;
 }
 
 int Similarities::getDumpId(const Dump d) const
