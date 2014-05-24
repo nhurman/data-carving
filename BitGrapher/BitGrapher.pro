@@ -31,7 +31,7 @@ SOURCES += \
     ui/DotPlotDialog.cpp \
     algorithms/DotPlotResult.cpp \
     algorithms/Similarities.cpp \
-    ui/SimilaritesDialog.cpp
+    ui/SimilaritiesDialog.cpp
 
 HEADERS  += \
   ui/MainWindow.h \
@@ -57,7 +57,7 @@ HEADERS  += \
     ui/DotPlotDialog.h \
     algorithms/DotPlotResult.h \
     algorithms/Similarities.h \
-    ui/SimilaritesDialog.h
+    ui/SimilaritiesDialog.h
 
 FORMS    += \
   ui/MainWindow.ui \
