@@ -194,12 +194,12 @@ void MainWindow::on_action_Dot_Plot_Pattern_triggered()
         return;
     }
     else if (result->sameDump()) {
-        wid->setBitString(result->getDump1().bitString(), 6);
+        wid->setBitString(result->getDump1().bitString(), result->getDiagSize());
         wid->setWindowTitle(QString(result->getDump1().fileName().c_str()));
         wid->show();
     }
     else {
-        wid->setBitStrings(result->getDump1().bitString(), result->getDump2().bitString(), 6);
+        wid->setBitStrings(result->getDump1().bitString(), result->getDump2().bitString(), result->getDiagSize());
         wid->setWindowTitle(QString(result->getDump1().fileName().c_str()), QString(result->getDump2().fileName().c_str()));
         wid->show();
     }

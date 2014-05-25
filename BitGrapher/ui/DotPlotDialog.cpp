@@ -109,7 +109,7 @@ void DotPlotDialog::processAndClose()
     for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
         v.push_back(getDump(i));
 
-    m_result = new DotPlotResult(v.at(0), v.at(1));
+    m_result = new DotPlotResult(v.at(0), v.at(1), m_minSizeSpinBox->value());
     done(0);
 }
 
