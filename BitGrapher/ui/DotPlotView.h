@@ -88,7 +88,6 @@ public slots:
 
 private:
     Ui::DotPlotView *ui; ///< The interface.
-    QGraphicsScene m_scene; ///< The scene that should be drawed.
     BitString const* m_bitstring; ///< First bitstring.
     BitString const* m_bitstring2; ///< Second bitstring.
     unsigned int m_height; ///< Height of the graphical view.

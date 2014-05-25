@@ -4,17 +4,14 @@ DotPlotView::DotPlotView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DotPlotView),
     m_classicPen(new QPen(Qt::blue)),
-    m_selectedPen(new QPen(Qt::red))
+    m_selectedPen(new QPen(Qt::red)),
+    m_selectedDiagonal(new DiagonalViewItem())
 {
     ui->setupUi(this);
-    ui->DotPlotZone->setScene(&m_scene);
 
-    /*BitString a = BitString::fromHex("AAF63E4");
+    BitString a = BitString::fromHex("AAF63E4");
     BitString b = BitString::fromHex("AAF63E4");
     this->setBitStrings(&a, &b);
-    this->drawDiagonals();*/
-    //connect(this, SIGNAL(clicked()), this, SLOT(diagClicked(new DiagonalViewItem(5, 7, 15, 17,*m_classicPen))));
-
 }
 
 DotPlotView::~DotPlotView()
@@ -44,37 +41,31 @@ void DotPlotView::drawDiagonals(std::list<Diagonal>  *listDiag) {
     qreal mw = ui->DotPlotZone->geometry().width() / m_width;
     qreal mh = ui->DotPlotZone->geometry().height() / m_height;
 
+    QGraphicsScene *scene = new QGraphicsScene();
     for (std::list<Diagonal>::iterator it = listDiag->begin(); it != listDiag->end(); ++it){
         unsigned int x = (*it).getX();
         unsigned int y = (*it).getY();
         unsigned int l = (*it).length();
         DiagonalViewItem *diag = new DiagonalViewItem(x*mw, y*mh, (x+l)*mw, (y+l)*mh, *m_classicPen);
-        m_scene.addItem(diag);
+        scene->addItem(diag);
         connect(diag, SIGNAL(diagonalClicked(DiagonalViewItem*)), this, SLOT(diagClicked(DiagonalViewItem*)));
-        //m_scene.addLine(x*mw, y*mh, (x+l)*mw, (y+l)*mh, *m_classicPen);
         std::cout << "Diag " << (*it).toString() << std::endl ;
 
     }
-    //debug
-    /*std::cout << "<----------------------ListDiag--------------------------->" << std::endl;
-        for (std::list<Diagonal>::iterator i = m_listDiag.begin(); i != m_listDiag.end(); i++ ){
-        std::cout << "Diag " << (*i).toString() << std::endl ;
-        }*/
+    ui->DotPlotZone->setScene(scene);
 }
 
 
 void DotPlotView::setSelectedDiagonal(DiagonalViewItem *d) {
     if (d != NULL) {
-        if (m_selectedDiagonal != NULL) {
-            m_selectedDiagonal->setPen(*m_classicPen);
-        }
+        m_selectedDiagonal->setPen(*m_classicPen);
         m_selectedDiagonal = d;
         m_selectedDiagonal->setPen(*m_selectedPen);
     }
 }
 
 void DotPlotView::refreshValues(qreal x, qreal y, qreal l) {
-    std::cout << x << " " << y << " " << l << std::endl;
+    //std::cout << x << " " << y << " " << l << std::endl;
     ui->PosDump1Value->setText(QString::number(x));
     ui->PosDump2Value->setText(QString::number(y));
     ui->SizeDiagValue->setText(QString::number(l));
@@ -82,8 +73,10 @@ void DotPlotView::refreshValues(qreal x, qreal y, qreal l) {
 }
 
 void DotPlotView::diagClicked(DiagonalViewItem *d) {
-    this->setSelectedDiagonal(d);
-    this->refreshValues(d->line().x1(), d->line().y1(), d->line().dx());
+    if (d != NULL) {
+        this->setSelectedDiagonal(d);
+        this->refreshValues(d->line().x1(), d->line().y1(), d->line().dx());
+    }
 }
 
 void DotPlotView::setWindowTitle(QString name1) {
