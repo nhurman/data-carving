@@ -48,13 +48,13 @@ public:
     /// \brief Set bitstring.
     /// \param b BitString used on axis X and Y.
     /// \note Also set diagonals with the given bitstring.
-    void setBitString(BitString const* b);
+    void setBitString(BitString const* b, unsigned int diagSize);
 
     /// \brief Set bitstrings.
     /// \param b1 BitString used on axis X.
     /// \param b2 BitString used on axis Y.
     /// \note Also set diagonals with the given bitstrings.
-    void setBitStrings(BitString const* b1, BitString const* b2);
+    void setBitStrings(BitString const* b1, BitString const* b2, unsigned int diagSize);
 
     /// \brief Draw diagonals on the graphic view.
     /// \param listDiag List of Diagonal to be converted in DiagonalViewItem.

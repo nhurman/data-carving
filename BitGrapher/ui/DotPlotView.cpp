@@ -9,9 +9,9 @@ DotPlotView::DotPlotView(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    BitString a = BitString::fromHex("AAF63E4");
+    /*BitString a = BitString::fromHex("AAF63E4");
     BitString b = BitString::fromHex("AAF63E4");
-    this->setBitStrings(&a, &b);
+    this->setBitStrings(&a, &b);*/
 }
 
 DotPlotView::~DotPlotView()
@@ -19,21 +19,21 @@ DotPlotView::~DotPlotView()
     delete ui;
 }
 
-void DotPlotView::setBitString(BitString const* b){
+void DotPlotView::setBitString(BitString const* b, unsigned int diagSize){
     m_bitstring = b;
     m_bitstring2 = b;
     m_height = b->size();
     m_width = b->size();
-    std::list<Diagonal> d = b->dotPlotPattern();
+    std::list<Diagonal> d = b->dotPlotPattern(diagSize);
     drawDiagonals(&d);
 }
 
-void DotPlotView::setBitStrings(BitString const* b1, BitString const* b2){
+void DotPlotView::setBitStrings(BitString const* b1, BitString const* b2, unsigned int diagSize){
     m_bitstring = b1;
     m_bitstring2 = b2;
     m_height = b2->size();
     m_width = b1->size();
-    std::list<Diagonal> d = b1->dotPlotPattern(b2);
+    std::list<Diagonal> d = b1->dotPlotPattern(b2, diagSize);
     drawDiagonals(&d);
 }
 

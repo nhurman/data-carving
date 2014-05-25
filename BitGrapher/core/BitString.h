@@ -55,12 +55,12 @@ public:
     /// \brief Dot Plot pattern between 2 dump.
     /// \param dump The dump to compare to.
     /// \return A list of the calculated diagonals.
-    std::list<Diagonal> dotPlotPattern(const BitString *dump) const;
+    std::list<Diagonal> dotPlotPattern(const BitString *dump, unsigned int minDiagSize) const;
 
     /// \brief Dot Plot pattern on one dump.
     /// \return A list of the calculated diagonals.
     /// \note This is faster than using the 2 dump method.
-    std::list<Diagonal> dotPlotPattern() const;
+    std::list<Diagonal> dotPlotPattern(unsigned int minDiagSize) const;
 
 private:
     size_t m_size;
