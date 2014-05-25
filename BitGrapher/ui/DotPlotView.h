@@ -45,16 +45,6 @@ public:
     /// \brief Destructor for AssociationViewWidget.
     ~DotPlotView();
 
-    /// \brief Set diagonals on the graphic view.
-    /// \param sd List of diagonal to add.
-    /// \param w Graphic view width.
-    /// \param h Graphic view height.
-    void setDiagonals(std::list<Diagonal> const sd, unsigned int w, unsigned int h);
-
-    /// \brief Set diagonals on the graphic view.
-    /// \param sd List of diagonal to add.
-    void setDiagonals(std::list<Diagonal> const sd);
-
     /// \brief Set bitstring.
     /// \param b BitString used on axis X and Y.
     /// \note Also set diagonals with the given bitstring.
@@ -67,7 +57,8 @@ public:
     void setBitStrings(BitString const* b1, BitString const* b2);
 
     /// \brief Draw diagonals on the graphic view.
-    void drawDiagonals();
+    /// \param listDiag List of Diagonal to be converted in DiagonalViewItem.
+    void drawDiagonals(std::list<Diagonal> *listDiag);
 
     /// \brief Set the diagonal that will be drawed.
     void setSelectedDiagonal(DiagonalViewItem *d);
@@ -98,7 +89,6 @@ public slots:
 private:
     Ui::DotPlotView *ui; ///< The interface.
     QGraphicsScene m_scene; ///< The scene that should be drawed.
-    std::list<Diagonal> m_listDiag; ///< A diagonal list that should be drawed.
     BitString const* m_bitstring; ///< First bitstring.
     BitString const* m_bitstring2; ///< Second bitstring.
     unsigned int m_height; ///< Height of the graphical view.

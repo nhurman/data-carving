@@ -189,18 +189,20 @@ void MainWindow::on_action_Dot_Plot_Pattern_triggered()
 
     dialog->exec();
     DotPlotResult* result = dialog->getResult();
-    if(result == NULL)
+    if(result == NULL) {
+        delete wid;
         return;
-    if (result->sameDump()) {
+    }
+    else if (result->sameDump()) {
         wid->setBitString(result->getDump1().bitString());
         wid->setWindowTitle(QString(result->getDump1().fileName().c_str()));
+        wid->show();
     }
     else {
         wid->setBitStrings(result->getDump1().bitString(), result->getDump2().bitString());
         wid->setWindowTitle(QString(result->getDump1().fileName().c_str()), QString(result->getDump2().fileName().c_str()));
+        wid->show();
     }
-    wid->drawDiagonals();
-    wid->show();
 }
 
 void MainWindow::on_actionOpen_Mask_triggered()

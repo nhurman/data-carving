@@ -22,24 +22,13 @@ DotPlotView::~DotPlotView()
     delete ui;
 }
 
-void DotPlotView::setDiagonals(std::list<Diagonal> const sd, unsigned int w, unsigned int h)
-{
-    m_listDiag = sd;
-    m_height = h;
-    m_width = w;
-}
-
-void DotPlotView::setDiagonals(std::list<Diagonal> const sd)
-{
-    m_listDiag = sd;
-}
-
 void DotPlotView::setBitString(BitString const* b){
     m_bitstring = b;
     m_bitstring2 = b;
     m_height = b->size();
     m_width = b->size();
-    m_listDiag = b->dotPlotPattern();
+    std::list<Diagonal> d = b->dotPlotPattern();
+    drawDiagonals(&d);
 }
 
 void DotPlotView::setBitStrings(BitString const* b1, BitString const* b2){
@@ -47,14 +36,15 @@ void DotPlotView::setBitStrings(BitString const* b1, BitString const* b2){
     m_bitstring2 = b2;
     m_height = b2->size();
     m_width = b1->size();
-    m_listDiag = b1->dotPlotPattern(b2);
+    std::list<Diagonal> d = b1->dotPlotPattern(b2);
+    drawDiagonals(&d);
 }
 
-void DotPlotView::drawDiagonals() {
+void DotPlotView::drawDiagonals(std::list<Diagonal>  *listDiag) {
     qreal mw = ui->DotPlotZone->geometry().width() / m_width;
     qreal mh = ui->DotPlotZone->geometry().height() / m_height;
 
-    for (std::list<Diagonal>::iterator it = m_listDiag.begin(); it != m_listDiag.end(); ++it){
+    for (std::list<Diagonal>::iterator it = listDiag->begin(); it != listDiag->end(); ++it){
         unsigned int x = (*it).getX();
         unsigned int y = (*it).getY();
         unsigned int l = (*it).length();
@@ -71,6 +61,7 @@ void DotPlotView::drawDiagonals() {
         std::cout << "Diag " << (*i).toString() << std::endl ;
         }*/
 }
+
 
 void DotPlotView::setSelectedDiagonal(DiagonalViewItem *d) {
     if (d != NULL) {
