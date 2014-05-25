@@ -23,5 +23,5 @@ int DotPlotResult::getDiagSize()
 
 bool DotPlotResult::sameDump()
 {
-    return m_dump1.bitString() == m_dump2.bitString();
+    return *(m_dump1.bitString()) == *(m_dump2.bitString());
 }
