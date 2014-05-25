@@ -69,25 +69,43 @@ public:
     /// \brief Draw diagonals on the graphic view.
     void drawDiagonals();
 
+    /// \brief Set the diagonal that will be drawed.
     void setSelectedDiagonal(DiagonalViewItem *d);
+
+    /// \brief Refresh the numerical values of the interface.
+    /// \param x Position in the first dump.
+    /// \param y Position in the second dump.
+    /// \param l Length of the current diagonal.
     void refreshValues(qreal x, qreal y, qreal l);
+
+    /// \brief Set the window title when only one dump is used.
+    /// \param name1 Name of the dump used.
+    void setWindowTitle(QString name1);
+
+    /// \brief Set the window title when two dumps are used.
+    /// \param name1 Name of the first dump used.
+    /// \param name1 Name of the second dump used.
+    void setWindowTitle(QString name1, QString name2);
 
 signals:
 
 public slots:
+
+    /// \brief Slot that refresh all the interface on diagonal click.
+    /// \param d The clicked diagonal.
     void diagClicked(DiagonalViewItem *d);
 
 private:
-    Ui::DotPlotView *ui;
-    QGraphicsScene m_scene;
-    std::list<Diagonal> m_listDiag;
-    BitString const* m_bitstring;
-    BitString const* m_bitstring2;
-    unsigned int m_height;
-    unsigned int m_width;
-    QPen *m_classicPen;
-    QPen *m_selectedPen;
-    QGraphicsLineItem *m_selectedDiagonal;
+    Ui::DotPlotView *ui; ///< The interface.
+    QGraphicsScene m_scene; ///< The scene that should be drawed.
+    std::list<Diagonal> m_listDiag; ///< A diagonal list that should be drawed.
+    BitString const* m_bitstring; ///< First bitstring.
+    BitString const* m_bitstring2; ///< Second bitstring.
+    unsigned int m_height; ///< Height of the graphical view.
+    unsigned int m_width; ///< Width of the graphical view.
+    QPen *m_classicPen; ///< Pen used for all unselected diagonals.
+    QPen *m_selectedPen; ///< Pen used for the selected diagonal.
+    QGraphicsLineItem *m_selectedDiagonal; ///< Adress of the selected diagonal.
 
 };
 

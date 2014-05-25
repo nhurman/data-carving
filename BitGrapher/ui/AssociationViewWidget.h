@@ -43,19 +43,24 @@ public:
     /// \note Will close current mask.
     void openMask();
 
-    /// \brief Allow user
-    /// \param index index of the dump to get
-    /// \return the dump at the given position
+    /// \brief Allow user to save a mask (*.mk) at chosen location (open a dialog).
     bool saveMaskAs();
+
+    /// \brief Allow user to save a mask (*.mk) at m_filePath location.
+    /// \note Call saveMaskAs if m_filePath == NULL.
     bool saveMask();
+
+    /// \brief Close current mask (*.mk).
     bool closeMask();
+
+    /// \brief Open a dialog to add a new line in the association view (*.mk).
     bool newLabelDialog();
 
 
 
 
 private:
-    QString m_filePath;
+    QString m_filePath; ///< Path to the mask (for saving)
 };
 
 #endif // ASSOCIATIONVIEWWIDGET_H

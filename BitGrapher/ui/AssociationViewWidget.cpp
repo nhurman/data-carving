@@ -95,5 +95,6 @@ bool AssociationViewWidget::closeMask(){
     while(this->rowCount() > 0) {
         this->removeRow(0);
     }
+    m_filePath = QString();
     return true;
 }

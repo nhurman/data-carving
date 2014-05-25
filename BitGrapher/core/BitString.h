@@ -52,8 +52,14 @@ public:
     static std::string formatToString(InputFormat format);
 
 
-    //
+    /// \brief Dot Plot pattern between 2 dump.
+    /// \param dump The dump to compare to.
+    /// \return A list of the calculated diagonals.
     std::list<Diagonal> dotPlotPattern(const BitString *dump) const;
+
+    /// \brief Dot Plot pattern on one dump.
+    /// \return A list of the calculated diagonals.
+    /// \note This is faster than using the 2 dump method.
     std::list<Diagonal> dotPlotPattern() const;
 
 private:

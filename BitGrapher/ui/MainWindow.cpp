@@ -193,16 +193,15 @@ void MainWindow::on_action_Dot_Plot_Pattern_triggered()
         return;
     if (result->sameDump()) {
         wid->setBitString(result->getDump1().bitString());
+        wid->setWindowTitle(QString(result->getDump1().fileName().c_str()));
     }
     else {
-        wid->setBitStrings(result->getDump1().bitString(),
-                           result->getDump2().bitString());
+        wid->setBitStrings(result->getDump1().bitString(), result->getDump2().bitString());
+        wid->setWindowTitle(QString(result->getDump1().fileName().c_str()), QString(result->getDump2().fileName().c_str()));
     }
     wid->drawDiagonals();
     wid->show();
 }
-
-
 
 void MainWindow::on_actionOpen_Mask_triggered()
 {

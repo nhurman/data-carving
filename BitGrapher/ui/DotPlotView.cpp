@@ -7,13 +7,12 @@ DotPlotView::DotPlotView(QWidget *parent) :
     m_selectedPen(new QPen(Qt::red))
 {
     ui->setupUi(this);
-    setWindowTitle("Dot Plot Pattern between XXXX");
     ui->DotPlotZone->setScene(&m_scene);
 
-    BitString a = BitString::fromHex("AAF63E4");
+    /*BitString a = BitString::fromHex("AAF63E4");
     BitString b = BitString::fromHex("AAF63E4");
     this->setBitStrings(&a, &b);
-    this->drawDiagonals();
+    this->drawDiagonals();*/
     //connect(this, SIGNAL(clicked()), this, SLOT(diagClicked(new DiagonalViewItem(5, 7, 15, 17,*m_classicPen))));
 
 }
@@ -94,4 +93,11 @@ void DotPlotView::refreshValues(qreal x, qreal y, qreal l) {
 void DotPlotView::diagClicked(DiagonalViewItem *d) {
     this->setSelectedDiagonal(d);
     this->refreshValues(d->line().x1(), d->line().y1(), d->line().dx());
+}
+
+void DotPlotView::setWindowTitle(QString name1) {
+    QWidget::setWindowTitle("Dot Plot Pattern of " + name1);
+}
+void DotPlotView::setWindowTitle(QString name1, QString name2) {
+    QWidget::setWindowTitle("Dot Plot Pattern between " + name1 + " and " + name2);
 }
