@@ -5,9 +5,9 @@
 #include <QComboBox>
 #include <QSpinBox>
 #include <QVBoxLayout>
-#include "core/dumpset.h"
-#include "algorithms/similarities.h"
-#include "ui/dumpcombobox.h"
+#include "core/DumpSet.h"
+#include "algorithms/Similarities.h"
+#include "ui/DumpComboBox.h"
 
 /// \class SimilaritiesDialog
 ///

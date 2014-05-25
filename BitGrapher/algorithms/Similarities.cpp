@@ -1,4 +1,4 @@
-#include "algorithms/similarities.h"
+#include "algorithms/Similarities.h"
 #include <iostream>
 
 Similarities::Similarities(const std::vector<Dump> dumps, const int minSize) : m_dumps(dumps)
@@ -366,23 +366,18 @@ std::list< Similarity > Similarities::intersectSim(Similarity s1, Similarity s2,
 
 std::string Similarities::toString() const
 {
-    std::string s = "Similarities :\n";
+    std::stringstream s;
+    s << "Similarities :\n";
     for(Similarity sim: m_similarities)
     {
-        char c[8];
-        s += "[";
-        s += itoa(sim.first.first, c, 10);
-        s += " ; ";
-        s += itoa(sim.first.second, c, 10);
-        s += "] :";
+        s << "[" << sim.first.first << " ; " << sim.first.second << "] :";
         for(int i: sim.second)
         {
-            s += " ";
-            s += itoa(i, c, 10);
+            s << " " << i;
         }
-        s += "\n";
+        s << "\n";
     }
-    return s;
+    return s.str();
 }
 
 //void Similarities::test()

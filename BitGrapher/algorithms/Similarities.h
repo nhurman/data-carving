@@ -1,7 +1,7 @@
 #ifndef SIMILARITIES_H
 #define SIMILARITIES_H
 
-#include "core/dumpset.h"
+#include "core/DumpSet.h"
 
 #define LOG2(x) std::log(x)/log(2)
 
