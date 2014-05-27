@@ -46,9 +46,18 @@ public:
 signals:
 
 public slots:
+    /// \brief Call this when a comboBox's selection has changed. Prevents the selection of a same Dump twice.
+    /// \param modifiedIndex Index of the modified ComboBox. -1 to refresh all.
     void refreshComboBoxes(int modifiedIndex); //modifiedIndex : index of the modified CB -1 to refresh all
+
+    /// \brief Call this when the user presses OK (runs the algorithm and closes the dialog).
     void processAndClose();
+
+    /// \brief Call this when the user presses Cancel (closes the dialog).
     void cancelAndClose();
+
+    /// \brief Call this when the user presses the default button (Sets the size to its preferred value).
+    /// \note Uses preferredStringSize().
     void displayDefaultSize();
 
 private:

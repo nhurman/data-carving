@@ -109,7 +109,7 @@ std::vector<std::string> DumpSet::getDumpNames() const
 {
     std::vector<std::string> v;
     for(std::map<std::string, Dump const*>::const_iterator it = m_dumps.begin(); it != m_dumps.end(); ++it) {
-      v.push_back(it->first);
+      v.push_back(it->second->fileName());
     }
     return v;
 }
