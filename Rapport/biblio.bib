@@ -1,38 +1,80 @@
 
 % Ce fichier doit lister toutes vos références bibliographiques.
-% Seules celles appelées par la commande \cite (cf. poly LaTeX) seront 
+% Seules celles appelées par la commande \cite (cf. poly LaTeX) seront
 % automatiquement incorporées dans votre document grâce à bibtex
 % et à la séquence des 4 commandes suivantes :
 %
-%      latex <fichier-tex-sans-extension> 
-%      bibtex <fichier-tex-sans-extension> 
-%      latex <fichier-tex-sans-extension> 
-%      latex <fichier-tex-sans-extension> 
-		  
-		  
-		  
+%      latex <fichier-tex-sans-extension>
+%      bibtex <fichier-tex-sans-extension>
+%      latex <fichier-tex-sans-extension>
+%      latex <fichier-tex-sans-extension>
+
+
+
 % Pour créer une nouvelle entrée bibliographique dans ce fichier :
 %      sous xemacs, dans ce fichier, dans la zone de texte, cliquer
-%      sur le bouton droit de la souris et choisir le type de 
+%      sur le bouton droit de la souris et choisir le type de
 %      référence. Compléter les différents champs. Supprimer les
-%      champs optionnels non utilisés. Ne pas oublier la clé 
-%      d'accès à la référence nécessaire pour la commande \cite 
+%      champs optionnels non utilisés. Ne pas oublier la clé
+%      d'accès à la référence nécessaire pour la commande \cite
 %      (par exemple "lamport:latex:94").
-		  
 
-@Book{lamport:latex:94,
-  author = 	 "Lamport, Leslie",
-  title = 	 "LaTeX: A Document Preparation System - User's Guide
-		  and Reference Manual",
-  publisher = 	 "Addison-Wesley",
-  year = 	 "1994",
-  month = 	 nov,
-  edition = 	 "seconde",
+on = 	 "seconde",
 }
-		  
-@Book{rolland:latex:95,
-  author = 	 "Rolland, Christian",
-  title = 	 "LaTeX, guide pratique",
-  publisher = 	 "Addison-Wesley",
-  year = 	 "1995",
+
+@Misc{ASCII,
+  author = {Vint Cerf},
+  title = {ASCII format for Network Interchange},
+  month = oct,
+  year = {1969},
+  howpublished = {\url{http://tools.ietf.org/html/rfc20}}
 }
+
+@Misc{ECMA6,
+  author = {},
+  title = {Standard ECMA-6},
+  month = dec,
+  year = {1991},
+  howpublished = {\url{http://www.ecma-international.org/publications/standards/Ecma-006.htm}}
+}
+
+@Misc{UTF8,
+  author = {F. Yergeau},
+  title = {UTF-8, a transformation format of Unicode and ISO 10646},
+  month = oct,
+  year = {1996},
+  howpublished = {\url{http://tools.ietf.org/html/rfc2044}}
+}
+
+@inproceedings{mCarve,
+  author =       {T. van Deursen and S. Mauw and S. Radomirovi\'c},
+  title =        {m{C}arve: {C}arving attributed dump sets},
+  booktitle =    {Proc.\ 20th USENIX Security Symposium},
+  publisher =    {USENIX Association},
+  month =        {August},
+  year =         {2011},
+  pages =        {107--121}
+}
+
+@Misc{Qt,
+  title = {Qt - Cross-platform application and UI development framework},
+  month = may,
+  year = {2014},
+  howpublished = {\url{http://qt.digia.com}}
+}
+
+@Misc{UnitTest,
+  title = {UnitTest++ - a lightweight unit testing framework for C++},
+  month = apr,
+  year = {2007},
+  howpublished = {\url{http://unittest-cpp.sourceforge.net/}}
+}
+
+@Misc{Doxygen,
+  title = {Doxygen},
+  month = may,
+  year = {2014},
+  howpublished = {\url{http://www.stack.nl/~dimitri/doxygen/}}
+}
+
+
