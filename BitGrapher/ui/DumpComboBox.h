@@ -2,10 +2,11 @@
 #define DUMPCOMBOBOX_H
 
 #include <QComboBox>
+#include "../core/Dump.h"
 
 /// \class DumpComboBox
 ///
-/// \brief A ComboBox that selects items (e.g. Dumps) while keeping track of the selected index.
+/// \brief A ComboBox that selects Dumps while keeping track of the selected index.
 ///
 /// \author Gabriel Prevosto
 ///
@@ -18,23 +19,31 @@ public:
 
     /// \brief A constructor fot DumpComboBox
     /// \param parent The parent Widget (optional).
-    /// \param index The index of the Dump selected by default. 0 by default.
-    explicit DumpComboBox(QWidget *parent = 0, int index = 0);
+    explicit DumpComboBox(QWidget *parent = 0);
+
+    /// \brief Sets the selectable Dumps.
+    /// \param dumps The list of Dumps that will be selectable.
+    void setDumpList(std::vector<Dump const*> dumps);
+
+    /// \brief Returns a pointer to the selected Dump.
+    /// \returns A pointer to the selected Dump.
+    Dump const* currentDump();
 
 signals:
 
-    /// \brief Emitted when the selected item changes.
-    /// \param i The index of the new selected item.
-    void currentDumpChanged( int i );
+    // \brief Emitted when the selected item changes.
+    // \param i The index of the new selected item.
+    //void currentDumpChanged( int i );
 
 private slots:
 
-    /// \brief Call this when the current index changed.
-    /// \note This is used to trigger currentDumpChanged.
-    void onCurrentIndexChanged();
+    // \brief Call this when the current index changed.
+    // \note This is used to trigger currentDumpChanged.
+    //void onCurrentIndexChanged();
 
 private:
-    int m_index; ///< The index of the selected item.
+    //int m_index; ///< The index of the selected item.
+    std::vector<Dump const*> m_dumps; ///< The Dumps that can be selected
 
 };
 

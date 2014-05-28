@@ -27,7 +27,7 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, DumpSet* ds, QString* selectedDump
 
     //dumps
     m_dumpCBs.push_back(new DumpComboBox(this));
-    m_dumpCBs.push_back(new DumpComboBox(this, 1));
+    m_dumpCBs.push_back(new DumpComboBox(this));
     m_layout->addWidget(m_dumpCBs[0]);
     m_layout->addWidget(m_dumpCBs[1]);
 

@@ -25,15 +25,15 @@ public:
     /// \brief Constructor for SimilaritiesDialog.
     /// \param parent The parent Widget (optional).
     /// \param ds The DumpSet in which the algorithm will be applied.
-    /// \param selectedDump Where the compared dump's name (the one to display) will be stored.
-    explicit SimilaritiesDialog(QWidget *parent = 0, DumpSet* ds = NULL, QString* selectedDump = NULL);
+    /// \param selectedDump Where the compared dump (the one to display) will be stored.
+    explicit SimilaritiesDialog(QWidget *parent = 0, DumpSet* ds = NULL, const Dump *selectedDump = NULL);
 
     /// \brief Displays the SimilaritiesDialog and returns the results of the algorithm.
     /// \note For an easy use of this class, just use this method.
     /// \param ds The DumpSet in which the algorithm will be applied.
-    /// \param selectedDump Where the compared dump's name (the one to display) will be stored.
+    /// \param selectedDump Where the compared dump (the one to display) will be stored.
     /// \return An instance of Similarity with the results of the algorithm.
-    static Similarities* getSimilarities(DumpSet* ds, QString* selectedDump = NULL);
+    static Similarities* getSimilarities(DumpSet* ds, Dump const* selectedDump = NULL);
 
     /// \brief Finds the dump selected by the ComboBox with the given index.
     /// \param index The index of the ComboBox to look at.
@@ -70,7 +70,7 @@ public slots:
 
 private:
     QVBoxLayout* m_layout; ///< The layout ofr this Dialog.
-    QString* m_selectedDump; ///< The Dump selected by the first ComboBox
+    Dump const* m_selectedDump; ///< The Dump selected by the first ComboBox
     DumpSet* m_dumpSet; ///< The working DumpSet
     std::vector<DumpComboBox*> m_dumpCBs; ///< The ComboBoxes
     QSpinBox* m_minSizeSpinBox; ///< The SpinBox that controls the minimum string size

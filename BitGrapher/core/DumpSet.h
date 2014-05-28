@@ -78,6 +78,10 @@ public:
     /// \return The list of all the Dump's names.
     std::vector<std::string> getDumpNames() const;
 
+    /// \brief Gets the list of all the Dumps.
+    /// \return The list of all the Dumps.
+    std::vector<const Dump *> getDumpList() const;
+
 private:
     std::map<std::string, Dump const*> m_dumps; ///< The Dumps contained in the DumpSet, sorted by name.
     std::string m_filePath; ///< The DumpSet's file path.

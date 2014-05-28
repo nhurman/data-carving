@@ -23,6 +23,7 @@
 #include "DotPlotDialog.h"
 #include "DotPlotView.h"
 #include "DotPlotDialog.h"
+#include "SimilaritiesDialog.h"
 
 
 namespace Ui {
@@ -67,6 +68,8 @@ private slots:
     void on_actionNew_Line_triggered();
 
     void on_actionDelete_Line_triggered();
+
+    void on_actionSimilarities_triggered();
 
 private:
     Ui::MainWindow *ui;

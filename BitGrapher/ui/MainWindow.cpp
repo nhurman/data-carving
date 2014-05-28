@@ -236,3 +236,42 @@ void MainWindow::on_actionDelete_Line_triggered()
 {
     ui->tableWidget->deleteLine();
 }
+
+void MainWindow::on_actionSimilarities_triggered()
+{
+    DumpSet* ds = ui->treeWidget->getCurrentDumpSet();
+    if(ds == NULL) //no dump selected
+    {
+        QMessageBox::information(this, "Could not perform operation",
+                                 "Please select a dump in a dump set.",
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    if(ds->size() < 2) //not enough dumps for comparison
+    {
+        QMessageBox::information(this, "Could not perform operation",
+                                 "Not enough dumps in the dump set (at least 2 necessary)",
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    Dump const* dump;
+
+    Similarities* sim = SimilaritiesDialog::getSimilarities(ds, dump);
+    //if(sim == NULL) //cancel was pressed
+    //    return;
+    //else
+    //{
+    //    if(m_similarities.find(m_dumpSet) != m_similarities.end()) //there is already a similarities in the dump set
+    //    {
+    //        delete m_similarities[m_dumpSet]; //delete it
+    //        m_similarities.erase(m_dumpSet);
+    //    }
+    //    m_similarities[m_dumpSet] = sim; //add the new similarities
+    //}
+
+    //ui->treeWidget->selectDump(*dumpName);
+
+    //refreshDisplay(); //refreshes to show similarities. Only useful if the selected dump has not changed
+}

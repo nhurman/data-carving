@@ -5,7 +5,7 @@
 
 Similarities* SimilaritiesDialog::m_result;
 
-SimilaritiesDialog::SimilaritiesDialog(QWidget *parent, DumpSet* ds, QString* selectedDump) :
+SimilaritiesDialog::SimilaritiesDialog(QWidget *parent, DumpSet* ds, Dump const* selectedDump) :
     QDialog(parent), m_selectedDump(selectedDump), m_dumpSet(ds)
 {
     setWindowTitle("Similarities");
@@ -41,13 +41,13 @@ SimilaritiesDialog::SimilaritiesDialog(QWidget *parent, DumpSet* ds, QString* se
 
     //dumps
     m_dumpCBs.push_back(new DumpComboBox(this));
-    m_dumpCBs.push_back(new DumpComboBox(this, 1));
+    m_dumpCBs.push_back(new DumpComboBox(this));
     m_layout->addWidget(m_dumpCBs[0]);
     m_layout->addWidget(m_dumpCBs[1]);
 
-    QObject::connect(m_dumpCBs[0], SIGNAL(currentDumpChanged( int ) ),
+    QObject::connect(m_dumpCBs[0], SIGNAL(currentIndexChanged( int ) ),
                           this, SLOT(refreshComboBoxes( int )));
-    QObject::connect(m_dumpCBs[1], SIGNAL(currentDumpChanged( int ) ),
+    QObject::connect(m_dumpCBs[1], SIGNAL(currentIndexChanged( int ) ),
                           this, SLOT(refreshComboBoxes( int )));
 
     //ok cancel
@@ -82,38 +82,27 @@ void SimilaritiesDialog::refreshComboBoxes(int modifiedIndex)
 {
     if(modifiedIndex <= 0)
         if(m_selectedDump != NULL)
-            *m_selectedDump = m_dumpCBs[0]->currentText();
+            m_selectedDump = m_dumpCBs[0]->currentDump();
 
     for(unsigned int i = modifiedIndex+1; i < m_dumpCBs.size(); i++)
     {
+        bool oldState = m_dumpCBs[i]->blockSignals(true);
         refreshComboBox(i);
+        m_dumpCBs[i]->blockSignals(oldState);
     }
 }
 
 void SimilaritiesDialog::refreshComboBox(const int index)
 {
-    QString selection = m_dumpCBs[index]->currentText();
-    std::vector<std::string> dumpsVect = m_dumpSet->getDumpNames();
-    QStringList dumps;
-    for(unsigned int i = 0; i < dumpsVect.size(); i++) //std::list to QStringList
+    std::vector<Dump const*> dumpsVect = m_dumpSet->getDumpList();
+    for(int i = 0; i < index; i++) //removing dumps selected in the boxes above
     {
-        dumps.push_back(QString::fromStdString(dumpsVect.at(i)));
-    }
-    for(int i = 0; i < index; i++) //removind dumps selected in the boxes above
-    {
-        dumps.removeOne(m_dumpCBs[i]->currentText());
+        std::vector<Dump const*>::iterator it = std::find(dumpsVect.begin(), dumpsVect.end(), m_dumpCBs[i]->currentDump());
+        if( it != dumpsVect.end())
+            dumpsVect.erase(it);
     }
 
-    m_dumpCBs[index]->clear();
-    m_dumpCBs[index]->addItems(dumps);
-
-    //puts the selection back if possible
-    int i = m_dumpCBs[index]->findText(selection);
-    if ( i != -1 ) // -1 for not found
-        m_dumpCBs[index]->setCurrentIndex(i);
-    else
-        m_dumpCBs[index]->setCurrentIndex(0);
-
+    m_dumpCBs[index]->setDumpList(dumpsVect);
 }
 
 void SimilaritiesDialog::addComboBox()
@@ -123,10 +112,10 @@ void SimilaritiesDialog::addComboBox()
         return;
     }
     //else
-    m_dumpCBs.push_back(new DumpComboBox(this, m_dumpCBs.size()));
+    m_dumpCBs.push_back(new DumpComboBox(this));
     m_layout->insertWidget(m_layout->count()-1, m_dumpCBs.back());
 
-    QObject::connect(m_dumpCBs.back(), SIGNAL(currentDumpChanged( int ) ),
+    QObject::connect(m_dumpCBs.back(), SIGNAL(currentIndexChanged( int ) ),
                           this, SLOT(refreshComboBoxes( int )));
 
     refreshComboBox(m_dumpCBs.size()-1);
@@ -160,7 +149,7 @@ void SimilaritiesDialog::cancelAndClose()
     done(0);
 }
 
-Similarities* SimilaritiesDialog::getSimilarities(DumpSet* ds, QString* selectedDump)
+Similarities* SimilaritiesDialog::getSimilarities(DumpSet* ds, const Dump *selectedDump)
 {
     SimilaritiesDialog dialog(0, ds, selectedDump);
     dialog.exec();

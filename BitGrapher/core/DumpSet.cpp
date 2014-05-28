@@ -114,6 +114,15 @@ std::vector<std::string> DumpSet::getDumpNames() const
     return v;
 }
 
+std::vector<Dump const*> DumpSet::getDumpList() const
+{
+    std::vector<Dump const*> v;
+    for( std::pair<std::string, Dump const*> p : m_dumps) {
+      v.push_back(p.second);
+    }
+    return v;
+}
+
 
 std::string DumpSet::toAbsolute(const std::string relativePath) const
 {
