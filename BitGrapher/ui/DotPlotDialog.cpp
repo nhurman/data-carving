@@ -136,7 +136,7 @@ int DotPlotDialog::preferredStringSize()
         sizes.push_back(getDump(i).getSize());
     }
 
-    int s = MIN_DIAG_SIZE;
+    int s = Diagonal::minStringSize(sizes);
     if(s > 0)
         return s;
     return 1;

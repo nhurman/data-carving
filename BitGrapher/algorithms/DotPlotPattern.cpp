@@ -47,3 +47,17 @@ std::list<Diagonal> BitString::dotPlotPattern(unsigned int minDiagSize) const {
     }
     return listDiag;
 }
+
+int Diagonal::minStringSize(std::list<int> sizes)
+{
+    int t = 0; //nb of combinations of 2 bits from different dumps
+    for(std::list<int>::iterator i = sizes.begin(); i != sizes.end(); i++)
+    {
+        std::list<int>::iterator j = i;
+        for(j++; j != sizes.end(); j++) //j starts at i+1
+        {
+            t+= (*i)*(*j);
+        }
+    }
+    return 4.29 + LOG2(t) + .99; //+.99 : cheap way to round up the result
+}
