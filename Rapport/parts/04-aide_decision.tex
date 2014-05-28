@@ -2,12 +2,10 @@ Afin de mieux assister l'utilisateur dans son analyse, des aides à la décision
 
 \subsubsection{Formats d'entrée}
 
-Tout d'abord, lors de l'ouverture d'un dump, l'aide à la décision sélectionne le format le plus probable (parmi binaire, hexadécimal ou donnée brute), tout en laissant le choix parmi les autres formats possibles (les formats qui ne sont pas respectés par le fichier sont éliminés).
-Par exemple, si l'on tente d'ouvrir un fichier contenant la chaîne ASCII ''0A1F'', l'aide à la décision la reconnaîtra comme de l'hexadécimal. L'utilisateur pourra également choisir l'option ''donnée brute'' (qui importe les caractères ASCII directement), mais pas l'option binaire (la chaîne contenant autre chose que des ''0'' et des ''1'').
+Tout d'abord, lors de l'ouverture d'un dump, l'aide à la décision sélectionne le format le plus probable parmi binaire, hexadécimal ou donnée brute. L'utilisateur a tout de même le choix parmi les autres formats, à part ceux qui ne sont pas respectés par le fichier en entrée.
+Par exemple, si l'on tente d'ouvrir un fichier contenant la chaîne ASCII ''0A1F'', l'aide à la décision la reconnaîtra comme de l'hexadécimal. L'utilisateur pourra également choisir l'option ''donnée brute'', qui importe les caractères ASCII directement, mais pas l'option binaire, la chaîne contenant autre chose que des ''0'' et des ''1'.
 
 \subsubsection{Tailles de chaîne minimale pour l'analyse}
 
-Ensuite, lors de l'application d'un algorithme de comparaison de dumps (voire partie sur l'analyse), une taille de chaîne à comparer minimale est demandée à l'utilisateur. Par la simple pression d'un bouton, cette valeur peut être sélectionnée automatiquement par le programme en fonction de la taille et du nombre de dumps à comparer.
+Ensuite, lors de l'application d'un algorithme de comparaison de dumps (voir Section \ref{04-analyse}), une taille de chaîne à comparer minimale est demandée à l'utilisateur. Par la simple pression d'un bouton, cette valeur peut être sélectionnée automatiquement par le programme en fonction de la taille et du nombre de dumps à comparer.
 Ces valeurs automatiques ont été calculées afin de donner, dans l'hypothèse d'une distribution aléatoire des bits dans les dumps, une probabilité d'obtenir par hasard un résultat (qui serait donc un faux positif) d'au plus 5\%.
-
-%A compléter au fur et à mesure de la fin du dev
