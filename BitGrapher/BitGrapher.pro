@@ -67,7 +67,8 @@ HEADERS  += \
     encoding/ASCII8.h \
     encoding/ASCII7.h \
     encoding/Integer.h \
-    encoding/BCD.h
+    encoding/BCD.h \
+    core/Label.h
 
 FORMS    += \
   ui/MainWindow.ui \

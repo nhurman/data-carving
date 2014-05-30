@@ -62,39 +62,39 @@ void TextViewWidget::on_encoding_currentIndexChanged(const QString &arg1)
         delete m_encoding;
         m_encoding = new Binary();
     }
-    else if ("Integer (2 bits)" == arg1) {
+    else if ("Int2" == arg1) {
         delete m_encoding;
         m_encoding = new Integer2();
     }
-    else if ("Integer (3 bits)" == arg1) {
+    else if ("Int3" == arg1) {
         delete m_encoding;
         m_encoding = new Integer3();
     }
-    else if ("Integer (4 bits)" == arg1) {
+    else if ("Int4" == arg1) {
         delete m_encoding;
         m_encoding = new Integer4();
     }
-    else if ("Integer (5 bits)" == arg1) {
+    else if ("Int5" == arg1) {
         delete m_encoding;
         m_encoding = new Integer5();
     }
-    else if ("Integer (6 bits)" == arg1) {
+    else if ("Int6" == arg1) {
         delete m_encoding;
         m_encoding = new Integer6();
     }
-    else if ("Integer (7 bits)" == arg1) {
+    else if ("Int7" == arg1) {
         delete m_encoding;
         m_encoding = new Integer7();
     }
-    else if ("Integer (8 bits)" == arg1) {
+    else if ("Int8" == arg1) {
         delete m_encoding;
         m_encoding = new Integer8();
     }
-    else if ("Integer (16 bits)" == arg1) {
+    else if ("Int16" == arg1) {
         delete m_encoding;
         m_encoding = new Integer16();
     }
-    else if ("Integer (32 bits)" == arg1) {
+    else if ("Int32" == arg1) {
         delete m_encoding;
         m_encoding = new Integer32();
     }
@@ -110,6 +110,19 @@ void TextViewWidget::on_globalOffset_valueChanged(int arg1)
 
 void TextViewWidget::on_newLabel_clicked()
 {
+    unsigned int outSize = m_encoding->getChunk(0).size();
     QTextCursor cursor = ui->textEdit->textCursor();
-    qDebug() << cursor.selectionStart() << cursor.selectionEnd();
+    unsigned int start = m_encoding->bitsPerChunk() * (cursor.selectionStart() / outSize);
+    unsigned int end = m_encoding->bitsPerChunk() * ceil(static_cast<double>(cursor.selectionEnd()) / outSize);
+
+    Label l;
+    l.name = ui->lineEdit->text().toUtf8().constData();
+    l.index = start;
+    l.length = end - start;
+    l.encoding = m_encoding->getName();
+    l.value = m_encoding->decode(l.index, l.length);
+
+    emit labelAdded(l);
+    ui->lineEdit->clear();
+    ui->textEdit->focusWidget();
 }

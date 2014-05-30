@@ -29,9 +29,16 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="placeholderText">
+        <string>Label Name</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="newLabel">
        <property name="text">
-        <string>Add Label</string>
+        <string>Add</string>
        </property>
       </widget>
      </item>
@@ -88,47 +95,47 @@
        </item>
        <item>
         <property name="text">
-         <string>Integer (2 bits)</string>
+         <string>Int2</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Integer (3 bits)</string>
+         <string>Int3</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Integer (4 bits)</string>
+         <string>Int4</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Integer (5 bits)</string>
+         <string>Int5</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Integer (6 bits)</string>
+         <string>Int6</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Integer (7 bits)</string>
+         <string>Int7</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Integer (8 bits)</string>
+         <string>Int8</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Integer (16 bits)</string>
+         <string>Int16</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Integer (32 bits)</string>
+         <string>Int32</string>
         </property>
        </item>
       </widget>

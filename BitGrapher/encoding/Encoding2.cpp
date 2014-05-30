@@ -1,4 +1,5 @@
 #include "Encoding2.h"
+#include <QDebug>
 
 Encoding2::Encoding2()
 {
@@ -18,6 +19,20 @@ void Encoding2::setGlobalOffset(unsigned int offset)
 void Encoding2::setBitString(BitString const* bitString)
 {
     m_bitString = bitString;
+}
+
+std::string Encoding2::decode(unsigned int start, unsigned int length)
+{
+    unsigned int chunk = start / bitsPerChunk();
+    unsigned int chunks = ceil(static_cast<double>(length) / bitsPerChunk());
+    qDebug() << chunk << chunks;
+    std::string out;
+
+    for (unsigned int i = chunk; i < chunk + chunks; ++i) {
+        out += getChunk(i);
+    }
+
+    return out;
 }
 
 unsigned int Encoding2::countChunks() const

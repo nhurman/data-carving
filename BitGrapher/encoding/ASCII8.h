@@ -10,6 +10,7 @@ public:
     ASCII8();
     std::string getChunk(unsigned int index) const;
     virtual unsigned int bitsPerChunk() const;
+    virtual std::string getName() const;
 };
 
 #endif // ASCII8_H

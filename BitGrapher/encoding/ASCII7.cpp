@@ -8,3 +8,8 @@ unsigned int ASCII7::bitsPerChunk() const
 {
     return 7;
 }
+
+std::string ASCII7::getName() const
+{
+    return "ASCII (7 bits)";
+}

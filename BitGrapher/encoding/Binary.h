@@ -10,6 +10,7 @@ public:
     Binary();
     std::string getChunk(unsigned int index) const;
     unsigned int bitsPerChunk() const;
+    std::string getName() const;
 };
 
 #endif // BINARY_H

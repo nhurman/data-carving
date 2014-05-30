@@ -12,7 +12,9 @@ public:
     void setBitString(BitString const* bitString);
     unsigned int countChunks() const;
     virtual std::string getChunk(unsigned int index) const = 0;
+    std::string decode(unsigned int start, unsigned int length);
     virtual unsigned int bitsPerChunk() const = 0;
+    virtual std::string getName() const = 0;
 
 protected:
     BitString const* m_bitString;

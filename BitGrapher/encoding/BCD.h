@@ -10,6 +10,7 @@ public:
     BCD();
     std::string getChunk(unsigned int index) const;
     virtual unsigned int bitsPerChunk() const;
+    std::string getName() const;
 };
 
 #endif // BCD_H

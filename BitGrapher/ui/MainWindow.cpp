@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->hexScroll->setWidget(m_hexView);
     ui->bmpScroll->setWidget(m_bmpView);
+
+    connect(ui->txtView, SIGNAL(labelAdded(Label)), ui->tableWidget, SLOT(addLabel(Label)));
 }
 
 MainWindow::~MainWindow()

@@ -13,6 +13,8 @@
 #include <QTextStream>
 #include <QTableWidget>
 
+#include "core/Label.h"
+
 /// \class AssociationViewWidget
 ///
 /// \brief Panel that show masks
@@ -56,7 +58,8 @@ public:
     /// \brief Open a dialog to add a new line in the association view (*.mk).
     bool newLabelDialog();
 
-
+public slots:
+    void addLabel(Label l);
 
 
 private:

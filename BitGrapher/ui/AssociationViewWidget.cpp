@@ -98,3 +98,13 @@ bool AssociationViewWidget::closeMask(){
     m_filePath = QString();
     return true;
 }
+
+void AssociationViewWidget::addLabel(Label l)
+{
+    insertRow(rowCount());
+    setItem(rowCount() - 1, 0, new QTableWidgetItem(l.name.c_str()));
+    setItem(rowCount() - 1, 1, new QTableWidgetItem(QString::number(l.index)));
+    setItem(rowCount() - 1, 2, new QTableWidgetItem(QString::number(l.length)));
+    setItem(rowCount() - 1, 3, new QTableWidgetItem(l.encoding.c_str()));
+    setItem(rowCount() - 1, 4, new QTableWidgetItem(l.value.c_str()));
+}

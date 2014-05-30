@@ -24,3 +24,8 @@ unsigned int BCD::bitsPerChunk() const
 {
     return 6;
 }
+
+std::string BCD::getName() const
+{
+    return "BCD";
+}

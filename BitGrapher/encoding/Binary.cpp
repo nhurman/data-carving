@@ -20,3 +20,8 @@ unsigned int Binary::bitsPerChunk() const
 {
     return 1;
 }
+
+std::string Binary::getName() const
+{
+    return "Binary";
+}

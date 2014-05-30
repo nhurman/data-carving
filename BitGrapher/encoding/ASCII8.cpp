@@ -24,3 +24,8 @@ unsigned int ASCII8::bitsPerChunk() const
 {
     return 8;
 }
+
+std::string ASCII8::getName() const
+{
+    return "ASCII (8 bits)";
+}
