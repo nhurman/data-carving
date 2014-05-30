@@ -8,27 +8,19 @@ Dump::Dump(std::string const& filePath, InputFormat format): m_filePath(filePath
         throw IOException("Could not open dump " + m_filePath);
     }
 
-    std::string str, buff;
-    while(std::getline(f, buff)) {
-        str.append(buff);
-    }
-
+    std::string str((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
     m_bitString = BitString::makeBitString(str, format);
 }
 
 Dump::Dump(Dump const& other) : m_filePath(other.m_filePath), m_format(other.m_format)
 {
     std::ifstream f;
-    f.open(m_filePath.c_str());
+    f.open(m_filePath.c_str(), std::ios::binary | std::ios::in);
     if (!f.is_open()) {
         throw IOException("Could not open dump " + m_filePath);
     }
 
-    std::string str, buff;
-    while(std::getline(f, buff)) {
-        str.append(buff);
-    }
-
+    std::string str((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
     m_bitString = BitString::makeBitString(str, m_format);
 }
 

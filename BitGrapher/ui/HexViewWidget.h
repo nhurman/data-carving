@@ -11,25 +11,28 @@
 #include "encoding/Encoding.h"
 #include "encoding/Hexadecimal.h"
 #include "encoding/ASCII.h"
+#include "ViewWidget.h"
 
-class HexViewWidget : public QWidget
+class HexViewWidget : public ViewWidget
 {
     Q_OBJECT
+
 public:
     explicit HexViewWidget(QWidget *parent = 0);
     ~HexViewWidget();
-    void setBitString(BitString const* bs);
     QSize sizeHint() const;
+    void setBitString(BitString const* bs);
 
 signals:
 
 public slots:
 
 protected:
-    void paintEvent(QPaintEvent* /* event */);
+    void generatePixmap();
 
     BitString const* m_bitString;
     Encoding* m_decoder;
+    Encoding* m_decoder2;
 
 };
 

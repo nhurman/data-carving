@@ -15,7 +15,7 @@ public:
     virtual ~ViewWidget();
     virtual QSize sizeHint() const = 0;
 
-    void setBitString(BitString const* bs);
+    virtual void setBitString(BitString const* bs);
 
 protected:
     virtual void generatePixmap() = 0;

@@ -4,6 +4,7 @@
 ViewWidget::ViewWidget(QWidget *parent) : QWidget(parent)
 {
     m_pixmap = 0;
+    m_bitString = 0;
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setBackgroundRole(QPalette::Light);
     if (parent) {
@@ -18,7 +19,6 @@ ViewWidget::~ViewWidget()
 
 void ViewWidget::setBitString(BitString const* bs)
 {
-    qDebug() << "Updating bs " << bs;
     m_bitString = bs;
     delete m_pixmap;
     m_pixmap = 0;

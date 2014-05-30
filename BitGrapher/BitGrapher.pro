@@ -21,7 +21,6 @@ SOURCES += \
     encoding/ASCII.cpp \
     ui/TextViewWidget.cpp \
     ui/ViewWidget.cpp \
-    encoding/Sixbit.cpp \
     ui/AssociationViewWidget.cpp \
     ui/DotPlotView.cpp \
     algorithms/Diagonal.cpp \
@@ -31,7 +30,13 @@ SOURCES += \
     ui/DotPlotDialog.cpp \
     algorithms/DotPlotResult.cpp \
     algorithms/Similarities.cpp \
-    ui/SimilaritiesDialog.cpp
+    ui/SimilaritiesDialog.cpp \
+    encoding/Binary.cpp \
+    encoding/Encoding2.cpp \
+    encoding/ASCII8.cpp \
+    encoding/ASCII7.cpp \
+    encoding/Integer.cpp \
+    encoding/BCD.cpp
 
 HEADERS  += \
   ui/MainWindow.h \
@@ -47,7 +52,6 @@ HEADERS  += \
     encoding/Encoding.h \
     ui/TextViewWidget.h \
     ui/ViewWidget.h \
-    encoding/Sixbit.h \
     ui/AssociationViewWidget.h \
     ui/DotPlotView.h \
     algorithms/Diagonal.h \
@@ -57,8 +61,15 @@ HEADERS  += \
     ui/DotPlotDialog.h \
     algorithms/DotPlotResult.h \
     algorithms/Similarities.h \
-    ui/SimilaritiesDialog.h
+    ui/SimilaritiesDialog.h \
+    encoding/Binary.h \
+    encoding/Encoding2.h \
+    encoding/ASCII8.h \
+    encoding/ASCII7.h \
+    encoding/Integer.h \
+    encoding/BCD.h
 
 FORMS    += \
   ui/MainWindow.ui \
-    ui/DotPlotView.ui
+    ui/DotPlotView.ui \
+    ui/TextViewWidget.ui

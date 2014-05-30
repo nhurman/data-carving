@@ -2,52 +2,53 @@
 
 
 HexViewWidget::HexViewWidget(QWidget *parent) :
-    QWidget(parent)
+    ViewWidget(parent)
 {
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_decoder = new Hexadecimal();
+    m_decoder2 = new ASCII();
 }
 
 HexViewWidget::~HexViewWidget()
 {
     delete m_decoder;
-}
-
-void HexViewWidget::setBitString(BitString const* bs)
-{
-    m_decoder->setBitString(bs);
+    delete m_decoder2;
 }
 
 QSize HexViewWidget::sizeHint() const
 {
-    int w = m_decoder->LineWidth();
+    int w = m_decoder->LineWidth() + m_decoder2->LineWidth();
     int h = m_decoder->LineHeight() * m_decoder->lines();
 
-    return QSize(w + 150, h + 2);
+    return QSize(w + 6, h + 4);
 }
 
-void HexViewWidget::paintEvent(QPaintEvent* /* event */)
+void HexViewWidget::setBitString(BitString const* bs)
 {
-    QPainter painter(this);
+    ViewWidget::setBitString(bs);
+    m_decoder->setBitString(bs);
+    m_decoder2->setBitString(bs);
+}
+
+void HexViewWidget::generatePixmap()
+{
+    m_pixmap = new QPixmap(sizeHint());
+    m_pixmap->fill(Qt::white);
+
+    QPainter painter(m_pixmap);
 
     if (!m_decoder->bitString()) {
         return;
     }
 
-    setBackgroundRole(QPalette::Light);
-
     QTextDocument doc;
     doc.setHtml(QString("<pre>") + m_decoder->toHTML().c_str() + "</pre>");
-    doc.drawContents(&painter, rect());
-
+    doc.drawContents(&painter, QRect(0, 0, m_pixmap->width(), m_pixmap->height()));
 
     painter.drawLine(
-        QPoint(m_decoder->LineWidth() + 6, 0),
-        QPoint(m_decoder->LineWidth() + 6, m_decoder->lines() * m_decoder->LineHeight() + 2));
+        QPoint(m_decoder->LineWidth() + 4, 0),
+        QPoint(m_decoder->LineWidth() + 4, m_decoder->lines() * m_decoder->LineHeight() + 2));
 
-    Encoding *decoder2 = new ASCII(m_decoder->bitString());
-    doc.setHtml(QString("<pre>") + decoder2->toHTML().c_str() + "</pre>");
+    doc.setHtml(QString("<pre>") + m_decoder2->toHTML().c_str() + "</pre>");
     painter.translate(m_decoder->LineWidth() + 6, 0);
-    doc.drawContents(&painter, rect());
-    delete decoder2;
+    doc.drawContents(&painter, QRect(0, 0, m_pixmap->width(), m_pixmap->height()));
 }

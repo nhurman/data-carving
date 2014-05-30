@@ -1,26 +1,36 @@
 #ifndef TEXTVIEWWIDGET_H
 #define TEXTVIEWWIDGET_H
 
-#include <QPainter>
-#include <QDebug>
-#include <QPixmapCache>
+#include <QWidget>
+#include "core/BitString.h"
+#include "encoding/Encoding2.h"
 
-#include "ViewWidget.h"
-#include "encoding/Encoding.h"
-#include "encoding/Hexadecimal.h"
+namespace Ui {
+class TextViewWidget;
+}
 
-class TextViewWidget : public ViewWidget
+class TextViewWidget : public QWidget
 {
+    Q_OBJECT
+
 public:
-    TextViewWidget(QWidget *parent = 0);
+    explicit TextViewWidget(QWidget *parent = 0);
     ~TextViewWidget();
-    QSize sizeHint() const;
+    void setBitString(BitString const* bs);
 
-protected:
-    Encoding *m_decoder;
-    unsigned int m_bytesPerLine;
-    void generatePixmap();
+private slots:
+    void on_encoding_currentIndexChanged(const QString &arg1);
+
+    void on_globalOffset_valueChanged(int arg1);
+
+    void on_newLabel_clicked();
+
+private:
+    void updateContents();
+    Ui::TextViewWidget *ui;
+    BitString const* m_bitString;
+    Encoding2 *m_encoding;
+    unsigned int m_globalOffset;
 };
-
 
 #endif // TEXTVIEWWIDGET_H

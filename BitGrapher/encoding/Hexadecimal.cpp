@@ -27,7 +27,7 @@ size_t Hexadecimal::LineHeight() const
 
 size_t Hexadecimal::LineWidth() const
 {
-    return 450;
+    return 453;
 }
 
 size_t Hexadecimal::lines() const
@@ -59,7 +59,7 @@ std::string Hexadecimal::toHTML() const
         }
 
         char str[3];
-        sprintf(str, "%2X", byte);
+        sprintf(str, "%02X", byte);
 
         //str[0] = toupper(str[0]);
         //str[1] = toupper(str[1]);

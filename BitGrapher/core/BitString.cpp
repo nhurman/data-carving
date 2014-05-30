@@ -1,4 +1,5 @@
 #include "BitString.h"
+#include <QDebug>
 
 
 BitString::BitString(size_t size) : m_size(size)
@@ -86,9 +87,6 @@ BitString BitString::fromBin(std::string str)
 
 BitString BitString::fromRaw(std::string str)
 {
-    // Remove spaces in str
-    str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
-
     BitString bs(str.length()*8);
     for(unsigned int i = 0; i < str.length(); i++)
     {

@@ -28,7 +28,7 @@ size_t ASCII::LineHeight() const
 
 size_t ASCII::LineWidth() const
 {
-    return 150;
+    return 135;
 }
 
 size_t ASCII::BitPerChar() const
@@ -55,6 +55,7 @@ std::string ASCII::toHTML() const
     os << "<style>i{font-style: normal;color: #7F7F7F}";
     os << "b{font-weight:normal}";
     os << "i,b{font-size:14px}</style>";
+    os << "<b>";
 
     for (size_t i = 0; i < m_bitString->size(); i += BitPerChar()) {
         unsigned char byte = 0;
@@ -62,30 +63,22 @@ std::string ASCII::toHTML() const
             byte += ((*m_bitString)[i + j] ? 1 : 0) << (7 - j);
         }
 
-        int mod = (i/BitPerChar()) % BytesPerLine();
-        if (i == 0 || mod == 0) {
-            if (i != 0) {
-                os.seekp(-1, std::ios_base::cur);
-                os << "</b>" << std::endl;
-            }
-
-            os << "<b>";
-        }
-
         if (byte < 32 || byte > 126) {
             byte = '.';
             os << "<i>.</i>";
         }
         else {
-            os << byte;
+            if (byte == '<') os << "&lt;";
+            else if (byte == '&') os << "&amp;";
+            else os << byte;
         }
+
+        if (0 != i && (i / BitPerChar() + 1) % BytesPerLine() == 0)
+            os << "</b>" << std::endl << "<b>";
+
     }
 
-    if (m_bitString->size() > 0) {
-        os.seekp(-1, std::ios_base::cur);
-        os << "</b>";
-    }
-
+    os << "</b>";
     return os.str();
 }
 

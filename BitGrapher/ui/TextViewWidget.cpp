@@ -1,55 +1,115 @@
 #include "TextViewWidget.h"
+#include "ui_TextViewWidget.h"
 
+#include <QDebug>
 
-TextViewWidget::TextViewWidget(QWidget *parent) : ViewWidget(parent)
+#include "encoding/BCD.h"
+#include "encoding/ASCII7.h"
+#include "encoding/ASCII8.h"
+#include "encoding/Binary.h"
+#include "encoding/Integer.h"
+
+TextViewWidget::TextViewWidget(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::TextViewWidget)
 {
-    m_decoder = new Hexadecimal();
+    ui->setupUi(this);
     m_bitString = 0;
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    setMinimumSize(sizeHint());
-    m_bytesPerLine = 10;
+    m_encoding = new ASCII8();
 }
 
 TextViewWidget::~TextViewWidget()
 {
-    delete m_decoder;
+    delete ui;
+    delete m_encoding;
 }
 
-QSize TextViewWidget::sizeHint() const
+void TextViewWidget::setBitString(BitString const* bs)
 {
-    if (!m_bitString) {
-        return QSize(1, 1);
+    m_bitString = bs;
+    updateContents();
+}
+
+void TextViewWidget::updateContents()
+{
+    ui->textEdit->clear();
+    m_encoding->setBitString(m_bitString);
+    m_encoding->setGlobalOffset(m_globalOffset);
+
+    QString contents;
+    for (unsigned int i = 0; i < m_encoding->countChunks(); ++i) {
+        contents += m_encoding->getChunk(i).c_str();
     }
 
-    unsigned int charWidth = 16, charHeight = 16;
-    unsigned int width = m_bytesPerLine * charWidth;
-    unsigned int lines = ceil(m_bitString->size() / (m_bytesPerLine * 8.));
-    unsigned int height = lines * charHeight;
-
-    qDebug() << width << height;
-
-    // width = charactersToDisplay * characterWidth
-    // charsToDisplay
-
-
-
-    return QSize(width, height);
+    ui->textEdit->setText(contents);
 }
 
-void TextViewWidget::generatePixmap()
+void TextViewWidget::on_encoding_currentIndexChanged(const QString &arg1)
 {
-    qDebug() << "Generating pixmap";
-    m_decoder->setBitString(m_bitString);
-    //m_decoder->
+    if ("BCD (6 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new BCD();
+    }
+    else if ("ASCII (7 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new ASCII7();
+    }
+    else if ("ASCII (8 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new ASCII8();
+    }
+    else if ("Binary" == arg1) {
+        delete m_encoding;
+        m_encoding = new Binary();
+    }
+    else if ("Integer (2 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new Integer2();
+    }
+    else if ("Integer (3 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new Integer3();
+    }
+    else if ("Integer (4 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new Integer4();
+    }
+    else if ("Integer (5 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new Integer5();
+    }
+    else if ("Integer (6 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new Integer6();
+    }
+    else if ("Integer (7 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new Integer7();
+    }
+    else if ("Integer (8 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new Integer8();
+    }
+    else if ("Integer (16 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new Integer16();
+    }
+    else if ("Integer (32 bits)" == arg1) {
+        delete m_encoding;
+        m_encoding = new Integer32();
+    }
 
-    /*if (!m_bitString) {
-        return;
-    }*/
+    updateContents();
+}
 
-    m_pixmap = new QPixmap(sizeHint());
-    m_pixmap->fill(Qt::white);
+void TextViewWidget::on_globalOffset_valueChanged(int arg1)
+{
+    m_globalOffset = arg1;
+    updateContents();
+}
 
-    QPainter painter(m_pixmap);
-    painter.drawText(QPoint(0, 0), "Hellow");
-    painter.drawLine(QPoint(0, 0), QPoint(100, 100));
+void TextViewWidget::on_newLabel_clicked()
+{
+    QTextCursor cursor = ui->textEdit->textCursor();
+    qDebug() << cursor.selectionStart() << cursor.selectionEnd();
 }
