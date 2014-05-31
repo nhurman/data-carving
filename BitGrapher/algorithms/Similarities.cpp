@@ -1,14 +1,14 @@
 #include "algorithms/Similarities.h"
 #include <iostream>
 
-Similarities::Similarities(const std::vector<Dump> dumps, const int minSize) : m_dumps(dumps)
+Similarities::Similarities(const std::vector<const Dump *> dumps, const int minSize) : m_dumps(dumps)
 {
     for(unsigned int i = 0; i < m_dumps.size(); i++)
     {
         std::list< Similarity > simi;
         for(unsigned int j = i+1; j < m_dumps.size(); j++)
         {
-            std::list<std::pair<int, int> > l = compare2Dumps(*m_dumps[i].bitString(), *m_dumps[j].bitString(), minSize);
+            std::list<std::pair<int, int> > l = compare2Dumps(*m_dumps[i]->bitString(), *m_dumps[j]->bitString(), minSize);
             addSimilarities(&simi, &l, i, j);
         }
         addSimList(&simi);
@@ -19,7 +19,7 @@ int Similarities::getDumpId(const Dump d) const
 {
     for(unsigned int i = 0; i < m_dumps.size(); i++)
     {
-        if(d.filePath() == m_dumps[i].filePath())
+        if(d.filePath() == m_dumps[i]->filePath())
             return i;
     }
     return -1;
@@ -48,9 +48,9 @@ std::list< std::pair<float, int> >* Similarities::getSimilarities(const int dump
     float currColor = 0;
     for (std::list< Similarity >::iterator i = m_similarities.begin(); i != m_similarities.end() /*&& pos != -1*/; i++ )
     {
-        if(m_dumps[dumpId].getSize() <= i->first.second) //if we arrived at the end of the dump
+        if(m_dumps[dumpId]->getSize() <= i->first.second) //if we arrived at the end of the dump
         {
-            if(m_dumps[dumpId].getSize() > i->first.first) //if the beginning of the next similarity is not too far
+            if(m_dumps[dumpId]->getSize() > i->first.first) //if the beginning of the next similarity is not too far
             {
                 //last similarity
                 float ratio = (float) i->second.size()/getDumpCount();

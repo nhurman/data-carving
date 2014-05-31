@@ -201,11 +201,12 @@ void MainWindow::on_actionSimilarities_triggered()
         return;
     }
 
-    Dump const* dump;
+    Dump const** dump;
+    *dump = NULL;
 
     Similarities* sim = SimilaritiesDialog::getSimilarities(ds, dump);
 
-    ui->treeWidget->setSelectedDump(dump);
+    ui->treeWidget->setSelectedDump(*dump);
 }
 
 void MainWindow::on_tableWidget_doubleClicked(const QModelIndex &index)

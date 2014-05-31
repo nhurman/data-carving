@@ -5,7 +5,7 @@
 
 Similarities* SimilaritiesDialog::m_result;
 
-SimilaritiesDialog::SimilaritiesDialog(QWidget *parent, DumpSet* ds, Dump const* selectedDump) :
+SimilaritiesDialog::SimilaritiesDialog(QWidget *parent, DumpSet* ds, const Dump **selectedDump) :
     QDialog(parent), m_selectedDump(selectedDump), m_dumpSet(ds)
 {
     setWindowTitle("Similarities");
@@ -40,14 +40,14 @@ SimilaritiesDialog::SimilaritiesDialog(QWidget *parent, DumpSet* ds, Dump const*
                           this, SLOT(removeComboBox()));
 
     //dumps
-    m_dumpCBs.push_back(new DumpComboBox(this));
-    m_dumpCBs.push_back(new DumpComboBox(this));
+    m_dumpCBs.push_back(new DumpComboBox(this, 0));
+    m_dumpCBs.push_back(new DumpComboBox(this, 1));
     m_layout->addWidget(m_dumpCBs[0]);
     m_layout->addWidget(m_dumpCBs[1]);
 
-    QObject::connect(m_dumpCBs[0], SIGNAL(currentIndexChanged( int ) ),
+    QObject::connect(m_dumpCBs[0], SIGNAL(currentDumpChanged( int ) ),
                           this, SLOT(refreshComboBoxes( int )));
-    QObject::connect(m_dumpCBs[1], SIGNAL(currentIndexChanged( int ) ),
+    QObject::connect(m_dumpCBs[1], SIGNAL(currentDumpChanged( int ) ),
                           this, SLOT(refreshComboBoxes( int )));
 
     //ok cancel
@@ -68,9 +68,9 @@ SimilaritiesDialog::SimilaritiesDialog(QWidget *parent, DumpSet* ds, Dump const*
     refreshComboBoxes(-1);
 }
 
-Dump SimilaritiesDialog::getDump(const int index) const
+Dump const* SimilaritiesDialog::getDump(const int index) const
 {
-    return *m_dumpSet->find(m_dumpCBs[index]->currentText().toUtf8().constData());
+    return m_dumpCBs[index]->currentDump();
 }
 
 int SimilaritiesDialog::getMinSize() const
@@ -81,8 +81,8 @@ int SimilaritiesDialog::getMinSize() const
 void SimilaritiesDialog::refreshComboBoxes(int modifiedIndex)
 {
     if(modifiedIndex <= 0)
-        if(m_selectedDump != NULL)
-            m_selectedDump = m_dumpCBs[0]->currentDump();
+        //if(m_selectedDump != NULL)
+            *m_selectedDump = m_dumpCBs[0]->currentDump();
 
     for(unsigned int i = modifiedIndex+1; i < m_dumpCBs.size(); i++)
     {
@@ -112,10 +112,10 @@ void SimilaritiesDialog::addComboBox()
         return;
     }
     //else
-    m_dumpCBs.push_back(new DumpComboBox(this));
+    m_dumpCBs.push_back(new DumpComboBox(this, m_dumpCBs.size()));
     m_layout->insertWidget(m_layout->count()-1, m_dumpCBs.back());
 
-    QObject::connect(m_dumpCBs.back(), SIGNAL(currentIndexChanged( int ) ),
+    QObject::connect(m_dumpCBs.back(), SIGNAL(currentDumpChanged( int ) ),
                           this, SLOT(refreshComboBoxes( int )));
 
     refreshComboBox(m_dumpCBs.size()-1);
@@ -135,7 +135,7 @@ void SimilaritiesDialog::removeComboBox()
 
 void SimilaritiesDialog::processAndClose()
 {
-    std::vector<Dump> v;
+    std::vector<Dump const*> v;
     for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
         v.push_back(getDump(i));
 
@@ -149,7 +149,7 @@ void SimilaritiesDialog::cancelAndClose()
     done(0);
 }
 
-Similarities* SimilaritiesDialog::getSimilarities(DumpSet* ds, const Dump *selectedDump)
+Similarities* SimilaritiesDialog::getSimilarities(DumpSet* ds, const Dump **selectedDump)
 {
     SimilaritiesDialog dialog(0, ds, selectedDump);
     dialog.exec();
@@ -163,7 +163,7 @@ int SimilaritiesDialog::preferredStringSize() const
     std::list<int> sizes;
     for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
     {
-        sizes.push_back(getDump(i).getSize());
+        sizes.push_back(getDump(i)->getSize());
     }
 
     int s = Similarities::minStringSize(sizes);

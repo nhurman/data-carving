@@ -23,7 +23,7 @@ public:
     /// \param dumps The dumps to compare using the algorithm.
     /// \param minSize The minimum size for the similarities.
     /// \note The algoritm is run in this method.
-    Similarities(std::vector<Dump> const dumps, int const minSize = 1);
+    Similarities(std::vector<Dump const*> const dumps, int const minSize = 1);
 
     /// \brief Looks for the given Dump and returns its ID.
     /// \param d The dump to look for.
@@ -78,7 +78,7 @@ public:
     //static void test();
 
 private:
-    std::vector<Dump> m_dumps; ///< The dumps to compare using the algorithm.
+    std::vector<const Dump *> m_dumps; ///< The dumps to compare using the algorithm.
     std::list< Similarity > m_similarities; ///< The list of the similarities found by the algorithm.
 
     /// \brief Adds the similarities from sim2 to sim1.

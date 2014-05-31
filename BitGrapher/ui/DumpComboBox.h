@@ -6,7 +6,7 @@
 
 /// \class DumpComboBox
 ///
-/// \brief A ComboBox that selects Dumps while keeping track of the selected index.
+/// \brief A ComboBox that selects Dumps and has an index.
 ///
 /// \author Gabriel Prevosto
 ///
@@ -19,7 +19,8 @@ public:
 
     /// \brief A constructor fot DumpComboBox
     /// \param parent The parent Widget (optional).
-    explicit DumpComboBox(QWidget *parent = 0);
+    /// \param index The ComboBox's index.
+    explicit DumpComboBox(QWidget *parent = 0, int index = 0);
 
     /// \brief Sets the selectable Dumps.
     /// \param dumps The list of Dumps that will be selectable.
@@ -31,18 +32,18 @@ public:
 
 signals:
 
-    // \brief Emitted when the selected item changes.
-    // \param i The index of the new selected item.
-    //void currentDumpChanged( int i );
+    /// \brief Emitted when the selected item changes.
+    /// \param i The ComboBox's index.
+    void currentDumpChanged( int i );
 
 private slots:
 
-    // \brief Call this when the current index changed.
-    // \note This is used to trigger currentDumpChanged.
-    //void onCurrentIndexChanged();
+    /// \brief Call this when the current index changed.
+    /// \note This is used to trigger currentDumpChanged.
+    void onCurrentIndexChanged();
 
 private:
-    //int m_index; ///< The index of the selected item.
+    int m_index; ///< The ComboBox's index.
     std::vector<Dump const*> m_dumps; ///< The Dumps that can be selected
 
 };

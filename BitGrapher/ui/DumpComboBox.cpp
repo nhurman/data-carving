@@ -1,9 +1,9 @@
 #include "ui/DumpComboBox.h"
 
-DumpComboBox::DumpComboBox(QWidget *parent) : QComboBox(parent)
+DumpComboBox::DumpComboBox(QWidget *parent, int index) : QComboBox(parent), m_index(index)
 {
-    //QObject::connect(this, SIGNAL(currentIndexChanged( QString ) ),
-    //        this, SLOT(onCurrentIndexChanged( )));
+    QObject::connect(this, SIGNAL(currentIndexChanged(int) ),
+            this, SLOT(onCurrentIndexChanged( )));
 }
 
 void DumpComboBox::setDumpList(std::vector<const Dump *> dumps)
@@ -36,8 +36,7 @@ const Dump *DumpComboBox::currentDump()
     return m_dumps.at(index);
 }
 
-//void DumpComboBox::onCurrentIndexChanged()
-//{
-//    m_index = currentIndex();
-//    emit currentDumpChanged(m_index);
-//}
+void DumpComboBox::onCurrentIndexChanged()
+{
+    emit currentDumpChanged(m_index);
+}
