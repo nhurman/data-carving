@@ -85,11 +85,13 @@ void AssociationViewWidget::openMask() {
             line = in.readLine();
 
             while(!line.isNull()) {
-                this->insertRow(this->rowCount());
                 rowFields = line.split(";");
-                for (int column = 0; column < rowFields.size(); column++) {
-                    this->setItem(this->rowCount()-1, column, new QTableWidgetItem(rowFields.at(column)));
-                }
+                Label l;
+                l.name = rowFields.at(0).toUtf8().constData();
+                l.index = rowFields.at(1).toInt();
+                l.length = rowFields.at(2).toInt();
+                l.encoding = rowFields.at(3).toUtf8().constData();
+                addLabel(l);
                 line = in.readLine();
             }
         }
