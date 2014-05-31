@@ -117,7 +117,7 @@ void TextViewWidget::on_newLabel_clicked()
 
     Label l;
     l.name = ui->lineEdit->text().toUtf8().constData();
-    l.index = start;
+    l.index = start + m_globalOffset;
     l.length = end - start;
     l.encoding = m_encoding->getName();
     l.value = m_encoding->decode(l.index, l.length);

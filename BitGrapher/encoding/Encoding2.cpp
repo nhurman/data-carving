@@ -25,13 +25,15 @@ std::string Encoding2::decode(unsigned int start, unsigned int length)
 {
     unsigned int chunk = start / bitsPerChunk();
     unsigned int chunks = ceil(static_cast<double>(length) / bitsPerChunk());
-    qDebug() << chunk << chunks;
+    unsigned int offset = m_globalOffset;
+    m_globalOffset = start % bitsPerChunk();
     std::string out;
 
     for (unsigned int i = chunk; i < chunk + chunks; ++i) {
         out += getChunk(i);
     }
 
+    m_globalOffset = offset;
     return out;
 }
 
