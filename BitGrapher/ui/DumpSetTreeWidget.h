@@ -32,6 +32,11 @@ public:
     /// \return The current Dump.
     Dump const* getCurrentDump();
 
+    /// \brief Setter for m_selectedDump.
+    /// \param d The Dump to select.
+    /// \return Set to false if d was not found in the current DumpSet.
+    bool setSelectedDump(Dump const* d);
+
     /// \brief Getter for m_selectedDumpSet.
     /// \return The current DumpSet.
     DumpSet* getCurrentDumpSet();

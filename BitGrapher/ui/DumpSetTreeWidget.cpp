@@ -13,6 +13,22 @@ Dump const* DumpSetTreeWidget::getCurrentDump()
     return m_selectedDump;
 }
 
+bool DumpSetTreeWidget::setSelectedDump(Dump const* d)
+{
+    QTreeWidgetItem* item = NULL;
+    for(std::pair<QTreeWidgetItem*, const Dump*> p : m_dumps[m_selectedDumpSet])
+    {
+        if(p.second == d)
+            item = p.first;
+    }
+    if(item == NULL)
+        return false;
+    //else
+    m_selectedDump = d;
+    setCurrentItem(item);
+    return true;
+}
+
 DumpSet* DumpSetTreeWidget::getCurrentDumpSet()
 {
     return m_selectedDumpSet;
