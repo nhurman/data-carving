@@ -1,6 +1,3 @@
-build/
-Test/out/
-Test/Makefile.local
 BitGrapher/BitGrapher.pro.user
 Rapport/*.aux
 Rapport/*.bbl
@@ -9,3 +6,4 @@ Rapport/*.log
 Rapport/*.pdf
 Rapport/*.synctex.gz
 Thumbs.db
+build/
