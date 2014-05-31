@@ -8,7 +8,7 @@ Similarities::Similarities(const std::vector<const Dump *> dumps, const int minS
         std::list< Similarity > simi;
         for(unsigned int j = i+1; j < m_dumps.size(); j++)
         {
-            std::list<std::pair<int, int> > l = compare2Dumps(*m_dumps[i]->bitString(), *m_dumps[j]->bitString(), minSize);
+            std::list<std::pair<int, int> > l = compare2Dumps(m_dumps[i]->bitString(), m_dumps[j]->bitString(), minSize);
             addSimilarities(&simi, &l, i, j);
         }
         addSimList(&simi);
@@ -432,14 +432,14 @@ void Similarities::addColor(std::list<std::pair<float, int> >* list, const float
     oldColor = color;
 }
 
-std::list<std::pair<int,int> > Similarities::compare2Dumps(const BitString b1, const BitString b2, int minSize)
+std::list<std::pair<int,int> > Similarities::compare2Dumps(const BitString* b1, const BitString* b2, int minSize)
 {
     std::list<std::pair<int,int> > sim;
     int start = -1;
-    int min = std::min(b1.size(), b2.size());
+    int min = std::min(b1->size(), b2->size());
     int i;
     for (i = 0; i < min ; i++){
-        if(b1[i]==b2[i])
+        if(b1 + i==b2 + i)
         {
             if(start == -1)
                 start = i;

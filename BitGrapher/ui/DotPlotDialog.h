@@ -33,7 +33,7 @@ public:
     /// \brief Getter for m_dumpSet
     /// \param index index of the dump to get
     /// \return the dump at the given position
-    Dump getDump(int index);
+    const Dump* getDump(int index);
 
     /// \brief Getter for the minimum size
     /// \return the minimum diagonal size

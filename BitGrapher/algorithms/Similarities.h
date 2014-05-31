@@ -97,7 +97,7 @@ private:
     /// \param b2 One of the Dumps to compare.
     /// \param minSize The minimum size for the similarities.
     /// \return The similarities between b1 and b2.
-    static std::list<std::pair<int,int> > compare2Dumps(BitString const b1, BitString const b2, int minSize = 1);
+    static std::list<std::pair<int,int> > compare2Dumps(const BitString* b1, const BitString* b2, int minSize = 1);
 
     /// \brief Processes the similarities corresponding to the union of s1 and s2
     /// (when s1 and s2 overlap, creates a new similarities with all of their related Dumps)

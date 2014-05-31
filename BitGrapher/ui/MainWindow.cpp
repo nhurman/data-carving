@@ -153,8 +153,6 @@ void MainWindow::on_action_Dot_Plot_Pattern_triggered()
         wid->setWindowTitle(QString(result->getDump1().fileName().c_str()), QString(result->getDump2().fileName().c_str()));
         wid->show();
     }
-    /*DotPlotView *wid = new DotPlotView();
-    wid->show();*/
 }
 
 void MainWindow::on_actionOpen_Mask_triggered()

@@ -26,8 +26,8 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, DumpSet* ds, QString* selectedDump
                           this, SLOT( displayDefaultSize() ));
 
     //dumps
-    m_dumpCBs.push_back(new DumpComboBox(this));
-    m_dumpCBs.push_back(new DumpComboBox(this));
+    m_dumpCBs.push_back(new DumpComboBox(this, 0));
+    m_dumpCBs.push_back(new DumpComboBox(this, 1));
     m_layout->addWidget(m_dumpCBs[0]);
     m_layout->addWidget(m_dumpCBs[1]);
 
@@ -54,9 +54,9 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, DumpSet* ds, QString* selectedDump
     refreshComboBoxes(-1);
 }
 
-Dump DotPlotDialog::getDump(int index)
+const Dump* DotPlotDialog::getDump(int index)
 {
-    return *m_dumpSet->find((m_dumpCBs[index]->currentText()).toStdString());
+    return m_dumpCBs[index]->currentDump();
 }
 
 int DotPlotDialog::getMinSize() const
@@ -105,11 +105,11 @@ void DotPlotDialog::refreshComboBox(int index)
 
 void DotPlotDialog::processAndClose()
 {
-    std::vector<Dump> v;
+    std::vector<const Dump*> v;
     for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
         v.push_back(getDump(i));
 
-    m_result = new DotPlotResult(v.at(0), v.at(1), m_minSizeSpinBox->value());
+    m_result = new DotPlotResult(Dump(*v.at(0)), Dump(*v.at(1)), m_minSizeSpinBox->value());
     done(0);
 }
 
@@ -133,7 +133,7 @@ int DotPlotDialog::preferredStringSize()
     std::list<int> sizes;
     for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
     {
-        sizes.push_back(getDump(i).getSize());
+        sizes.push_back(getDump(i)->getSize());
     }
 
     int s = Diagonal::minStringSize(sizes);
