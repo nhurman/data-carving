@@ -3,6 +3,7 @@ Rapport/*.aux
 Rapport/*.bbl
 Rapport/*.blg
 Rapport/*.log
+Rapport/*.out
 Rapport/*.pdf
 Rapport/*.synctex.gz
 Thumbs.db
