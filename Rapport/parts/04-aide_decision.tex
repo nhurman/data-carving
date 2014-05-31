@@ -8,4 +8,16 @@ Par exemple, si l'on tente d'ouvrir un fichier contenant la chaîne ASCII ''0A1F
 \subsubsection{Tailles de chaîne minimale pour l'analyse}
 
 Ensuite, lors de l'application d'un algorithme de comparaison de dumps (voir Section \ref{04-analyse}), une taille de chaîne à comparer minimale est demandée à l'utilisateur. Par la simple pression d'un bouton, cette valeur peut être sélectionnée automatiquement par le programme en fonction de la taille et du nombre de dumps à comparer.
-Ces valeurs automatiques ont été calculées afin de donner, dans l'hypothèse d'une distribution aléatoire des bits dans les dumps, une probabilité d'obtenir par hasard un résultat (qui serait donc un faux positif) d'au plus 5\%.
+Ces valeurs automatiques ont été calculées afin de donner une probabilité d'obtenir un résultat par hasard (qui serait donc un faux positif) d'au plus 5\%.
+
+Pour simplifier les calculs, nous avons établi les hypothèses suivantes :
+\begin{itemize}
+	\item Ne connaissant pas par avance leur structure, nous avons supposé une distribution aléatoire des bits dans les dumps.
+	\item Nous avons supposée la taille des dumps en bits grande par rapport à 1. Dans la pratique, cette taille sera de quelques Ko.
+	\item Nous avons supposé le nombre de dumps négligeable devant leur taille en bits. Cela ne devrait pas poser de problème, car le nombre de dumps par set est au plus de l'ordre de la dizaine.
+\end{itemize}
+Nos résultats indiquent les tailles de chaînes minimales suivantes, pour deux dumps de 1Ko :
+\begin{itemize}
+	\item 18 bits pour l'algorithme des similarités (Voir Section \ref{04-similarities}).
+	\item 31 bits pour l'algorithme des dotplot patterns (Voir Section \ref{04-dotplot}).
+\end{itemize}
