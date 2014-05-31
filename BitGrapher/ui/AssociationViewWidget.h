@@ -1,6 +1,7 @@
 #ifndef ASSOCIATIONVIEWWIDGET_H
 #define ASSOCIATIONVIEWWIDGET_H
 
+#include <QMap>
 #include <QWidget>
 #include <QStandardItemModel>
 #include <QStandardItem>
@@ -14,6 +15,7 @@
 #include <QTableWidget>
 
 #include "core/Label.h"
+#include "encoding/Encoding2.h"
 
 /// \class AssociationViewWidget
 ///
@@ -58,12 +60,19 @@ public:
     /// \brief Open a dialog to add a new line in the association view (*.mk).
     bool newLabelDialog();
 
+    Label getLabel(int row);
+    void setBitString(BitString const* bs);
+    QMap<QString, Encoding2*>* getEncodings();
+
 public slots:
     void addLabel(Label l);
+    void updateLabel(int row, Label l);
 
 
 private:
     QString m_filePath; ///< Path to the mask (for saving)
+    QMap<QString, Encoding2*> m_encodings;
+    BitString const* m_bitString;
 };
 
 #endif // ASSOCIATIONVIEWWIDGET_H

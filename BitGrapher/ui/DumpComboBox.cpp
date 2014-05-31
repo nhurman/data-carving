@@ -31,9 +31,8 @@ void DumpComboBox::setDumpList(std::vector<const Dump *> dumps)
 const Dump *DumpComboBox::currentDump()
 {
     int index = currentIndex();
-    if(index >= m_dumps.size() || index == -1)
+    if(index >= m_dumps.size() || index < 0)
         return NULL;
-    //else
     return m_dumps.at(index);
 }
 

@@ -1,4 +1,6 @@
 #include "MainWindow.h"
+#include "LabelDialog.h"
+#include "core/Label.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -20,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->bmpScroll->setWidget(m_bmpView);
 
     connect(ui->txtView, SIGNAL(labelAdded(Label)), ui->tableWidget, SLOT(addLabel(Label)));
+    ui->txtView->setEncodings(ui->tableWidget->getEncodings());
 }
 
 MainWindow::~MainWindow()
@@ -80,6 +83,7 @@ void MainWindow::on_selectedDumpChanged(Dump const* dump)
     m_txtView->setBitString(bs);
     m_hexView->setBitString(bs);
     m_bmpView->setBitString(bs);
+    ui->tableWidget->setBitString(bs);
 }
 
 void MainWindow::on_actionNew_set_triggered()
@@ -173,11 +177,6 @@ void MainWindow::on_actionSave_As_triggered()
     ui->tableWidget->saveMaskAs();
 }
 
-void MainWindow::on_actionNew_Line_triggered()
-{
-    ui->tableWidget->newLine();
-}
-
 void MainWindow::on_actionDelete_Line_triggered()
 {
     ui->tableWidget->deleteLine();
@@ -220,4 +219,15 @@ void MainWindow::on_actionSimilarities_triggered()
     //ui->treeWidget->selectDump(*dumpName);
 
     //refreshDisplay(); //refreshes to show similarities. Only useful if the selected dump has not changed
+}
+
+void MainWindow::on_tableWidget_doubleClicked(const QModelIndex &index)
+{
+    LabelDialog* d = new LabelDialog(this);
+    d->setEncodings(ui->tableWidget->getEncodings());
+    Label l = ui->tableWidget->getLabel(index.row());
+    d->setLabel(l);
+    if (d->exec())
+        ui->tableWidget->updateLabel(index.row(), d->getLabel());
+    delete d;
 }

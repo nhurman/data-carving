@@ -2,6 +2,7 @@
 #define TEXTVIEWWIDGET_H
 
 #include <QWidget>
+#include <QMap>
 #include "core/BitString.h"
 #include "core/Label.h"
 #include "encoding/Encoding2.h"
@@ -18,15 +19,14 @@ public:
     explicit TextViewWidget(QWidget *parent = 0);
     ~TextViewWidget();
     void setBitString(BitString const* bs);
+    void setEncodings(QMap<QString, Encoding2*>* encodings);
 
 signals:
     void labelAdded(Label l);
 
 private slots:
     void on_encoding_currentIndexChanged(const QString &arg1);
-
     void on_globalOffset_valueChanged(int arg1);
-
     void on_newLabel_clicked();
 
 private:
@@ -34,6 +34,7 @@ private:
     Ui::TextViewWidget *ui;
     BitString const* m_bitString;
     Encoding2 *m_encoding;
+    QMap<QString, Encoding2*>* m_encodings;
     unsigned int m_globalOffset;
 };
 

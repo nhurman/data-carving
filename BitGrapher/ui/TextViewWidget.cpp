@@ -2,7 +2,6 @@
 #include "ui_TextViewWidget.h"
 
 #include <QDebug>
-
 #include "encoding/BCD.h"
 #include "encoding/ASCII7.h"
 #include "encoding/ASCII8.h"
@@ -15,13 +14,20 @@ TextViewWidget::TextViewWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     m_bitString = 0;
-    m_encoding = new ASCII8();
+    m_encodings = 0;
+    m_encoding = 0;
+    m_globalOffset = 0;
 }
 
 TextViewWidget::~TextViewWidget()
 {
     delete ui;
-    delete m_encoding;
+}
+
+void TextViewWidget::setEncodings(QMap<QString, Encoding2*>* encodings)
+{
+    m_encodings = encodings;
+    m_encoding = (*m_encodings)["ASCII (8 bits)"];
 }
 
 void TextViewWidget::setBitString(BitString const* bs)
@@ -46,59 +52,7 @@ void TextViewWidget::updateContents()
 
 void TextViewWidget::on_encoding_currentIndexChanged(const QString &arg1)
 {
-    if ("BCD (6 bits)" == arg1) {
-        delete m_encoding;
-        m_encoding = new BCD();
-    }
-    else if ("ASCII (7 bits)" == arg1) {
-        delete m_encoding;
-        m_encoding = new ASCII7();
-    }
-    else if ("ASCII (8 bits)" == arg1) {
-        delete m_encoding;
-        m_encoding = new ASCII8();
-    }
-    else if ("Binary" == arg1) {
-        delete m_encoding;
-        m_encoding = new Binary();
-    }
-    else if ("Int2" == arg1) {
-        delete m_encoding;
-        m_encoding = new Integer2();
-    }
-    else if ("Int3" == arg1) {
-        delete m_encoding;
-        m_encoding = new Integer3();
-    }
-    else if ("Int4" == arg1) {
-        delete m_encoding;
-        m_encoding = new Integer4();
-    }
-    else if ("Int5" == arg1) {
-        delete m_encoding;
-        m_encoding = new Integer5();
-    }
-    else if ("Int6" == arg1) {
-        delete m_encoding;
-        m_encoding = new Integer6();
-    }
-    else if ("Int7" == arg1) {
-        delete m_encoding;
-        m_encoding = new Integer7();
-    }
-    else if ("Int8" == arg1) {
-        delete m_encoding;
-        m_encoding = new Integer8();
-    }
-    else if ("Int16" == arg1) {
-        delete m_encoding;
-        m_encoding = new Integer16();
-    }
-    else if ("Int32" == arg1) {
-        delete m_encoding;
-        m_encoding = new Integer32();
-    }
-
+    m_encoding = (*m_encodings)[arg1];
     updateContents();
 }
 
@@ -110,6 +64,8 @@ void TextViewWidget::on_globalOffset_valueChanged(int arg1)
 
 void TextViewWidget::on_newLabel_clicked()
 {
+    if (!m_encoding || !m_bitString) return;
+
     unsigned int outSize = m_encoding->getChunk(0).size();
     QTextCursor cursor = ui->textEdit->textCursor();
     unsigned int start = m_encoding->bitsPerChunk() * (cursor.selectionStart() / outSize);
@@ -120,9 +76,9 @@ void TextViewWidget::on_newLabel_clicked()
     l.index = start + m_globalOffset;
     l.length = end - start;
     l.encoding = m_encoding->getName();
-    l.value = m_encoding->decode(l.index, l.length);
+    //l.value = m_encoding->decode(l.index, l.length);
 
     emit labelAdded(l);
     ui->lineEdit->clear();
-    ui->textEdit->focusWidget();
+    ui->textEdit->setFocus(Qt::OtherFocusReason);
 }

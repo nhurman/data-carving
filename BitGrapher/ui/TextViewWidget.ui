@@ -75,7 +75,7 @@
        </property>
        <item>
         <property name="text">
-         <string>BCD (6 bits)</string>
+         <string>BCD</string>
         </property>
        </item>
        <item>

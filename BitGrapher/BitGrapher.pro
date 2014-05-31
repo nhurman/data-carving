@@ -36,7 +36,8 @@ SOURCES += \
     encoding/ASCII8.cpp \
     encoding/ASCII7.cpp \
     encoding/Integer.cpp \
-    encoding/BCD.cpp
+    encoding/BCD.cpp \
+    ui/LabelDialog.cpp
 
 HEADERS  += \
   ui/MainWindow.h \
@@ -68,9 +69,11 @@ HEADERS  += \
     encoding/ASCII7.h \
     encoding/Integer.h \
     encoding/BCD.h \
-    core/Label.h
+    core/Label.h \
+    ui/LabelDialog.h
 
 FORMS    += \
   ui/MainWindow.ui \
     ui/DotPlotView.ui \
-    ui/TextViewWidget.ui
+    ui/TextViewWidget.ui \
+    ui/LabelDialog.ui
