@@ -5,9 +5,9 @@ Afin de mieux assister l'utilisateur dans son analyse, des aides à la décision
 Tout d'abord, lors de l'ouverture d'un dump, l'aide à la décision sélectionne le format le plus probable parmi binaire, hexadécimal ou donnée brute. L'utilisateur a tout de même le choix parmi les autres formats, à part ceux qui ne sont pas respectés par le fichier en entrée.
 Par exemple, si l'on tente d'ouvrir un fichier contenant la chaîne ASCII ''0A1F'', l'aide à la décision la reconnaîtra comme de l'hexadécimal. L'utilisateur pourra également choisir l'option ''données brutes'', qui importe les caractères ASCII directement, mais pas l'option binaire, la chaîne contenant autre chose que des ''0'' et des ''1'.
 
-\subsubsection{Tailles de chaîne minimale pour l'analyse}
+\subsubsection{Taille minimale de chaîne pour l'analyse}
 
-Ensuite, lors de l'application d'un algorithme de comparaison de dumps (voir Section \ref{04-analyse}), une taille de chaîne à comparer minimale est demandée à l'utilisateur. Par la simple pression d'un bouton, cette valeur peut être sélectionnée automatiquement par le programme en fonction de la taille et du nombre de dumps à comparer.
+Lors de l'application d'un algorithme de comparaison de dumps (voir Section \ref{04-analyse}), une taille minimale de chaîne à comparer est demandée à l'utilisateur. Par la simple pression d'un bouton, cette valeur peut être sélectionnée automatiquement par le programme en fonction de la taille et du nombre de dumps à comparer.
 Ces valeurs automatiques ont été calculées afin de donner une probabilité d'obtenir un résultat par hasard (qui serait donc un faux positif) d'au plus 5\%.
 
 Pour simplifier les calculs, nous avons établi les hypothèses suivantes :
@@ -16,8 +16,8 @@ Pour simplifier les calculs, nous avons établi les hypothèses suivantes :
 	\item Nous avons supposée la taille des dumps en bits grande par rapport à 1. Dans la pratique, cette taille sera de quelques Ko.
 	\item Nous avons supposé le nombre de dumps négligeable devant leur taille en bits. Cela ne devrait pas poser de problème, car le nombre de dumps par set est au plus de l'ordre de la dizaine.
 \end{itemize}
-Nos résultats indiquent les tailles de chaînes minimales suivantes, pour deux dumps de 1Ko :
+Nos résultats indiquent les tailles minimales de chaînes suivantes, pour $n$ dumps de taille $t$ :
 \begin{itemize}
-	\item 18 bits pour l'algorithme des similarités (Voir Section \ref{04-similarities}).
-	\item 31 bits pour l'algorithme des dotplot patterns (Voir Section \ref{04-dotplot}).
+	\item $4.29+log_{2}\left (\frac{n\times (n-1)}{2}\times t  \right )$ bits pour l'algorithme des similarités (Voir Section \ref{04-similarities}).
+	\item $4.29+2\times log_{2}(t)$ bits pour l'algorithme des dotplot patterns (Voir Section \ref{04-dotplot}). Pour cet algorithme, on a toujours $n\leq 2$ pour des questions de visualisation.
 \end{itemize}
