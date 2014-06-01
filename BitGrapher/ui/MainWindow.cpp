@@ -144,13 +144,13 @@ void MainWindow::on_action_Dot_Plot_Pattern_triggered()
         return;
     }
     else if (result->sameDump()) {
-        wid->setBitString(result->getDump1().bitString(), result->getDiagSize());
-        wid->setWindowTitle(QString(result->getDump1().fileName().c_str()));
+        wid->setBitString(result->getDump1()->bitString(), result->getDiagSize());
+        wid->setWindowTitle(QString(result->getDump1()->fileName().c_str()));
         wid->show();
     }
     else {
-        wid->setBitStrings(result->getDump1().bitString(), result->getDump2().bitString(), result->getDiagSize());
-        wid->setWindowTitle(QString(result->getDump1().fileName().c_str()), QString(result->getDump2().fileName().c_str()));
+        wid->setBitStrings(result->getDump1()->bitString(), result->getDump2()->bitString(), result->getDiagSize());
+        wid->setWindowTitle(QString(result->getDump1()->fileName().c_str()), QString(result->getDump2()->fileName().c_str()));
         wid->show();
     }
 }
@@ -199,12 +199,11 @@ void MainWindow::on_actionSimilarities_triggered()
         return;
     }
 
-    Dump const** dump;
-    *dump = NULL;
+    Dump const* dump = NULL;
 
-    Similarities* sim = SimilaritiesDialog::getSimilarities(ds, dump);
+    SimilaritiesDialog::getSimilarities(ds, &dump);
 
-    ui->treeWidget->setSelectedDump(*dump);
+    ui->treeWidget->setSelectedDump(dump);
 }
 
 void MainWindow::on_tableWidget_doubleClicked(const QModelIndex &index)

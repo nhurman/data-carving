@@ -30,10 +30,10 @@ public:
     /// \param ds DumpSet from which to choose for the DotPlot operation
     explicit DotPlotDialog(QWidget *parent = 0, DumpSet* ds = NULL, QString* selectedDump = NULL);
 
-    /// \brief Getter for m_dumpSet
+    /// \brief Get the dump selected by a combo box
     /// \param index index of the dump to get
     /// \return the dump at the given position
-    const Dump* getDump(int index);
+    const Dump* getDump(int index) const;
 
     /// \brief Getter for the minimum size
     /// \return the minimum diagonal size

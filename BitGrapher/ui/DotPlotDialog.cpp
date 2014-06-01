@@ -54,7 +54,7 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, DumpSet* ds, QString* selectedDump
     refreshComboBoxes(-1);
 }
 
-const Dump* DotPlotDialog::getDump(int index)
+const Dump* DotPlotDialog::getDump(int index) const
 {
     return m_dumpCBs[index]->currentDump();
 }
@@ -83,24 +83,7 @@ void DotPlotDialog::refreshComboBoxes(int modifiedIndex)
 
 void DotPlotDialog::refreshComboBox(int index)
 {
-    QString selection = m_dumpCBs[index]->currentText();
-    std::vector<std::string> dumpsVect = m_dumpSet->getDumpNames();
-    QStringList dumps;
-    for(unsigned int i = 0; i < dumpsVect.size(); i++) //std::list to QStringList
-    {
-        dumps.push_back(QString::fromStdString(dumpsVect.at(i)));
-    }
-
-    m_dumpCBs[index]->clear();
-    m_dumpCBs[index]->addItems(dumps);
-
-    //puts the selection back if possible
-    int i = m_dumpCBs[index]->findText(selection);
-    if ( i != -1 ) // -1 for not found
-        m_dumpCBs[index]->setCurrentIndex(i);
-    else
-        m_dumpCBs[index]->setCurrentIndex(0);
-
+    m_dumpCBs[index]->setDumpList(m_dumpSet->getDumpList());
 }
 
 void DotPlotDialog::processAndClose()
@@ -109,7 +92,7 @@ void DotPlotDialog::processAndClose()
     for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
         v.push_back(getDump(i));
 
-    m_result = new DotPlotResult(Dump(*v.at(0)), Dump(*v.at(1)), m_minSizeSpinBox->value());
+    m_result = new DotPlotResult(v.at(0), v.at(1), m_minSizeSpinBox->value());
     done(0);
 }
 
