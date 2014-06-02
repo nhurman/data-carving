@@ -1,47 +1,26 @@
 Cette fonction, accessible via le menu Algorithms, permet mettre en évidence les chaînes de bits semblables au même endroit dans un dump.
-
-Dans le cas de deux dumps, les similarités sont représentées par la couleur verte, tandis que les similarités sont représentées par la couleur rouge. Un exemple de similarités est représenté sur la figure \ref{04-1-sim_simple}. Pour faciliter la compréhension, on y a remplacé les bits (de sens à priori inconnu) par des lettres.
-
-\begin{figure}[!h]
-  \begin{center}
-  {\tt\center
-  {Dump 1 : \color{simColor} Ce}{\color{dissimColor} ci es}{\color{simColor}t }{\color{dissimColor} un exemple de }{\color{simColor} similarité}
-
-  {Dump 2 : \color{simColor} Ce}{\color{dissimColor} la me}{\color{simColor}t }{\color{dissimColor} en couleur la }{\color{simColor} similarité}
-  }
-  \end{center}
-  \caption{Exemple de similarités}
-  \label{04-1-sim_simple}
-\end{figure}
-
-Afin d'affiner la recherche, il est possible de spécifier une taille de chaîne minimum, comme l'illustre la figure \ref{04-1-sim_taille_min}.
+Elle est accessible en cliquant sur Similarities dans le menu Algorithms. La fenètre suivante apparait alors :
 
 \begin{figure}[!h]
   \begin{center}
-  {\tt
-  {Dump 1 : \color{dissimColor} Ceci est un exemple de }{\color{simColor} similarité }{\color{dissimColor} avec une taille minimum de 4}
-
-  {Dump 2 : \color{dissimColor} Cela met en couleur la }{\color{simColor} similarité }{\color{dissimColor} faisant plus de 4 caractères}
-  }
+  \includegraphics[scale=1]{similaritiesdialog.png}
+  \caption{Fenetre de lancement des Similarities}
+  \label{similaritiesdialog}
   \end{center}
-  \caption{Similarités avec une taille de chaîne minimum}
-  \label{04-1-sim_taille_min}
 \end{figure}
 
-
-Dans le cas de plusieurs dumps, on dispose de trois couleurs. Le rouge représente les dissimilarités, le vert les similarités concernant le dump visualisé (c'est-à-dire les similarités commune à ce dump et à d'autres), tandis que le bleu correspond aux similarités ne concernant pas le dump visualisé (c'est-à-dire les similarités communes à d'autres dumps).
-Ces couleurs ont des nuances : plus le vert ou le bleu sont prononcés, plus il y a de dumps partageant la similarité en question. La figure \ref{04-1-sim_mult} est un exemple de similarités avec 3 dumps.
+L'algorithme est fonctionnel sur 2 dumps, mais comme sur la figure \ref{similaritiesdialog}, il est possible d'ajouter d'autres dumps avec le bouton Add Dump et d'en enlever avec le bouton Remove Dump.
+On peut affiner les résultats en entrant une taille minimale de similarité à rechercher, via le paramètre Minimum String Size, ou laisser le logiciel choisir une taille adéquat avec le bouton Default.
+Apres avoir valider, l'affichage de la vue text est modifié ainsi :
 
 \begin{figure}[!h]
   \begin{center}
-  {\tt
-  {Dump 1 : \color{dissimColor} Encore un}{\color{otherSimColor} e au}{\color{dissimColor} tre }{\color{simColor} similarité}{\color{dissimColor} .}
-
-  {Dump 2 : \color{dissimColor} Toujours }{\color{simColor} plus }{\color{dissimColor} de }{\color{simColor} similarité}{\color{dissimColor} s}
-
-  {Dump 3 : \color{dissimColor} colorées }{\color{simColor} plus }{\color{dissimColor} qu'}{\color{otherSimColor} auparavant}{\color{dissimColor} .}
-  }
+  \includegraphics[scale=1]{similaritiescolor.png}
+  \caption{Zone text après lancement de l'algorithme de similarities}
+  \label{similaritiescolor}
   \end{center}
-  \caption{Similatités entre trois dumps}
-  \label{04-1-sim_mult}
 \end{figure}
+
+Dans le cas de deux dumps, les similarités du dump visualisé sont représentées par la couleur verte, tandis que les dissimilarités du dump visualisé sont représentées par la couleur rouge.
+Dans le cas de plusieurs dumps, on dispose d'une troisième couleur, le bleu. Il correspond aux similarités ne concernant pas le dump visualisé (c'est-à-dire les similarités communes à d'autres dumps).
+Ces couleurs ont des nuances : plus le vert ou le bleu sont prononcés, plus il y a de dumps partageant la similarité en question.
