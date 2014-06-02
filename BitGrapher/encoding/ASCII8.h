@@ -4,6 +4,13 @@
 #include "core/BitString.h"
 #include "encoding/Encoding2.h"
 
+/*!
+ * \class ASCII8
+ * \brief ASCII encoding over 8 bits
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class ASCII8 : public Encoding2
 {
 public:

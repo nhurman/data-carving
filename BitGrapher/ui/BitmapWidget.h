@@ -7,6 +7,13 @@
 
 #include "ViewWidget.h"
 
+/*!
+ * \class BitmapWidget
+ * \brief Bitmap view widget
+ *
+ * \author Nicolas Hurman
+ * \date 02/03/2014
+ */
 class BitmapWidget : public ViewWidget
 {
 public:

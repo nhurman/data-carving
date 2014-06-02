@@ -3,6 +3,13 @@
 
 #include "encoding/Encoding2.h"
 
+/*!
+ * \class Integer
+ * \brief Raw integer encoding
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class Integer : public Encoding2
 {
 public:
@@ -10,6 +17,13 @@ public:
     std::string getChunk(unsigned int index) const;
 };
 
+/*!
+ * \class Integer
+ * \brief Raw unsigned integer encoding over 2 bits
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class Integer2 : public Integer
 {
 public:
@@ -18,6 +32,13 @@ public:
     std::string getName() const { return "Int2"; }
 };
 
+/*!
+ * \class Integer
+ * \brief Raw unsigned integer encoding over 3 bits
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class Integer3 : public Integer
 {
 public:
@@ -26,6 +47,13 @@ public:
     std::string getName() const { return "Int3"; }
 };
 
+/*!
+ * \class Integer
+ * \brief Raw unsigned integer encoding over 4 bits
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class Integer4 : public Integer
 {
 public:
@@ -34,6 +62,13 @@ public:
     std::string getName() const { return "Int4"; }
 };
 
+/*!
+ * \class Integer
+ * \brief Raw unsigned integer encoding over 5 bits
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class Integer5 : public Integer
 {
 public:
@@ -42,6 +77,13 @@ public:
     std::string getName() const { return "Int5"; }
 };
 
+/*!
+ * \class Integer
+ * \brief Raw unsigned integer encoding over 6 bits
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class Integer6 : public Integer
 {
 public:
@@ -50,6 +92,13 @@ public:
     std::string getName() const { return "Int6"; }
 };
 
+/*!
+ * \class Integer
+ * \brief Raw unsigned integer encoding over 7 bits
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class Integer7 : public Integer
 {
 public:
@@ -58,6 +107,13 @@ public:
     std::string getName() const { return "Int7"; }
 };
 
+/*!
+ * \class Integer
+ * \brief Raw unsigned integer encoding over 8 bits
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class Integer8 : public Integer
 {
 public:
@@ -66,6 +122,13 @@ public:
     std::string getName() const { return "Int8"; }
 };
 
+/*!
+ * \class Integer
+ * \brief Raw unsigned integer encoding over 16 bits
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class Integer16 : public Integer
 {
 public:
@@ -74,6 +137,13 @@ public:
     std::string getName() const { return "Int16"; }
 };
 
+/*!
+ * \class Integer
+ * \brief Raw unsigned integer encoding over 32 bits
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class Integer32 : public Integer
 {
 public:

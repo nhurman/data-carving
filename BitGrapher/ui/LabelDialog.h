@@ -10,15 +10,45 @@ namespace Ui {
 class LabelDialog;
 }
 
+/*!
+ * \class LabelDialog
+ * \brief Label edition dialog
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class LabelDialog : public QDialog
 {
     Q_OBJECT
 
 public:
+    /*!
+     * \brief Constructor
+     * \param parent Parent widget for garbage collection
+     */
     explicit LabelDialog(QWidget *parent = 0);
+
+    /*!
+     * \brief Destructor
+     */
     ~LabelDialog();
+
+    /*!
+     * \brief Set the label to display
+     * \param l Label
+     */
     void setLabel(Label const& l);
+
+    /*!
+     * \brief Get the displayed label
+     * \return Label
+     */
     Label getLabel() const;
+
+    /*!
+     * \brief Set the encodings list
+     * \param encs Encodings
+     */
     void setEncodings(QMap<QString, Encoding2*>* encs);
 
 private slots:

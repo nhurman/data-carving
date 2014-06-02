@@ -9,6 +9,13 @@
 #include "core/BitString.h"
 #include "Encoding.h"
 
+/*!
+ * \class Encoding
+ * \brief Deprecated, please use ASCII8 instead
+ *
+ * \author Nicolas Hurman
+ * \date 02/03/2014
+ */
 class ASCII : public Encoding
 {
 public:

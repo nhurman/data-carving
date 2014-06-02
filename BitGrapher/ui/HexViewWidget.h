@@ -13,6 +13,13 @@
 #include "encoding/ASCII.h"
 #include "ViewWidget.h"
 
+/*!
+ * \class HexViewWidget
+ * \brief Hexadecimal view widget
+ *
+ * \author Nicolas Hurman
+ * \date 02/03/2014
+ */
 class HexViewWidget : public ViewWidget
 {
     Q_OBJECT

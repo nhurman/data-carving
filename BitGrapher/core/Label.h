@@ -3,6 +3,13 @@
 
 #include <string>
 
+/*!
+ * \class Label
+ * \brief Represents a label
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 struct Label
 {
     std::string name;

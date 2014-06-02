@@ -3,6 +3,13 @@
 
 #include <core/BitString.h>
 
+/*!
+ * \class Encoding
+ * \brief Deprecated, please use Encoding2 instead
+ *
+ * \author Nicolas Hurman
+ * \date 02/03/2014
+ */
 class Encoding
 {
 public:

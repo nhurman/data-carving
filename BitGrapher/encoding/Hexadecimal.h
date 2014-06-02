@@ -9,6 +9,13 @@
 #include "core/BitString.h"
 #include "Encoding.h"
 
+/*!
+ * \class Hexadecimal
+ * \brief Deprecated, please use Hexadecimal2 instead
+ *
+ * \author Nicolas Hurman
+ * \date 02/03/2014
+ */
 class Hexadecimal : public Encoding
 {
 public:

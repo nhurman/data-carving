@@ -4,6 +4,13 @@
 #include "core/BitString.h"
 #include "encoding/Encoding2.h"
 
+/*!
+ * \class Binary
+ * \brief Binary encoding
+ *
+ * \author Nicolas Hurman
+ * \date 28/05/2014
+ */
 class Binary : public Encoding2
 {
 public:
