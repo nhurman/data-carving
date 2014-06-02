@@ -27,13 +27,27 @@ public:
     DiagonalViewItem();
 
     /// \brief Constructor for DiagonalViewItem.
-    /// \param x1 X position of the upper left point.
-    /// \param y1 Y position of the upper left point.
-    /// \param x2 X position of the bottom right point.
-    /// \param y2 Y position of the bottom right point.
+    /// \param x X position of the upper left point.
+    /// \param y Y position of the upper left point.
+    /// \param l Length of the diagonal in bit.
+    /// \param mw X scaling.
+    /// \param mw Y scaling.
     /// \param pen Pen used to draw the line.
     /// \param parent The parent Widget (optional).
-    DiagonalViewItem(qreal x1, qreal y1, qreal x2, qreal y2, QPen pen, QGraphicsItem * parent = 0);
+    DiagonalViewItem(unsigned int x, unsigned int y, unsigned int l, qreal mw, qreal mh, QPen pen, QGraphicsItem * parent = 0);
+
+    /// \brief X Accessor.
+    /// \return Value of m_x.
+    unsigned int getX();
+
+    /// \brief Y Accessor.
+    /// \return Value of m_y.
+    unsigned int getY();
+
+    /// \brief Length Accessor.
+    /// \return Value of m_l.
+    unsigned int getL();
+
 
 protected:
     /// \brief Method called when you click on a diagonal.
@@ -45,6 +59,11 @@ signals:
     /// \brief Tell the window that a diagonal was clicked.
     /// \param d Diagonal that sent the signal.
     void diagonalClicked(DiagonalViewItem *d);
+
+private:
+    unsigned int m_x; ///< Diagonal position on X axis (in dump)
+    unsigned int m_y; ///< Diagonal position on Y axis (in dump)
+    unsigned int m_l; ///< Diagonal length (in bit)
 };
 
 #endif // DIAGONALVIEWITEM_H

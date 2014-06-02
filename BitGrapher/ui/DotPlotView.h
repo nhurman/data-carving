@@ -11,7 +11,6 @@
 #include <QTextEdit>
 #include <QMouseEvent>
 
-
 #include "ui_DotPlotView.h"
 
 #include "algorithms/Diagonal.h"

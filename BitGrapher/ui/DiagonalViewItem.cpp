@@ -5,12 +5,27 @@ DiagonalViewItem::DiagonalViewItem() :
 {
 }
 
-DiagonalViewItem::DiagonalViewItem(qreal x1, qreal y1, qreal x2, qreal y2, QPen pen, QGraphicsItem * parent) :
-    QGraphicsLineItem(x1, y1, x2, y2, parent)
+DiagonalViewItem::DiagonalViewItem(unsigned int x, unsigned int y, unsigned int l, qreal mw, qreal mh, QPen pen, QGraphicsItem * parent) :
+    QGraphicsLineItem(x*mw, y*mh, (x+l)*mw, (y+l)*mh, parent),
+    m_x(x),
+    m_y(y),
+    m_l(l)
 {
     this->setPen(pen);
     //this->setFlags(QGraphicsItem::ItemIsSelectable);
     this->setAcceptedMouseButtons(Qt::LeftButton);
+}
+
+unsigned int DiagonalViewItem::getX() {
+    return m_x;
+}
+
+unsigned int DiagonalViewItem::getY(){
+    return m_y;
+}
+
+unsigned int DiagonalViewItem::getL(){
+    return m_l;
 }
 
 
