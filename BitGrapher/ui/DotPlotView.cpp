@@ -10,10 +10,6 @@ DotPlotView::DotPlotView(QWidget *parent) :
     m_selectedDiagonal(new DiagonalViewItem())
 {
     ui->setupUi(this);
-
-    /*BitString a = BitString::fromHex("AAF63E4");
-    BitString b = BitString::fromHex("AAF63E4");
-    this->setBitStrings(&a, &b);*/
 }
 
 DotPlotView::~DotPlotView()
@@ -48,7 +44,7 @@ void DotPlotView::drawDiagonals(std::list<Diagonal>  *listDiag) {
         unsigned int x = (*it).getX();
         unsigned int y = (*it).getY();
         unsigned int l = (*it).length();
-        DiagonalViewItem *diag = new DiagonalViewItem(x, y, l, mw, mh, *m_classicPen);
+        DiagonalViewItem *diag = new DiagonalViewItem(x, y, l, 1, 1, *m_classicPen);
         scene->addItem(diag);
         connect(diag, SIGNAL(diagonalClicked(DiagonalViewItem*)), this, SLOT(diagClicked(DiagonalViewItem*)));
         std::cout << "Diag " << (*it).toString() << std::endl ;

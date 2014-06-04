@@ -1,0 +1,42 @@
+0 - présentation zones, commencer en 
+1 - ouverture
+2 - champs simples
+3 - ouverture second dump
+4 - vérification de tailles des champs + changement
+5 - même trajet, comparaison via similarities
+6 - ajout du champ
+7 - ouverture d'une autre de ma carte, t+1
+8 - dotplot
+9 - un champ est décalé (diagonale de 160)
+10 - passage en bitmap, bonjour AFXX !
+11 - ajout du champ
+12 - sauvegarde du masque
+13 - fermeture + réouverture, chargement d'un 4eme dump, 
+
+
+
+3 - dotplot détourné 
+
+Ultra Heavy Dump Pro Crasher
+string size 31, 66264b >> 8283o
+crash @ 1:40, 1,8Go ram
+
+Still Big
+String Size 35, 35760b >> 4470o
+crash @ 1:40, 1,8Go ram
+
+Still Big Less
+3500o
+dotplot affiche pas, 1:30, 1,5Go ram
+
+2150o 
+calcul en 34s
+800mo mem
+affiche pas
+
+1024o
+calcul en 7sec
+190mo mem
+affiche pas
+
+ mécanisme de detection des zones vides
