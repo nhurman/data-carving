@@ -73,6 +73,16 @@ void MainWindow::on_actionAdd_dump_triggered()
 
 void MainWindow::on_selectedDumpChanged(Dump const* dump)
 {
+    BitString const* bs = NULL;
+    if (dump) {
+        bs = dump->bitString();
+    }
+
+    m_txtView->setBitString(bs);
+    m_hexView->setBitString(bs);
+    m_bmpView->setBitString(bs);
+    ui->tableWidget->setBitString(bs);
+
     DumpSet* ds = ui->treeWidget->getCurrentDumpSet();
     if(ds)
     {
@@ -91,16 +101,6 @@ void MainWindow::on_selectedDumpChanged(Dump const* dump)
         else
             ui->txtView->setSimilarities(nullptr);
     }
-
-    BitString const* bs = NULL;
-    if (dump) {
-        bs = dump->bitString();
-    }
-
-    m_txtView->setBitString(bs);
-    m_hexView->setBitString(bs);
-    m_bmpView->setBitString(bs);
-    ui->tableWidget->setBitString(bs);
 }
 
 void MainWindow::on_actionNew_set_triggered()
