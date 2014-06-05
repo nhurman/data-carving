@@ -89,7 +89,7 @@ void TextViewWidget::updateContents()
         }
     }
     else for (unsigned int i = 0; i < m_encoding->countChunks(); ++i) {
-        contents += m_encoding->getChunk(i).c_str();
+        contents += QString(m_encoding->getChunk(i).c_str()).toHtmlEscaped();
     }
 
     ui->textEdit->setText(contents + "</pre>");
