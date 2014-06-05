@@ -67,7 +67,7 @@ void TextViewWidget::updateContents()
     m_encoding->setBitString(m_bitString);
     m_encoding->setGlobalOffset(m_globalOffset);
 
-    QString contents = "<pre>";
+    QString contents = "<pre style='word-wrap:break-words;white-space:pre-wrap'>";
     int pos = -1;
 
     if (m_similarities) {
@@ -98,6 +98,7 @@ void TextViewWidget::updateContents()
 void TextViewWidget::on_encoding_currentIndexChanged(const QString &arg1)
 {
     m_encoding = (*m_encodings)[arg1];
+    emit encodingChanged();
     updateContents();
 }
 

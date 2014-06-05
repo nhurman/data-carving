@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->bmpScroll->setWidget(m_bmpView);
 
     connect(ui->txtView, SIGNAL(labelAdded(Label)), ui->tableWidget, SLOT(addLabel(Label)));
+    connect(ui->txtView, SIGNAL(encodingChanged()), this, SLOT(onEncodingChanged()));
     ui->txtView->setEncodings(ui->tableWidget->getEncodings());
 
     on_actionNew_set_triggered();
@@ -31,6 +32,23 @@ MainWindow::~MainWindow()
     delete m_bmpView;
     delete m_hexView;
     delete ui;
+}
+
+void MainWindow::onEncodingChanged()
+{
+    DumpSet *ds = ui->treeWidget->getCurrentDumpSet();
+    if (0 == ds) return;
+
+    auto i = m_similarities.find(ds);
+    if (i != m_similarities.end()) {
+        int id = i->second->getDumpId(*(ui->treeWidget->getCurrentDump()));
+        if(id != -1) {
+            Similarities* s = i->second;
+            std::list<std::pair<float, int>>* sims = s->getSimilarities(id,
+                ui->txtView->getEncoding()->bitsPerChunk());
+            ui->txtView->setSimilarities(sims);
+         }
+    }
 }
 
 void MainWindow::on_actionAdd_dump_triggered()

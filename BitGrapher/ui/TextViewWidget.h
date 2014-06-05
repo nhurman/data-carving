@@ -68,6 +68,8 @@ signals:
      */
     void labelAdded(Label l);
 
+    void encodingChanged();
+
 private slots:
     void on_encoding_currentIndexChanged(const QString &arg1);
     void on_globalOffset_valueChanged(int arg1);

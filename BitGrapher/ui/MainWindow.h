@@ -39,6 +39,8 @@ public:
     ~MainWindow();
 
 private slots:
+    void onEncodingChanged();
+
     void on_selectedDumpChanged(Dump const* ds);
 
     void on_actionAdd_dump_triggered();
