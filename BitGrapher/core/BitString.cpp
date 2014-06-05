@@ -183,7 +183,6 @@ BitString BitString::operator^(BitString const& other)
     return bs;
 }
 
-
 // Operations
 BitString BitString::substring(unsigned int start, size_t size) const
 {

@@ -6,8 +6,8 @@
 
 Similarities* SimilaritiesDialog::m_result;
 
-SimilaritiesDialog::SimilaritiesDialog(QWidget *parent, DumpSet* ds, const Dump **selectedDump) :
-    QDialog(parent), m_selectedDump(selectedDump), m_dumpSet(ds)
+SimilaritiesDialog::SimilaritiesDialog(QWidget *parent, DumpSet* ds, int offset, const Dump **selectedDump) :
+    QDialog(parent), m_selectedDump(selectedDump), m_dumpSet(ds), m_offset(offset)
 {
     setWindowTitle("Similarities");
 
@@ -141,7 +141,7 @@ void SimilaritiesDialog::processAndClose()
         v.push_back(getDump(i));
     }
 
-    m_result = new Similarities(v, getMinSize());
+    m_result = new Similarities(v, m_offset, getMinSize());
     done(0);
 }
 
@@ -151,9 +151,9 @@ void SimilaritiesDialog::cancelAndClose()
     done(0);
 }
 
-Similarities* SimilaritiesDialog::getSimilarities(DumpSet* ds, const Dump **selectedDump)
+Similarities* SimilaritiesDialog::getSimilarities(DumpSet* ds, int offset, const Dump **selectedDump)
 {
-    SimilaritiesDialog dialog(0, ds, selectedDump);
+    SimilaritiesDialog dialog(0, ds, offset, selectedDump);
     dialog.exec();
     Similarities* res = m_result;
     m_result = NULL;

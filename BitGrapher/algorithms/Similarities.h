@@ -23,7 +23,7 @@ public:
     /// \param dumps The dumps to compare using the algorithm.
     /// \param minSize The minimum size for the similarities.
     /// \note The algoritm is run in this method.
-    Similarities(std::vector<Dump const*> const dumps, int const minSize = 1);
+    Similarities(std::vector<Dump const*> const dumps, int offset = 0, int const minSize = 1);
 
     /// \brief Looks for the given Dump and returns its ID.
     /// \param d The dump to look for.
@@ -75,11 +75,15 @@ public:
     /// \return The converted coordinates.
     static int convertCoords(int const c, int const charSize, bool const roundUp = false);
 
+    std::vector<const Dump *> getDumps() const { return m_dumps; }
+    int getMinSize() const { return m_minSize; }
+
     //static void test();
 
 private:
     std::vector<const Dump *> m_dumps; ///< The dumps to compare using the algorithm.
     std::list< Similarity > m_similarities; ///< The list of the similarities found by the algorithm.
+    int m_minSize;
 
     /// \brief Adds the similarities from sim2 to sim1.
     /// \param sim1 A list of similartites implying two or more dumps.

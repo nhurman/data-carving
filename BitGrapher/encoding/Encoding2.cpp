@@ -40,5 +40,5 @@ std::string Encoding2::decode(unsigned int start, unsigned int length)
 unsigned int Encoding2::countChunks() const
 {
     if (NULL == m_bitString) return 0;
-    return ceil(static_cast<double>(m_bitString->size()) / bitsPerChunk());
+    return ceil(static_cast<double>(m_bitString->size() - m_globalOffset) / bitsPerChunk());
 }

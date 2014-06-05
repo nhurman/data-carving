@@ -2,14 +2,21 @@
 #include <iostream>
 #include <QDebug>
 
-Similarities::Similarities(const std::vector<const Dump *> dumps, const int minSize) : m_dumps(dumps)
+Similarities::Similarities(const std::vector<const Dump *> dumps, int offset, const int minSize) : m_dumps(dumps)
 {
+    m_minSize = minSize;
     for(unsigned int i = 0; i < m_dumps.size(); i++)
     {
         std::list< Similarity > simi;
         for(unsigned int j = i+1; j < m_dumps.size(); j++)
         {
-            std::list<std::pair<int, int> > l = compare2Dumps(*m_dumps[i]->bitString(), *m_dumps[j]->bitString(), minSize);
+            int size1 = (*m_dumps[i]->bitString()).size() - offset;
+            int size2 = (*m_dumps[j]->bitString()).size() - offset;
+
+            std::list<std::pair<int, int> > l = compare2Dumps(
+                (*m_dumps[i]->bitString()).substring(offset, size1),
+                (*m_dumps[j]->bitString()).substring(offset, size2),
+            minSize);
             addSimilarities(&simi, &l, i, j);
         }
         addSimList(&simi);

@@ -61,6 +61,13 @@ public:
      */
     Encoding2* getEncoding() const;
 
+
+    /*!
+     * \brief Get the current offset
+     * \return int
+     */
+    int getOffset() const;
+
 signals:
     /*!
      * \brief Fired when a label is added

@@ -26,14 +26,14 @@ public:
     /// \param parent The parent Widget (optional).
     /// \param ds The DumpSet in which the algorithm will be applied.
     /// \param selectedDump Where the compared dump (the one to display) will be stored.
-    explicit SimilaritiesDialog(QWidget *parent = 0, DumpSet* ds = NULL, const Dump **selectedDump = NULL);
+    explicit SimilaritiesDialog(QWidget *parent = 0, DumpSet* ds = NULL, int offset = 0, const Dump **selectedDump = NULL);
 
     /// \brief Displays the SimilaritiesDialog and returns the results of the algorithm.
     /// \note For an easy use of this class, just use this method.
     /// \param ds The DumpSet in which the algorithm will be applied.
     /// \param selectedDump Where the compared dump (the one to display) will be stored.
     /// \return An instance of Similarity with the results of the algorithm.
-    static Similarities* getSimilarities(DumpSet* ds, Dump const** selectedDump = NULL);
+    static Similarities* getSimilarities(DumpSet* ds, int offset, Dump const** selectedDump = NULL);
 
     /// \brief Finds the dump selected by the ComboBox with the given index.
     /// \param index The index of the ComboBox to look at.
@@ -84,6 +84,7 @@ private:
     /// \return The preferred minimum string size.
     int preferredStringSize() const;
 
+    int m_offset;
     static Similarities* m_result; ///< The result of the algorithm is stored here, to be recovered after window closure.
 };
 

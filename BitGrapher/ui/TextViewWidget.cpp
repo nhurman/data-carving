@@ -105,6 +105,7 @@ void TextViewWidget::on_encoding_currentIndexChanged(const QString &arg1)
 void TextViewWidget::on_globalOffset_valueChanged(int arg1)
 {
     m_globalOffset = arg1;
+    emit encodingChanged();
     updateContents();
 }
 
@@ -132,4 +133,9 @@ void TextViewWidget::on_newLabel_clicked()
 Encoding2* TextViewWidget::getEncoding() const
 {
     return m_encoding;
+}
+
+int TextViewWidget::getOffset() const
+{
+    return m_globalOffset;
 }

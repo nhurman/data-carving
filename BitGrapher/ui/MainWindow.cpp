@@ -43,7 +43,9 @@ void MainWindow::onEncodingChanged()
     if (i != m_similarities.end()) {
         int id = i->second->getDumpId(*(ui->treeWidget->getCurrentDump()));
         if(id != -1) {
-            Similarities* s = i->second;
+            Similarities* s = new Similarities(i->second->getDumps(), ui->txtView->getOffset(), i->second->getMinSize());
+            delete m_similarities[ds];
+            m_similarities[ds] = s;
             std::list<std::pair<float, int>>* sims = s->getSimilarities(id,
                 ui->txtView->getEncoding()->bitsPerChunk());
             ui->txtView->setSimilarities(sims);
@@ -236,7 +238,7 @@ void MainWindow::on_actionSimilarities_triggered()
 
     //// GABRIEL
     Dump const* dump = 0;
-    Similarities* sim = SimilaritiesDialog::getSimilarities(ds, &dump);
+    Similarities* sim = SimilaritiesDialog::getSimilarities(ds, ui->txtView->getOffset(), &dump);
     if(sim == NULL) //cancel was pressed
         return;
     else
