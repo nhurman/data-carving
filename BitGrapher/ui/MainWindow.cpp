@@ -74,6 +74,25 @@ void MainWindow::on_actionAdd_dump_triggered()
 
 void MainWindow::on_selectedDumpChanged(Dump const* dump)
 {
+    DumpSet* ds = ui->treeWidget->getCurrentDumpSet();
+    if(ds)
+    {
+        auto i = m_similarities.find(ds);
+        if (i != m_similarities.end()) {
+            int id = i->second->getDumpId(*(ui->treeWidget->getCurrentDump()));
+            if(id != -1) {
+                Similarities* s = i->second;
+                std::list<std::pair<float, int>>* sims = s->getSimilarities(id,
+                    ui->txtView->getEncoding()->bitsPerChunk());
+                ui->txtView->setSimilarities(sims);
+            }
+            else
+                ui->txtView->setSimilarities(nullptr);
+        }
+        else
+            ui->txtView->setSimilarities(nullptr);
+    }
+
     BitString const* bs = NULL;
     if (dump) {
         bs = dump->bitString();
