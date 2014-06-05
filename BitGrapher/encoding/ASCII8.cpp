@@ -17,7 +17,7 @@ std::string ASCII8::getChunk(unsigned int index) const
         byte = (byte << 1) | static_cast<int>((*m_bitString)[i]);
     }
 
-    if (byte < 0x20) byte = '.'; // Control codes
+    if (byte < 0x20) byte = ' '; // Control codes
 
     return std::string(&byte, 1);
 }
