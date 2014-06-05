@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->txtView, SIGNAL(labelAdded(Label)), ui->tableWidget, SLOT(addLabel(Label)));
     ui->txtView->setEncodings(ui->tableWidget->getEncodings());
 
-
     on_actionNew_set_triggered();
     //ui->treeWidget->addDump("C:/Users/nhurman/Documents/GitHub/data-carving/build-BitGrapher-Desktop_Qt_5_3_0_MinGW_32bit-Debug/dump3.txt");
     //ui->treeWidget->addDump("C:/Users/nhurman/Documents/GitHub/data-carving/build-BitGrapher-Desktop_Qt_5_3_0_MinGW_32bit-Debug/dump3_.txt");

@@ -67,21 +67,21 @@ void TextViewWidget::updateContents()
     m_encoding->setBitString(m_bitString);
     m_encoding->setGlobalOffset(m_globalOffset);
 
-    QString contents;
+    QString contents = "<pre>";
     int pos = -1;
 
     if (m_similarities) {
         for (std::pair<float, int> p: *m_similarities) {
             QColor color = toSimColor(p.first);
 
-            contents += QString("<span style='color:rgb({0}, {1}, {2})'>")
-                .arg(color.red(), color.green(), color.blue());
+            contents += QString("<span style='color:rgb(%1, %2, %3)'>")
+                .arg(color.red()).arg(color.green()).arg(color.blue());
 
             int newPos = p.second;
 
             if (newPos < 0) newPos = m_encoding->countChunks() - 1;
             for (int i = pos + 1; i <= newPos; ++i) {
-                contents += m_encoding->getChunk(i).c_str();
+                contents += QString(m_encoding->getChunk(i).c_str()).toHtmlEscaped();
             }
 
             contents += "</span>";
@@ -92,8 +92,7 @@ void TextViewWidget::updateContents()
         contents += m_encoding->getChunk(i).c_str();
     }
 
-    qDebug() << contents;
-    ui->textEdit->setText(contents);
+    ui->textEdit->setText(contents + "</pre>");
 }
 
 void TextViewWidget::on_encoding_currentIndexChanged(const QString &arg1)
