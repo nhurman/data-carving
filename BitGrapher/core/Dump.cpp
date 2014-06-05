@@ -1,6 +1,6 @@
 #include "Dump.h"
 
-Dump::Dump(std::string const& filePath, InputFormat format): m_filePath(filePath)
+Dump::Dump(std::string const& filePath, InputFormat format): m_filePath(filePath), m_format(format)
 {
     std::ifstream f;
     f.open(m_filePath.c_str());

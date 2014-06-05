@@ -1,4 +1,5 @@
 #include "DumpSet.h"
+#include <QDebug>
 
 
 DumpSet::DumpSet(std::string filePath) : m_filePath(filePath), m_modified(false)
@@ -55,6 +56,7 @@ bool DumpSet::save()
 
     for (std::map<std::string, Dump const*>::iterator i = m_dumps.begin(); i != m_dumps.end(); i++) {
         file << toRelative( i->second->filePath() ) << ";" << BitString::formatToString(i->second->getFormat()) << std::endl;
+        qDebug() << i->second->getFormat();
     }
 
     file.close();
