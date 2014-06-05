@@ -28,7 +28,7 @@ TextViewWidget::~TextViewWidget()
 void TextViewWidget::setEncodings(QMap<QString, Encoding2*>* encodings)
 {
     m_encodings = encodings;
-    m_encoding = (*m_encodings)["ASCII (8 bits)"];
+    m_encoding = (*m_encodings)["Binary"];
 }
 
 void TextViewWidget::setSimilarities(std::list<std::pair<float, int>>* sims)
