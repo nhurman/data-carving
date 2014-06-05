@@ -2,6 +2,7 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QLabel>
+#include <QDebug>
 
 Similarities* SimilaritiesDialog::m_result;
 
@@ -136,8 +137,9 @@ void SimilaritiesDialog::removeComboBox()
 void SimilaritiesDialog::processAndClose()
 {
     std::vector<Dump const*> v;
-    for(unsigned int i = 0; i < m_dumpCBs.size(); i++)
+    for(unsigned int i = 0; i < m_dumpCBs.size(); i++) {
         v.push_back(getDump(i));
+    }
 
     m_result = new Similarities(v, getMinSize());
     done(0);

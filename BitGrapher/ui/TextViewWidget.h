@@ -6,6 +6,8 @@
 #include "core/BitString.h"
 #include "core/Label.h"
 #include "encoding/Encoding2.h"
+#include "core/DumpSet.h"
+#include "algorithms/Similarities.h"
 
 namespace Ui {
 class TextViewWidget;
@@ -46,6 +48,19 @@ public:
      */
     void setEncodings(QMap<QString, Encoding2*>* encodings);
 
+    /*!
+     * \brief Set the similarities
+     * \param sims Similarities
+     */
+    void setSimilarities(std::list<std::pair<float, int>>* sims);
+
+
+    /*!
+     * \brief Get the current encoding
+     * \return Encoding
+     */
+    Encoding2* getEncoding() const;
+
 signals:
     /*!
      * \brief Fired when a label is added
@@ -65,6 +80,7 @@ private:
     Encoding2 *m_encoding;
     QMap<QString, Encoding2*>* m_encodings;
     unsigned int m_globalOffset;
+    std::list<std::pair<float, int>>* m_similarities;
 };
 
 #endif // TEXTVIEWWIDGET_H

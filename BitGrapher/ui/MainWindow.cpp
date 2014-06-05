@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include "LabelDialog.h"
 #include "core/Label.h"
-
+#include "SimilaritiesDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,9 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     QObject::connect(ui->treeWidget, SIGNAL(selectedDumpChanged(Dump const*)),
         this, SLOT(on_selectedDumpChanged(Dump const*)));
-
-    on_actionNew_set_triggered();
-    //ui->treeWidget->addDump("C:/Users/Nicolas/Desktop/dimp.txt");
 
     m_txtView = ui->txtView;
     m_hexView = new HexViewWidget(ui->hexScroll);
@@ -23,6 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->txtView, SIGNAL(labelAdded(Label)), ui->tableWidget, SLOT(addLabel(Label)));
     ui->txtView->setEncodings(ui->tableWidget->getEncodings());
+
+
+    on_actionNew_set_triggered();
+    //ui->treeWidget->addDump("C:/Users/nhurman/Documents/GitHub/data-carving/build-BitGrapher-Desktop_Qt_5_3_0_MinGW_32bit-Debug/dump3.txt");
+    //ui->treeWidget->addDump("C:/Users/nhurman/Documents/GitHub/data-carving/build-BitGrapher-Desktop_Qt_5_3_0_MinGW_32bit-Debug/dump3_.txt");
 }
 
 MainWindow::~MainWindow()
@@ -57,16 +59,13 @@ void MainWindow::on_actionAdd_dump_triggered()
         }
         availableInputModes.push_back("Raw data"); //always available
 
-        InputFormat inputFormat;
+        InputFormat inputFormat = RAW;
         if(availableInputModes.size() > 1){ //more than 1 available
             QString chosenFormat = QInputDialog::getItem(this,"Select input format", "Input format : ", availableInputModes, 0, false, &ok);
             if(ok){ //cancel was not pressed
                 inputFormat = BitString::stringToFormat(chosenFormat.toStdString());
             }
             //else we won't add the dump, so nothing more to do
-        }
-        else{
-            inputFormat = RAW; //default value
         }
         if(ok)
             ui->treeWidget->addDump(filePath, inputFormat);
@@ -199,11 +198,33 @@ void MainWindow::on_actionSimilarities_triggered()
         return;
     }
 
-    Dump const* dump = NULL;
+    //// GABRIEL
+    Dump const* dump = 0;
+    Similarities* sim = SimilaritiesDialog::getSimilarities(ds, &dump);
+    if(sim == NULL) //cancel was pressed
+        return;
+    else
+    {
+        if(m_similarities.find(ds) != m_similarities.end()) //there is already a similarities in the dump set
+        {
+            delete m_similarities[ds]; //delete it
+            m_similarities.erase(ds);
+        }
+        m_similarities[ds] = sim; //add the new similarities
+    }
 
-    SimilaritiesDialog::getSimilarities(ds, &dump);
+    if (dump) ui->treeWidget->setSelectedDump(dump);
 
-    ui->treeWidget->setSelectedDump(dump);
+    auto i = m_similarities.find(ds);
+    if (i != m_similarities.end()) {
+        int id = i->second->getDumpId(*(ui->treeWidget->getCurrentDump()));
+        if(id != -1) {
+            Similarities* s = i->second;
+            std::list<std::pair<float, int>>* sims = s->getSimilarities(id,
+                ui->txtView->getEncoding()->bitsPerChunk());
+            ui->txtView->setSimilarities(sims);
+         }
+    }
 }
 
 void MainWindow::on_tableWidget_doubleClicked(const QModelIndex &index)

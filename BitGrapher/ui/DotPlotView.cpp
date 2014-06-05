@@ -36,8 +36,8 @@ void DotPlotView::setBitStrings(BitString const* b1, BitString const* b2, unsign
 }
 
 void DotPlotView::drawDiagonals(std::list<Diagonal>  *listDiag) {
-    qreal mw = ui->DotPlotZone->geometry().width() / m_width;
-    qreal mh = ui->DotPlotZone->geometry().height() / m_height;
+//    qreal mw = ui->DotPlotZone->geometry().width() / m_width;
+//    qreal mh = ui->DotPlotZone->geometry().height() / m_height;
 
     QGraphicsScene *scene = new QGraphicsScene();
     for (std::list<Diagonal>::iterator it = listDiag->begin(); it != listDiag->end(); ++it){

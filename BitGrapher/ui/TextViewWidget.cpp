@@ -17,6 +17,7 @@ TextViewWidget::TextViewWidget(QWidget *parent) :
     m_encodings = 0;
     m_encoding = 0;
     m_globalOffset = 0;
+    m_similarities = 0;
 }
 
 TextViewWidget::~TextViewWidget()
@@ -30,10 +31,34 @@ void TextViewWidget::setEncodings(QMap<QString, Encoding2*>* encodings)
     m_encoding = (*m_encodings)["ASCII (8 bits)"];
 }
 
+void TextViewWidget::setSimilarities(std::list<std::pair<float, int>>* sims)
+{
+    m_similarities = sims;
+    updateContents();
+}
+
 void TextViewWidget::setBitString(BitString const* bs)
 {
     m_bitString = bs;
     updateContents();
+}
+
+QColor makeColor(QColor c1, QColor c2, float ratio)
+{
+    return QColor (c1.red()*ratio + c2.red()*(1-ratio),
+                   c1.green()*ratio + c2.green()*(1-ratio),
+                   c1.blue()*ratio + c2.blue()*(1-ratio));
+}
+
+QColor toSimColor(const float f)
+{
+    const char* DISSIM_COLOR = "red";
+    const char* SIM_COLOR = "green";
+    const char* OTHER_SIM_COLOR = "blue";
+    if(f >= 0)
+        return makeColor( QColor( SIM_COLOR ), QColor( DISSIM_COLOR ), f );
+    //else
+    return makeColor( QColor( OTHER_SIM_COLOR ), QColor( DISSIM_COLOR ), -f );
 }
 
 void TextViewWidget::updateContents()
@@ -43,10 +68,31 @@ void TextViewWidget::updateContents()
     m_encoding->setGlobalOffset(m_globalOffset);
 
     QString contents;
-    for (unsigned int i = 0; i < m_encoding->countChunks(); ++i) {
+    int pos = -1;
+
+    if (m_similarities) {
+        for (std::pair<float, int> p: *m_similarities) {
+            QColor color = toSimColor(p.first);
+
+            contents += QString("<span style='color:rgb({0}, {1}, {2})'>")
+                .arg(color.red(), color.green(), color.blue());
+
+            int newPos = p.second;
+
+            if (newPos < 0) newPos = m_encoding->countChunks() - 1;
+            for (int i = pos + 1; i <= newPos; ++i) {
+                contents += m_encoding->getChunk(i).c_str();
+            }
+
+            contents += "</span>";
+            pos = newPos;
+        }
+    }
+    else for (unsigned int i = 0; i < m_encoding->countChunks(); ++i) {
         contents += m_encoding->getChunk(i).c_str();
     }
 
+    qDebug() << contents;
     ui->textEdit->setText(contents);
 }
 
@@ -81,4 +127,9 @@ void TextViewWidget::on_newLabel_clicked()
     emit labelAdded(l);
     ui->lineEdit->clear();
     ui->textEdit->setFocus(Qt::OtherFocusReason);
+}
+
+Encoding2* TextViewWidget::getEncoding() const
+{
+    return m_encoding;
 }

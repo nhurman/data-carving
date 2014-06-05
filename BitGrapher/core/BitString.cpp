@@ -11,6 +11,7 @@ BitString::BitString(size_t size) : m_size(size)
 
 BitString::BitString(BitString const& other)
 {
+    m_bytes = 0;
     operator=(other);
 }
 

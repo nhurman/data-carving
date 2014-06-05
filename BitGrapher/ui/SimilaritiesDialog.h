@@ -1,5 +1,5 @@
-#ifndef SIMILARITESDIALOG_H
-#define SIMILARITESDIALOG_H
+#ifndef SIMILARITIESDIALOG_H
+#define SIMILARITIESDIALOG_H
 
 #include <QDialog>
 #include <QComboBox>
@@ -75,7 +75,7 @@ private:
     std::vector<DumpComboBox*> m_dumpCBs; ///< The ComboBoxes
     QSpinBox* m_minSizeSpinBox; ///< The SpinBox that controls the minimum string size
 
-    /// \breif refreshes a single ComboBox.
+    /// \brief refreshes a single ComboBox.
     /// \param index The index of the ComboBoox to refresh.
     /// \note Used by refreshComboBoxes(int).
     void refreshComboBox(int const index);
@@ -89,4 +89,4 @@ private:
 
 
 
-#endif // SIMILARITESDIALOG_H
+#endif // SIMILARITIESDIALOG_H

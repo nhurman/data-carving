@@ -52,7 +52,7 @@ public:
 protected:
     /// \brief Method called when you click on a diagonal.
     /// \param event Countain informations about the click.
-    void mousePressEvent (QGraphicsSceneMouseEvent *event );
+    void mousePressEvent (QGraphicsSceneMouseEvent */*event*/ );
 
 
 signals:

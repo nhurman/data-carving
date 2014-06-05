@@ -65,6 +65,9 @@ private:
     BitmapWidget* m_bmpView;
     HexViewWidget* m_hexView;
     TextViewWidget* m_txtView;
+
+    ///GABRIEL
+    std::map<DumpSet*, Similarities*> m_similarities;
 };
 
 #endif // MAINWINDOW_H

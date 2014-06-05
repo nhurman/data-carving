@@ -109,8 +109,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>622</width>
-             <height>510</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
           </widget>
@@ -148,8 +148,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>622</width>
-             <height>510</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
           </widget>
@@ -167,7 +167,7 @@
      <x>0</x>
      <y>0</y>
      <width>929</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDumps">
@@ -411,9 +411,6 @@
   <action name="actionRemove_dump">
    <property name="text">
     <string>&amp;Remove dump</string>
-   </property>
-   <property name="shortcut">
-    <string>Del</string>
    </property>
   </action>
   <action name="actionSimilarities">

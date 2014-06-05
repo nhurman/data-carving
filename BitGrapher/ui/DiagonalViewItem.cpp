@@ -29,7 +29,7 @@ unsigned int DiagonalViewItem::getL(){
 }
 
 
-void DiagonalViewItem::mousePressEvent ( QGraphicsSceneMouseEvent * event ){
+void DiagonalViewItem::mousePressEvent ( QGraphicsSceneMouseEvent * /*event*/ ){
     //std::cout << this->line().x1() << " " << this->line().y1() << " " << this->line().dx() << std::endl;
     emit diagonalClicked(this);
 }

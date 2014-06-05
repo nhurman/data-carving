@@ -1,5 +1,6 @@
 #include "algorithms/Similarities.h"
 #include <iostream>
+#include <QDebug>
 
 Similarities::Similarities(const std::vector<const Dump *> dumps, const int minSize) : m_dumps(dumps)
 {
