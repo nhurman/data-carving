@@ -52,7 +52,7 @@ std::list< std::pair<float, int> >* Similarities::getSimilarities(const int dump
 {
     std::list< std::pair<float, int> >* sims = new std::list< std::pair<float, int> >();
     int pos = 0;
-    float oldColor = 0;
+    float oldColor = 2; //has to be an impossible value
     float currColor = 0;
     for (std::list< Similarity >::iterator i = m_similarities.begin(); i != m_similarities.end() /*&& pos != -1*/; i++ )
     {
@@ -79,7 +79,7 @@ std::list< std::pair<float, int> >* Similarities::getSimilarities(const int dump
         }
 
         //dissimilarity until next value
-        pos = convertCoords(i->first.first, charSize, true) -1; //-1 because it is the beginning fo the next similarity
+        pos = convertCoords(i->first.first, charSize, true) -1; //-1 because it is the beginning of the next similarity
         if(pos > sims->back().second) //the length can be of 0 or lower due to the encoding
         {
             currColor = 0;
