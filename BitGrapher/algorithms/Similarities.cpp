@@ -18,10 +18,6 @@ Similarities::Similarities(const std::vector<const Dump *> dumps, int offset, co
                 (*m_dumps[j]->bitString()).substring(offset, size2),
             minSize);
             addSimilarities(&simi, &l, i, j);
-
-            std::cout << std::endl << i << " - " << j << std::endl;
-            for(auto k = simi.begin(); k != simi.end(); ++k)
-                std::cout << k->first.first << " ; " << k->first.second << std::endl;
         }
         addSimList(&simi);
     }
