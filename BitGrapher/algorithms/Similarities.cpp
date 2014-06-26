@@ -18,10 +18,6 @@ Similarities::Similarities(const std::vector<const Dump *> dumps, int offset, co
                 (*m_dumps[j]->bitString()).substring(offset, size2),
             minSize);
             addSimilarities(&simi, &l, i, j);
-/*
-            std::cout << std::endl << i << " - " << j << std::endl;
-            for(auto k = l.begin(); k != l.end(); ++k)
-                std::cout << k->first.first << " ; " << k->first.second << std::endl;*/
         }
         addSimList(&simi);
     }
@@ -107,11 +103,11 @@ std::list< std::pair<float, int> >* Similarities::getSimilarities(const int dump
 
                 addColor(sims, currColor, oldColor, pos);
             }
-
+        }
             //Bug Fix
             std::list< Similarity >::iterator j = i; //j = i+1;
             j++;
-            pos = sims->back().second + 1;              //We consider the next character, in case it was shared by more than 1 similarity
+            pos += 1;//= sims->back().second + 1;              //We consider the next character, in case it was shared by more than 1 similarity
             if(i->first.second >= j->first.first-1                              //if the next similarity is right next to this one (j is right after i)
                     && pos < convertCoords(j->first.first, charSize, true))     // but we are before its converted starting point (pos is before the junction between i and j)
             {
@@ -146,7 +142,7 @@ std::list< std::pair<float, int> >* Similarities::getSimilarities(const int dump
                 }
             }
             //Bug Fix End
-        }
+
     }
 
 
@@ -176,29 +172,23 @@ void Similarities::addSimilarities(std::list<Similarity>* sim1, std::list<std::p
         }
         else
         {
-            if(j->first.second > i->first) //let [a;b] e sim1, [x,y] e sim2. if(b > x)
+            if(j->first.second >= i->first) //let [a;b] e sim1, [x,y] e sim2. if(b >= x)
             {
                 std::list<int> l;
                 l.push_back(d1);
                 l.push_back(d2);
-                if(j->first.first < i->second) //if(a < y)
+                if(j->first.first <= i->second) //if(a <= y)
                 {
                     //[a,b] inter [x,y] != NULL
                     std::list< Similarity > newSim = uniteSim(*j, Similarity (*i, l));
 
-                //VENDREDI
-                    /*if(j->first.second > i->second) //if(b>y)
-                    {
-                        //ajout de [yb] à sim1 ([ab] devient [yb])
-                    }
-                    else */if(j->first.second < i->second) //if(b<y)
+                    if(j->first.second < i->second) //if(b<y)
                     {
                         //adds [by] to sim2 ([xy] becomes [(b+1)y])
                         i->first = j->first.second+1;
                         i--; //to work with the new i again
                         newSim.pop_back(); //don't add [(b+1)y] to sim1
                     }
-                //vendredi
                     j = sim1->erase(j);
                     sim1->insert(j, newSim.begin(), newSim.end() );
 
@@ -230,12 +220,20 @@ void Similarities::addSimList (std::list< Similarity >* list)
         }
         else
         {
-            if(j->first.second > i->first.first) //let [a;b] e sim1, [x,y] e sim2. if(b > x)
+            if(j->first.second >= i->first.first) //let [a;b] e sim1, [x,y] e sim2. if(b >= x)
             {
-                if(j->first.first < i->first.second) //if(a < y)
+                if(j->first.first <= i->first.second) //if(a <= y)
                 {
-                    //[a,b] inter [x,y] != NULL
                     std::list< Similarity > newSim = intersectSim(*j, *i);
+
+                    if(j->first.second < i->first.second) //if(b<y)
+                    {
+                        //adds [by] to sim2 ([xy] becomes [(b+1)y])
+                        i->first.first = j->first.second+1;
+                        i--; //to work with the new i again
+                        newSim.pop_back(); //don't add [(b+1)y] to sim1
+                    }
+                    //[a,b] inter [x,y] != NULL
                     j = m_similarities.erase(j);
                     m_similarities.insert(j, newSim.begin(), newSim.end() );
                 }
