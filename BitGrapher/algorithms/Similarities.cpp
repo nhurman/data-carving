@@ -18,6 +18,10 @@ Similarities::Similarities(const std::vector<const Dump *> dumps, int offset, co
                 (*m_dumps[j]->bitString()).substring(offset, size2),
             minSize);
             addSimilarities(&simi, &l, i, j);
+/*
+            std::cout << std::endl << i << " - " << j << std::endl;
+            for(auto k = l.begin(); k != l.end(); ++k)
+                std::cout << k->first.first << " ; " << k->first.second << std::endl;*/
         }
         addSimList(&simi);
     }
@@ -181,8 +185,23 @@ void Similarities::addSimilarities(std::list<Similarity>* sim1, std::list<std::p
                 {
                     //[a,b] inter [x,y] != NULL
                     std::list< Similarity > newSim = uniteSim(*j, Similarity (*i, l));
+
+                //VENDREDI
+                    /*if(j->first.second > i->second) //if(b>y)
+                    {
+                        //ajout de [yb] à sim1 ([ab] devient [yb])
+                    }
+                    else */if(j->first.second < i->second) //if(b<y)
+                    {
+                        //adds [by] to sim2 ([xy] becomes [(b+1)y])
+                        i->first = j->first.second+1;
+                        i--; //to work with the new i again
+                        newSim.pop_back(); //don't add [(b+1)y] to sim1
+                    }
+                //vendredi
                     j = sim1->erase(j);
                     sim1->insert(j, newSim.begin(), newSim.end() );
+
                 }
                 else
                 {
